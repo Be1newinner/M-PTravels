@@ -24,22 +24,21 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.ORACLE_SSH_KEY }}" > ~/.ssh/oracle_key
           chmod 600 ~/.ssh/oracle_key
+          echo "${{ secrets.SSH_PASSPHRASE }}" > ~/.ssh/passphrase
+          chmod 600 ~/.ssh/passphrase
           echo "Host my-oracle-instance
           HostName 141.148.220.14
           User ubuntu
           IdentityFile ~/.ssh/oracle_key" >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
-      - name: Add SSH Passphrase
+      - name: Start SSH Agent and Add Key
         run: |
-          echo "${{ secrets.SSH_PASSPHRASE_THIS_REPO_ON_ORACLE_FIRST_INSTANCE }}" > ~/.ssh/passphrase
-          chmod 600 ~/.ssh/passphrase
+          eval "$(ssh-agent -s)"
+          SSH_ASKPASS=~/.ssh/passphrase ssh-add ~/.ssh/oracle_key
 
       - name: SSH into ORACLE instance and deploy
-        env:
-          SSH_ASKPASS: ~/.ssh/passphrase
         run: |
-          ssh-add ~/.ssh/oracle_key
           ssh -t -o StrictHostKeyChecking=no my-oracle-instance << 'EOF'
             cd /home/ubuntu/projects/M-PTravels
             git fetch origin main
