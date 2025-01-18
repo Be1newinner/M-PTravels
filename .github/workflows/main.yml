@@ -1,0 +1,42 @@
+# .github/workflows/deploy.yml
+name: Deploy to Oracle
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.ORACLE_SSH_KEY }}" > ~/.ssh/oracle_key
+          chmod 600 ~/.ssh/oracle_key
+          echo "Host my-oracle-instance
+          HostName 141.148.220.14
+          User ubuntu
+          IdentityFile ~/.ssh/oracle_key" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
+
+      - name: SSH into ORACLE instance and deploy
+        run: |
+          ssh -t -o StrictHostKeyChecking=no my-oracle-instance << 'EOF'
+            cd /home/ubuntu/projects/M-PTravels
+            git fetch origin main
+            git reset --hard origin/main
+            git pull origin main
+            pm2 list
+            pm2 restart server
+          EOF
