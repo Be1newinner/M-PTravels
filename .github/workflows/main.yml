@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '20'
 
-           - name: Set up SSH
+      - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.ORACLE_SSH_KEY }}" > ~/.ssh/oracle_key
