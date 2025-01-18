@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Set up SSH
+           - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.ORACLE_SSH_KEY }}" > ~/.ssh/oracle_key
@@ -30,8 +30,16 @@ jobs:
           IdentityFile ~/.ssh/oracle_key" >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
-      - name: SSH into ORACLE instance and deploy
+      - name: Add SSH Passphrase
         run: |
+          echo "${{ secrets.SSH_PASSPHRASE_THIS_REPO_ON_ORACLE_FIRST_INSTANCE }}" > ~/.ssh/passphrase
+          chmod 600 ~/.ssh/passphrase
+
+      - name: SSH into ORACLE instance and deploy
+        env:
+          SSH_ASKPASS: ~/.ssh/passphrase
+        run: |
+          ssh-add ~/.ssh/oracle_key
           ssh -t -o StrictHostKeyChecking=no my-oracle-instance << 'EOF'
             cd /home/ubuntu/projects/M-PTravels
             git fetch origin main
