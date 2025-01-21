@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bgImg {
+    background-image: url("./assets/bg-sky.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.cloudImg {
+    background-image: url("./assets/cloud-vector.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: color-burn;
+    
+}
+
+#hero-section{
+    background-color: transparent;
+    position: relative;
+}
+
+#hero-section:after{
+    content: "";
+    position: absolute;
+    width: 55%;
+    border-radius: 20px;
+    height: 80%;
+    z-index: 29;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #b2e3f2;
+    border:solid 4px white
+}
+.loginBg{
+    background-image: url("./assets/login.jpg");
+    height:100%;
+    width:100%;
+}
