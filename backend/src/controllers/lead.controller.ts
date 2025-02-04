@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import Lead from "../models/lead.model.ts";
+import AppError from "../utils/AppError.ts";
+import { SendResponse } from "../utils/JsonResponse.ts";
 
 export const createLead = async (
   req: Request,
@@ -26,20 +28,17 @@ export const createLead = async (
       dropDate,
     });
 
-    res.status(201).json({
-      success: true,
-      statusCode: 201,
+    SendResponse(res, {
+      status_code: 201,
       message: "Lead created successfully",
       data: lead,
     });
   } catch (error: unknown) {
     console.error("Error while creating lead", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -53,44 +52,17 @@ export const getAllLeads = async (
     const skip = (page - 1) * limit;
     const { filters = {}, projection } = req.body || {};
 
-    const filterConditions: unknown[] = [];
+    const filterConditions: Record<
+      string,
+      { $regex: unknown; $options: string }
+    >[] = [];
 
     if (filters) {
-      if (filters.name) {
-        filterConditions.push({
-          name: { $regex: filters.name, $options: "i" },
-        });
-      }
-      if (filters.email) {
-        filterConditions.push({
-          email: { $regex: filters.email, $options: "i" },
-        });
-      }
-      if (filters.phone) {
-        filterConditions.push({
-          phone: { $regex: filters.phone, $options: "i" },
-        });
-      }
-      if (filters.pickupAddress) {
-        filterConditions.push({
-          pickupAddress: { $regex: filters.pickupAddress, $options: "i" },
-        });
-      }
-      if (filters.dropAddress) {
-        filterConditions.push({
-          dropAddress: { $regex: filters.dropAddress, $options: "i" },
-        });
-      }
-      if (filters.pickupDate) {
-        filterConditions.push({
-          pickupDate: { $regex: filters.pickupDate, $options: "i" },
-        });
-      }
-      if (filters.dropDate) {
-        filterConditions.push({
-          dropDate: { $regex: filters.dropDate, $options: "i" },
-        });
-      }
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+          filterConditions.push({ [key]: { $regex: value, $options: "i" } });
+        }
+      });
     }
 
     const filterObjects =
@@ -113,21 +85,13 @@ export const getAllLeads = async (
       .skip(skip)
       .limit(limit);
 
-    if (leads.length === 0) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Leads not found",
-      });
-      return;
-    }
+    if (leads.length === 0) throw new AppError("Leads not found", 404);
 
     const totalCount = await Lead.countDocuments(filterObjects);
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
-      message: "Leads fetched successfully",
+    SendResponse(res, {
+      status_code: 200,
+      message: "Lead fetched successfully",
       data: {
         data: leads,
         pagination: {
@@ -142,12 +106,10 @@ export const getAllLeads = async (
     });
   } catch (error: unknown) {
     console.error("Error while getting leads", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -157,29 +119,19 @@ export const getLead = async (req: Request, res: Response): Promise<void> => {
   try {
     const existingLead = await Lead.findById(id);
 
-    if (!existingLead) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Lead not found",
-      });
-      return;
-    }
+    if (!existingLead) throw new AppError("Lead not found", 404);
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
+    SendResponse(res, {
       message: "Lead fetched successfully",
       data: existingLead,
+      status_code: 200,
     });
   } catch (error: unknown) {
     console.error("Error while getting lead", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -201,14 +153,7 @@ export const updateLead = async (
   try {
     const existingLead = await Lead.findById(id);
 
-    if (!existingLead) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Lead not found",
-      });
-      return;
-    }
+    if (!existingLead) throw new AppError("Lead not found", 404);
 
     const updatedLead = await Lead.findByIdAndUpdate(
       id,
@@ -226,20 +171,17 @@ export const updateLead = async (
       { new: true }
     );
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
+    SendResponse(res, {
       message: "Lead updated successfully",
       data: updatedLead,
+      status_code: 200,
     });
   } catch (error: unknown) {
     console.error("Error while updating lead", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -252,30 +194,20 @@ export const deleteLead = async (
   try {
     const existingLead = await Lead.findById(id);
 
-    if (!existingLead) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Lead not found",
-      });
-      return;
-    }
+    if (!existingLead) throw new AppError("Lead not found", 404);
 
     await existingLead.deleteOne();
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
+    SendResponse(res, {
       message: "Lead deleted successfully",
+      status_code: 200,
     });
   } catch (error: unknown) {
     console.error("Error while deleting lead", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -294,28 +226,18 @@ export const searchLead = async (
       ],
     });
 
-    if (leads.length === 0) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Leads not found",
-      });
-      return;
-    }
+    if (leads.length === 0) throw new AppError("Leads not found", 404);
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
+    SendResponse(res, {
       message: "Leads fetched successfully",
       data: leads,
+      status_code: 200,
     });
   } catch (error: unknown) {
     console.error("Error while searching lead", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };

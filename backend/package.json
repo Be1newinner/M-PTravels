@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "npx nodemon --trace-deprecation",
     "build": "tsc",
     "lint": "npx eslint src",
     "lint:fix": "npx eslint src --fix"

@@ -1,5 +1,6 @@
 import nodemailer, { SendMailOptions } from "nodemailer";
 import { isEmailValid } from "./helper.ts";
+import { ENV_CONFIGS } from "../config/envs.config.ts";
 
 export interface MailOptions {
   to: string | string[];
@@ -30,16 +31,16 @@ export async function sendMail(
 
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || "587", 10),
+      host: ENV_CONFIGS.SMTP_HOST,
+      port: parseInt(ENV_CONFIGS.SMTP_PORT || "587", 10),
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: ENV_CONFIGS.SMTP_USER,
+        pass: ENV_CONFIGS.SMTP_PASS,
       },
     });
 
     const mailOptions: SendMailOptions = {
-      from: `<${process.env.SMTP_USER}>`,
+      from: `<${ENV_CONFIGS.SMTP_USER}>`,
       to: Array.isArray(to) ? to.join(", ") : to,
       subject,
       html,

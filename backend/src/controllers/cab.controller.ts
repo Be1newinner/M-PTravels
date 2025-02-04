@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import Cab from "../models/cab.model.ts";
 import fs from "fs/promises";
 import { bucket } from "../config/firebaseInit.ts";
+import AppError from "../utils/AppError.ts";
+import { SendResponse } from "../utils/JsonResponse.ts";
 
 export const createCab = async (req: Request, res: Response): Promise<void> => {
   const { title, description, model, capacity } = req.body;
@@ -23,12 +25,10 @@ export const createCab = async (req: Request, res: Response): Promise<void> => {
       }
     } catch (error: unknown) {
       console.error("Error while uploading image", error);
-      res.status(500).json({
-        success: false,
-        statusCode: 500,
-        message: error?.message || "Internal Server Error",
-        error,
-      });
+      const message =
+        error instanceof Error ? error.message : "Internal Server Error!";
+
+      throw new AppError(message, 500);
     }
   }
 
@@ -42,20 +42,17 @@ export const createCab = async (req: Request, res: Response): Promise<void> => {
       capacity,
     });
 
-    res.status(201).json({
-      success: true,
-      statusCode: 201,
+    SendResponse(res, {
+      status_code: 201,
       message: "Cab created successfully",
       data: cab,
     });
   } catch (error: unknown) {
     console.error("Error while creating cab", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -63,29 +60,19 @@ export const getCabs = async (req: Request, res: Response): Promise<void> => {
   try {
     const cabs = await Cab.find({});
 
-    if (cabs.length === 0) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Cabs not found",
-      });
-      return;
-    }
+    if (cabs.length === 0) throw new AppError("Cabs not found", 404);
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
+    SendResponse(res, {
+      status_code: 200,
       message: "Cabs fetched successfully",
       data: cabs,
     });
   } catch (error: unknown) {
     console.error("Error while getting cabs", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -95,29 +82,19 @@ export const getCab = async (req: Request, res: Response): Promise<void> => {
   try {
     const cab = await Cab.findById(id);
 
-    if (!cab) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Cab not found",
-      });
-      return;
-    }
+    if (!cab) throw new AppError("Cab not found", 404);
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
+    SendResponse(res, {
+      status_code: 200,
       message: "Cab fetched successfully",
       data: cab,
     });
   } catch (error: unknown) {
     console.error("Error while getting cab", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -128,14 +105,7 @@ export const updateCab = async (req: Request, res: Response): Promise<void> => {
   try {
     const cab = await Cab.findById(id);
 
-    if (!cab) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Cab not found",
-      });
-      return;
-    }
+    if (!cab) throw new AppError("Cab not found", 404);
 
     if (req.files && Array.isArray(req.files) && req.files.length > 0) {
       try {
@@ -152,12 +122,10 @@ export const updateCab = async (req: Request, res: Response): Promise<void> => {
         }
       } catch (error: unknown) {
         console.error("Error while uploading image", error);
-        res.status(500).json({
-          success: false,
-          statusCode: 500,
-          message: error?.message || "Internal Server Error",
-          error,
-        });
+        const message =
+          error instanceof Error ? error.message : "Internal Server Error!";
+
+        throw new AppError(message, 500);
       }
     }
 
@@ -168,20 +136,17 @@ export const updateCab = async (req: Request, res: Response): Promise<void> => {
 
     await cab.save();
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
-      message: "Cab updated successfully",
+    SendResponse(res, {
+      status_code: 200,
+      message: "Cab fetched successfully",
       data: cab,
     });
   } catch (error: unknown) {
     console.error("Error while updating cab", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };
 
@@ -191,15 +156,8 @@ export const deleteCab = async (req: Request, res: Response): Promise<void> => {
   try {
     const cab = await Cab.findById(id);
 
-    if (!cab) {
-      res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Cab not found",
-      });
-      return;
-    }
-
+    if (!cab) throw new AppError("Cab not found", 404);
+    
     if (cab.imageUrls.length > 0) {
       for (const imageUrl of cab.imageUrls) {
         const fileName =
@@ -216,18 +174,15 @@ export const deleteCab = async (req: Request, res: Response): Promise<void> => {
 
     await cab.deleteOne();
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
+    SendResponse(res, {
+      status_code: 200,
       message: "Cab deleted successfully",
     });
   } catch (error: unknown) {
     console.error("Error while deleting cab", error);
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      message: error?.message || "Internal Server Error",
-      error,
-    });
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+
+    throw new AppError(message, 500);
   }
 };

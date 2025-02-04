@@ -1,15 +1,12 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import connectToDB from "./config/db.ts";
 
-dotenv.config();
-
 const app = express();
 
-const PORT = process.env.PORT || 5000;
+const PORT = ENV_CONFIGS.PORT;
 
 // Database Connection
 connectToDB()
@@ -36,6 +33,7 @@ import leadRoutes from "./routes/lead.routes.ts";
 import cabRoutes from "./routes/cab.routes.ts";
 import packageRoutes from "./routes/package.routes.ts";
 import { errorHandler } from "./middlewares/error.middleware.ts";
+import { ENV_CONFIGS } from "./config/envs.config.ts";
 
 // Routes
 app.use("/api/v1/user", userRoutes);

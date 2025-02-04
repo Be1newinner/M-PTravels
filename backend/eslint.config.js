@@ -2,6 +2,7 @@ import globals from "globals";
 import jsPlugin from "@eslint/js";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import { ENV_CONFIGS } from "./src/config/envs.config";
 
 /** @type {import('eslint').ESLint.FlatConfig[]} */
 export default [
@@ -20,7 +21,7 @@ export default [
       "@typescript-eslint": tsPlugin, // Enable TypeScript plugin
     },
     rules: {
-      "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+      "no-console": ENV_CONFIGS.NODE_ENV === "production" ? "error" : "off",
       "no-unused-vars": "off", // Disable core unused vars rule
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }], // TypeScript unused vars rule
       "@typescript-eslint/explicit-function-return-type": "off", // Disable return type enforcement
