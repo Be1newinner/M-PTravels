@@ -66,8 +66,9 @@ jobs:
 
             # Add bun's bin directory to PATH to ensure pm2 is accessible
             export PATH=$PATH:/home/ubuntu/.bun/bin
-
-            if ! command -v pm2 &> /dev/null
+            source ~/.bashrc
+            
+            if ! command -v pm2 &> /dev/null                                      
             then
                 echo "pm2 not found, installing pm2..."
                 bun add pm2
