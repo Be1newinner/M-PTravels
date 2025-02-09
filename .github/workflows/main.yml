@@ -38,10 +38,10 @@ jobs:
 
       - name: SSH into Lightsail and deploy
         run: |
-          ssh -t -o StrictHostKeyChecking=no my-lightshell-instance << 'EOF'
+          ssh -t -o StrictHostKeyChecking=no ubuntu@3.111.126.28 << 'EOF'
             set -e  # Exit immediately on error
             cd /home/ubuntu/projects/M-PTravels
-
+      
             # Ensure we have the latest code
             git fetch origin main
             if ! git diff --quiet HEAD origin/main; then
@@ -50,26 +50,30 @@ jobs:
             else
               echo "No changes detected."
             fi
-
+      
             cd backend
+      
             # Ensure Node.js and bun are installed on the server (if not installed)
-            whoami
             if ! command -v bun &> /dev/null
             then
                 echo "bun not found, installing..."
                 sudo apt update
                 curl -fsSL https://bun.sh/install | bash
             fi
-
+      
             # Ensure dependencies are installed
             bun install --production
-
+      
+            # Add bun's bin directory to PATH to ensure pm2 is accessible
+            export PATH=$PATH:/home/ubuntu/.bun/bin
+      
+            # Check if pm2 is installed, install it using bun if not
             if ! command -v pm2 &> /dev/null
             then
                 echo "pm2 not found, installing pm2..."
                 bun add pm2
             fi
-
+      
             # Restart PM2 process safely
             if pm2 describe mp-backend > /dev/null; then
               pm2 restart mp-backend
