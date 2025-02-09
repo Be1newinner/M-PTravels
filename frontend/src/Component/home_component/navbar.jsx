@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { useState } from "react";
@@ -9,6 +9,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isSearch, setIsSearch] = useState(false)
+  const [isNews, setIsNews] = useState(false)
 
   const links = [
     {
@@ -16,35 +18,31 @@ export default function Navbar() {
       path: "/",
     },
     {
-      page: "Trip Booking",
-      path: "/tripBooking",
-    },
-    {
       page: "Tour Package",
-      path: "/tourPackage",
+      path: "/tour_package",
     },
     {
-      page: "Pages",
-      path: "",
-      isDropdown: true,
-      items: [
+      page:"Contact",
+      path:"/contact"
+    },
+    {
+      page:"About",
+      path:"/about"
+    },
+    {
+      page:"News",
+      path:null,
+      isDropDown: true,
+      items:[
         {
-          page: "Contact",
-          path: "/contact",
+          page:"News Listing",
+          path:"/news_listing"
         },
         {
-          page: "Privacy Policy",
-          path: "/privacyPage",
+          page:"News Details",
+          path:"/new_details",
         },
-        {
-          page: "Login",
-          path: "/login",
-        },
-        {
-          page: "Signup",
-          path: "/signup",
-        },
-      ],
+      ], 
     },
   ];
 
@@ -58,20 +56,33 @@ export default function Navbar() {
 
   function handleMouseEnter(index) {
     setIsDropdownOpen(true);
-    setActiveDropdown(index)
+    setActiveDropdown(index);
   }
 
   function handleMouseLeave() {
-    setIsDropdownOpen(false)
-    setActiveDropdown(null)
+    setIsDropdownOpen(false);
+    setActiveDropdown(null);
   }
+
+  function handleSearch(){
+  if(isSearch)
+    setIsSearch(false);
+  else
+  setIsSearch(true);
+  console.log("value:", isSearch);
+}
+
+function forNews(){
+  setIsNews(true)
+}
+
 
   const location = useLocation();
   // console.log("location", location)
 
   return (
     <div className="h-full flex items-center px-10 py-2 bg-[#ECECF2] max-md:px-3 max-xl:px-10 max-md:py-2 max-xl:py-4 relative">
-      <div className="flex justify-between max-md:items-center max-xl:w-full ">
+      <div className="flex justify-between max-sm:h-12 items-center max-xl:w-full ">
         <a href="/" className="w-4/12 max-md:w-2/12 max-xl:w-2/12">
           <img src="logo2.png" alt="logo" className=" "></img>
         </a>
@@ -80,7 +91,7 @@ export default function Navbar() {
             <IoReorderThreeOutline className="text-blue-600 text-5xl max-md:text-4xl xl:hidden" />
           </button>
           {isOpen && (
-            <ul className="absolute top-20 right-0 bg-black z-50  text-white font-medium w-1/2 p-6 xl:hidden">
+            <ul className="absolute top-20 right-0 bg-black z-50  text-white font-medium max-sm:w-full p-6 xl:hidden">
               {links.map((item, i) => (
                 <>
                   <li
@@ -164,18 +175,23 @@ export default function Navbar() {
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-2 text-xl">
-          <Link to="#">
-            <CiSearch className="text-3xl" />
-          </Link>
-          <a href="/login" className="hover:text-blue-600">
-            Login
-          </a>
-          <p>/</p>
-          <Link to="/signup" className="hover:text-blue-600">
-            Signup
-          </Link>
-        </div>
+        <div className="flex items-center space-x-4">
+      {/* Search Input */}
+      <input
+        type="text"
+        name="search"
+        placeholder="Search"
+        className={`outline-none px-4 h-12 bg-[#ECECF2] transition-all duration-300 ease-in-out ${
+          isSearch ? "flex" : "hidden"
+        }`}
+      />
+
+      {/* Search Icon */}
+      <CiSearch
+        onClick={handleSearch}
+        className="text-3xl cursor-pointer hover:text-gray-600"
+      />
+    </div>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 export default function DreamFlight() {
   return (
     <div>
@@ -14,9 +15,11 @@ export default function DreamFlight() {
             Lorem ipsum dolor sit amet consectetur. Felis tristique pretium leo
             nisi at risus ac enim.
           </p>
+          <Link to="/trip_booking">
           <button className="bg-blue-600 px-6 py-2 mt-4 rounded-md text-white shadow-2xl hover:bg-gray-100 duration-500 hover:text-black">
             Book Now
           </button>
+          </Link>
         </div>
         <div className="pr-20 max-xl:pr-10 py-20 items-center max-md:pr-2 max-sm:pt-0 sm:pt-10 max-sm:w-full max-xl:w-8/12 max-2xl:w-10/12">
           <img src="online-cab-booking.png" alt="plane"></img>

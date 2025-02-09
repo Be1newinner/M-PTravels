@@ -8,16 +8,16 @@ import { CiLocationOn } from "react-icons/ci";
 import { Link } from "react-router-dom";
 export default function Footer() {
   return (
-    <footer className="flex justify-between px-20 py-10 max-xl:flex-wrap max-sm:px-4 max-xl:px-8 ">
-      <div className="w-1/4 max-xl:w-full">
-        <img src="logo2.png" alt="logo" className="w-1/3"/>
+    <footer className="flex justify-between max-md:justify-between max-lg:justify-normal max-md:gap-0 max-lg:gap-10 bg-white px-20 py-10 max-xl:flex-wrap max-sm:px-4 max-xl:px-8 ">
+      <div className="w-1/4 max-sm:w-full max-md:w-2/3 max-lg:w-1/2">
+        <img src="logo2.png" alt="logo" className="w-1/3 max-xl:w-1/5"/>
         <p className="text-gray-500 py-4">
           Lorem ipsum dolor sit amet consectetur. Aliquet vulputate augue
           penatibus in libero et id aliquam. In ridiculus pretium est velit
           euismod.
         </p>
         <p>Subscribe to our special offers</p>
-        <div className="h-12 w-full gap-3 flex max-sm:flex-wrap  border-black items-center px-1 mt-4 rounded-lg bg-slate-200 max-xl:gap-2 ">
+        <div className="h-12 gap-3 flex max-sm:flex-wrap justify-between max-sm:px-2 max-lg:px-4 border-black items-center px-1 mt-4 rounded-lg bg-slate-200 max-xl:gap-2 ">
           <input
             type="text"
             name="email"
@@ -32,16 +32,16 @@ export default function Footer() {
         <p className="text-2xl font-medium max-xl:mt-4">Booking</p>
         <ul className="text-sm">
           <li className="pt-4 py-4">
-            <Link to="#">Book Trip</Link>
+            <Link to="/trip_booking">Book Trip</Link>
           </li>
           <li>
-            <Link to="#">Travel Services</Link>
+            <Link to="/tour_package">Travel Services</Link>
           </li>
           <li className="py-4">
             <Link to="#">Transportation</Link>
           </li>
           <li>
-            <Link to="#">Planning Your Trip</Link>
+            <Link to="/tour_package">Planning Your Trip</Link>
           </li>
         </ul>
       </div>
@@ -49,16 +49,16 @@ export default function Footer() {
         <p className="text-2xl font-medium max-xl:mt-4">Useful Links</p>
         <ul className="text-sm">
           <li className="pt-4 py-4">
-            <Link to="#">Home</Link>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="#">Blogs</Link>
+            <Link to="/news_listing">Blogs</Link>
           </li>
           <li className="py-4">
-            <Link to="#">About</Link>
+            <Link to="/about">About</Link>
           </li>
           <li>
-            <Link to="#">Contact Us</Link>
+            <Link to="/contact">Contact Us</Link>
           </li>
         </ul>
       </div>
@@ -66,10 +66,10 @@ export default function Footer() {
         <p className="text-2xl font-medium max-xl:mt-4">Booking</p>
         <ul className="text-sm">
           <li className="pt-4 py-4">
-            <Link to="#">Check-in</Link>
+            <Link to="/trip_booking">Check-in</Link>
           </li>
           <li>
-            <Link to="#">Manage Your Booking</Link>
+            <Link to="/tour_package">Manage Your Booking</Link>
           </li>
           <li className="py-4">
             <Link to="#">Chaurfeur Drive</Link>
@@ -79,8 +79,8 @@ export default function Footer() {
           </li>
         </ul>
       </div>
-      <div className="w-1/4 max-xl:w-full max-xl:mt-4 ">
-        <p className="text-2xl font-medium max-sm:mt-4">Contact Us</p>
+      <div className="w-1/4 max-md:w-full max-xl:mt-4 ">
+        <Link to="/privacyPage" className="text-2xl font-medium max-sm:mt-4 hover:text-blue-600">Privacy Policy</Link>
         <div className="flex items-center gap-3 py-2 ">
           <CiLocationOn className="text-3xl " />
           <p className="text-sm"> Saket, New Delhi, 110080</p>
