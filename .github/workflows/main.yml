@@ -1,5 +1,5 @@
 # .github/workflows/deploy.yml
-name: Deploy to Oracle
+name: Deploy to Lightsail (info@shipsar.in)
 
 on:
   push:
@@ -22,28 +22,42 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.ORACLE_SSH_KEY }}" > ~/.ssh/oracle_key
-          chmod 600 ~/.ssh/oracle_key
-          echo "${{ secrets.SSH_PASSPHRASE }}" > ~/.ssh/passphrase
-          chmod 600 ~/.ssh/passphrase
-          echo "Host my-oracle-instance
-          HostName 141.148.220.14
+          echo "${{ secrets.LIGHTSHELL_SSH_KEY }}" > ~/.ssh/lightshell_key
+          chmod 600 ~/.ssh/lightshell_key
+          ssh-keygen -y -f ~/.ssh/lightshell_key > ~/.ssh/lightshell_key.pub
+          echo "Host my-lightshell-instance
+          HostName 3.111.126.28
           User ubuntu
-          IdentityFile ~/.ssh/oracle_key" >> ~/.ssh/config
+          IdentityFile ~/.ssh/lightshell_key" >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
       - name: Start SSH Agent and Add Key
         run: |
           eval "$(ssh-agent -s)"
-          SSH_ASKPASS=~/.ssh/passphrase ssh-add ~/.ssh/oracle_key
+          ssh-add ~/.ssh/lightshell_key
 
-      - name: SSH into ORACLE instance and deploy
+      - name: SSH into Lightsail and deploy
         run: |
-          ssh -t -o StrictHostKeyChecking=no my-oracle-instance << 'EOF'
+          ssh -t -o StrictHostKeyChecking=no my-lightshell-instance << 'EOF'
+            set -e  # Exit immediately on error
             cd /home/ubuntu/projects/M-PTravels
+
+            # Ensure we have the latest code
             git fetch origin main
-            git reset --hard origin/main
-            git pull origin main
-            pm2 list
-            pm2 restart server
+            if ! git diff --quiet HEAD origin/main; then
+              git reset --hard origin/main
+              git pull origin main
+            else
+              echo "No changes detected."
+            fi
+
+            # Ensure dependencies are installed
+            npm install --production
+
+            # Restart PM2 process safely
+            if pm2 describe mp-backend > /dev/null; then
+              pm2 restart mp-backend
+            else
+              pm2 start npm --name mp-backend -- run start
+            fi
           EOF
