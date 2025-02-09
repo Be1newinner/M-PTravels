@@ -52,7 +52,14 @@ jobs:
             fi
 
             cd backend
-            source ~/.bashrc 
+            # Ensure Node.js and npm are installed on the server (if not installed)
+            if ! command -v npm &> /dev/null
+            then
+                echo "npm not found, installing..."
+                sudo apt update
+                sudo apt install -y nodejs npm
+            fi
+
             # Ensure dependencies are installed
             npm install --production
 
