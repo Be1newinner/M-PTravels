@@ -51,6 +51,8 @@ jobs:
               echo "No changes detected."
             fi
 
+            cd backend
+            source ~/.bashrc 
             # Ensure dependencies are installed
             npm install --production
 
