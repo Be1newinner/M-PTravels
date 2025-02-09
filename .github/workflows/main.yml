@@ -52,16 +52,17 @@ jobs:
             fi
 
             cd backend
-            # Ensure Node.js and npm are installed on the server (if not installed)
-            if ! command -v npm &> /dev/null
+            # Ensure Node.js and bun are installed on the server (if not installed)
+            whoami
+            if ! command -v bun &> /dev/null
             then
-                echo "npm not found, installing..."
+                echo "bun not found, installing..."
                 sudo apt update
-                sudo apt install -y nodejs npm
+                curl -fsSL https://bun.sh/install | bash
             fi
 
             # Ensure dependencies are installed
-            npm install --production
+            bun install --production
 
             # Restart PM2 process safely
             if pm2 describe mp-backend > /dev/null; then
