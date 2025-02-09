@@ -38,7 +38,7 @@ jobs:
 
       - name: SSH into Lightsail and deploy
         run: |
-          ssh -t -o StrictHostKeyChecking=no ubuntu@3.111.126.28 << 'EOF'
+          ssh -t -o StrictHostKeyChecking=no my-lightshell-instance << 'EOF'
             set -e  # Exit immediately on error
             cd /home/ubuntu/projects/M-PTravels
 
@@ -52,8 +52,8 @@ jobs:
             fi
 
             cd backend
-            
             # Ensure Node.js and bun are installed on the server (if not installed)
+            whoami
             if ! command -v bun &> /dev/null
             then
                 echo "bun not found, installing..."
@@ -63,8 +63,7 @@ jobs:
 
             # Ensure dependencies are installed
             bun install --production
-            
-            # Check if pm2 is installed, install it using bun if not
+
             if ! command -v pm2 &> /dev/null
             then
                 echo "pm2 not found, installing pm2..."
