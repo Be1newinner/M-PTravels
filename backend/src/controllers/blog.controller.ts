@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Blog from "../models/blog.model.ts";
 import { bucket } from "../config/firebaseInit.ts";
 import fs from "fs/promises";
@@ -7,7 +7,8 @@ import AppError from "../utils/AppError.ts";
 
 export const createBlog = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { title, description } = req.body;
 
@@ -40,15 +41,19 @@ export const createBlog = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
-export const getBlogs = async (req: Request, res: Response): Promise<void> => {
+export const getBlogs = async (
+  _: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const blogs = await Blog.find({}).sort({ createdAt: -1 });
 
-    if (blogs.length === 0) throw new AppError("Blogs not found!", 404);
+    if (blogs.length === 0) return next(new AppError("Blogs not found!", 404));
 
     SendResponse(res, {
       status_code: 200,
@@ -60,16 +65,20 @@ export const getBlogs = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
-export const getBlog = async (req: Request, res: Response): Promise<void> => {
+export const getBlog = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { id } = req.params;
 
   try {
     const blog = await Blog.findById(id);
-    if (!blog) throw new AppError("Blogs not found!", 404);
+    if (!blog) return next(new AppError("Blogs not found!", 404));
 
     SendResponse(res, {
       status_code: 200,
@@ -81,13 +90,14 @@ export const getBlog = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const updateBlog = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
   const { title, description } = req.body;
@@ -102,7 +112,7 @@ export const updateBlog = async (
       { new: true }
     );
 
-    if (!blog) throw new AppError("Blogs not found", 404);
+    if (!blog) return next(new AppError("Blogs not found", 404));
 
     SendResponse(res, {
       status_code: 200,
@@ -114,20 +124,21 @@ export const updateBlog = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const deleteBlog = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
 
   try {
     const blog = await Blog.findById(id);
 
-    if (!blog) throw new AppError("Blogs not found", 404);
+    if (!blog) return next(new AppError("Blogs not found", 404));
 
     if (blog?.image && blog?.image !== "") {
       let fileName =
@@ -147,20 +158,21 @@ export const deleteBlog = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const searchBlogs = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { query } = req.query;
 
   try {
     const blogs = await Blog.find({ title: { $regex: query, $options: "i" } });
 
-    if (blogs.length === 0) throw new AppError("Blogs not found", 404);
+    if (blogs.length === 0) return next(new AppError("Blogs not found", 404));
 
     SendResponse(res, {
       status_code: 200,
@@ -172,6 +184,6 @@ export const searchBlogs = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };

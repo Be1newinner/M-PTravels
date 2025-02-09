@@ -1,11 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Lead from "../models/lead.model.ts";
 import AppError from "../utils/AppError.ts";
 import { SendResponse } from "../utils/JsonResponse.ts";
 
 export const createLead = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const {
     name,
@@ -38,13 +39,14 @@ export const createLead = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const getAllLeads = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -85,7 +87,7 @@ export const getAllLeads = async (
       .skip(skip)
       .limit(limit);
 
-    if (leads.length === 0) throw new AppError("Leads not found", 404);
+    if (leads.length === 0) return next(new AppError("Leads not found", 404));
 
     const totalCount = await Lead.countDocuments(filterObjects);
 
@@ -109,17 +111,21 @@ export const getAllLeads = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
-export const getLead = async (req: Request, res: Response): Promise<void> => {
+export const getLead = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { id } = req.params;
 
   try {
     const existingLead = await Lead.findById(id);
 
-    if (!existingLead) throw new AppError("Lead not found", 404);
+    if (!existingLead) return next(new AppError("Lead not found", 404));
 
     SendResponse(res, {
       message: "Lead fetched successfully",
@@ -131,13 +137,14 @@ export const getLead = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const updateLead = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
   const {
@@ -153,7 +160,7 @@ export const updateLead = async (
   try {
     const existingLead = await Lead.findById(id);
 
-    if (!existingLead) throw new AppError("Lead not found", 404);
+    if (!existingLead) return next(new AppError("Lead not found", 404));
 
     const updatedLead = await Lead.findByIdAndUpdate(
       id,
@@ -181,20 +188,21 @@ export const updateLead = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const deleteLead = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
 
   try {
     const existingLead = await Lead.findById(id);
 
-    if (!existingLead) throw new AppError("Lead not found", 404);
+    if (!existingLead) return next(new AppError("Lead not found", 404));
 
     await existingLead.deleteOne();
 
@@ -207,13 +215,14 @@ export const deleteLead = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const searchLead = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { query } = req.query;
 
@@ -226,7 +235,7 @@ export const searchLead = async (
       ],
     });
 
-    if (leads.length === 0) throw new AppError("Leads not found", 404);
+    if (leads.length === 0) return next(new AppError("Leads not found", 404));
 
     SendResponse(res, {
       message: "Leads fetched successfully",
@@ -238,6 +247,6 @@ export const searchLead = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };

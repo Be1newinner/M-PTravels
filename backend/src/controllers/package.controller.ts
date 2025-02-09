@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Package from "../models/package.model.ts";
 import { bucket } from "../config/firebaseInit.ts";
 import fs from "fs/promises";
@@ -7,13 +7,14 @@ import { SendResponse } from "../utils/JsonResponse.ts";
 
 export const createPackage = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { title, description, price, price_unit } = req.body;
 
   try {
     if (!title || !description || !price || !price_unit)
-      throw new AppError("All fields are required", 400);
+      return next(new AppError("All fields are required", 400));
 
     let image_url = "";
 
@@ -45,19 +46,20 @@ export const createPackage = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const getPackages = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     const existingPackages = await Package.find({});
 
     if (existingPackages.length === 0)
-      throw new AppError("No packages found", 404);
+      return next(new AppError("No packages found", 404));
 
     SendResponse(res, {
       message: "Packages fetched successfully",
@@ -69,20 +71,21 @@ export const getPackages = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const getPackage = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
 
   try {
     const existingPackage = await Package.findById(id);
 
-    if (!existingPackage) throw new AppError("Package not found", 404);
+    if (!existingPackage) return next(new AppError("Package not found", 404));
 
     SendResponse(res, {
       message: "Package fetched successfully",
@@ -94,13 +97,14 @@ export const getPackage = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const updatePackage = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
   const { title, description, price, price_unit } = req.body;
@@ -110,7 +114,7 @@ export const updatePackage = async (
   try {
     const existingPackage = await Package.findById(id);
 
-    if (!existingPackage) throw new AppError("Package not found", 404);
+    if (!existingPackage) return next(new AppError("Package not found", 404));
 
     if (req.file) {
       if (existingPackage.image_url) {
@@ -150,20 +154,21 @@ export const updatePackage = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const deletePackage = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
 
   try {
     const existingPackage = await Package.findById(id);
 
-    if (!existingPackage) throw new AppError("Package not found", 404);
+    if (!existingPackage) return next(new AppError("Package not found", 404));
 
     if (existingPackage.image_url && existingPackage.image_url !== "") {
       let fileName =
@@ -188,6 +193,6 @@ export const deletePackage = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };

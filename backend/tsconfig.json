@@ -12,5 +12,5 @@
     "noEmit": true
   },
   "include": ["src/**/*", "src/index.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "eslint.config.js", "loader.mjs", "dist"]
 }

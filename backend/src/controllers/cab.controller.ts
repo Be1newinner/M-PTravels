@@ -1,11 +1,15 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Cab from "../models/cab.model.ts";
 import fs from "fs/promises";
 import { bucket } from "../config/firebaseInit.ts";
 import AppError from "../utils/AppError.ts";
 import { SendResponse } from "../utils/JsonResponse.ts";
 
-export const createCab = async (req: Request, res: Response): Promise<void> => {
+export const createCab = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { title, description, model, capacity } = req.body;
 
   let imageUrls: string[] = [];
@@ -28,7 +32,7 @@ export const createCab = async (req: Request, res: Response): Promise<void> => {
       const message =
         error instanceof Error ? error.message : "Internal Server Error!";
 
-      throw new AppError(message, 500);
+      return next(new AppError(message, 500));
     }
   }
 
@@ -52,15 +56,19 @@ export const createCab = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
-export const getCabs = async (req: Request, res: Response): Promise<void> => {
+export const getCabs = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const cabs = await Cab.find({});
 
-    if (cabs.length === 0) throw new AppError("Cabs not found", 404);
+    if (cabs.length === 0) return next(new AppError("Cabs not found", 404));
 
     SendResponse(res, {
       status_code: 200,
@@ -72,17 +80,21 @@ export const getCabs = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
-export const getCab = async (req: Request, res: Response): Promise<void> => {
+export const getCab = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { id } = req.params;
 
   try {
     const cab = await Cab.findById(id);
 
-    if (!cab) throw new AppError("Cab not found", 404);
+    if (!cab) return next(new AppError("Cab not found", 404));
 
     SendResponse(res, {
       status_code: 200,
@@ -94,18 +106,22 @@ export const getCab = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
-export const updateCab = async (req: Request, res: Response): Promise<void> => {
+export const updateCab = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { id } = req.params;
   const { title, description, model, capacity } = req.body;
 
   try {
     const cab = await Cab.findById(id);
 
-    if (!cab) throw new AppError("Cab not found", 404);
+    if (!cab) return next(new AppError("Cab not found", 404));
 
     if (req.files && Array.isArray(req.files) && req.files.length > 0) {
       try {
@@ -125,7 +141,7 @@ export const updateCab = async (req: Request, res: Response): Promise<void> => {
         const message =
           error instanceof Error ? error.message : "Internal Server Error!";
 
-        throw new AppError(message, 500);
+        return next(new AppError(message, 500));
       }
     }
 
@@ -146,18 +162,22 @@ export const updateCab = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
-export const deleteCab = async (req: Request, res: Response): Promise<void> => {
+export const deleteCab = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { id } = req.params;
 
   try {
     const cab = await Cab.findById(id);
 
-    if (!cab) throw new AppError("Cab not found", 404);
-    
+    if (!cab) return next(new AppError("Cab not found", 404));
+
     if (cab.imageUrls.length > 0) {
       for (const imageUrl of cab.imageUrls) {
         const fileName =
@@ -183,6 +203,6 @@ export const deleteCab = async (req: Request, res: Response): Promise<void> => {
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };

@@ -18,7 +18,7 @@ export const verifyJWT = async (
     req.cookies?.accessToken;
 
   try {
-    if (!token) throw new AppError("Token not found", 401);
+    if (!token) return next(new AppError("Token not found", 401));
 
     const decodedToken = jwt.verify(
       token,
@@ -27,7 +27,7 @@ export const verifyJWT = async (
 
     const user = await User.findById((decodedToken as jwt.JwtPayload).id);
 
-    if (!user) throw new AppError("User not found", 401);
+    if (!user) return next(new AppError("User not found", 401));
 
     req.user = user;
 
@@ -36,9 +36,9 @@ export const verifyJWT = async (
     console.error("Error verifying JWT", error);
 
     if (error instanceof jwt.TokenExpiredError) {
-      throw new AppError("Token expired", 401);
+      return next(new AppError("Token expired", 401));
     } else {
-      throw new AppError("Unauthorized access", 401);
+      return next(new AppError("Unauthorized access", 401));
     }
   }
 };

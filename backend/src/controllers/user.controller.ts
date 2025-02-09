@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model.ts";
 import { Types } from "mongoose";
 import jwt from "jsonwebtoken";
@@ -21,7 +21,7 @@ const generateAccessAndRefreshToken = async (
     const user = await User.findById(userId);
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("DB: User not found");
     }
 
     const accessToken: string = user.generateAccessToken();
@@ -37,24 +37,29 @@ const generateAccessAndRefreshToken = async (
   }
 };
 
-export const loginUser = async (req: Request, res: Response): Promise<void> => {
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { email, password } = req.body;
 
   try {
     if (!email || !password)
-      throw new AppError("Email and password are required", 400);
+      return next(new AppError("Email and password are required", 400));
 
     const user = await User.findOne({ email }).select("+password");
 
-    if (!user) throw new AppError("User not found", 404);
+    if (!user) return next(new AppError("User not found", 404));
 
     const isPasswordValid = await user.isPasswordCorrect(password);
 
-    if (!isPasswordValid) throw new AppError("Invalid password", 401);
+    if (!isPasswordValid) return next(new AppError("Invalid password", 401));
 
     const tokenResponse = await generateAccessAndRefreshToken(user._id);
 
-    if (!tokenResponse) throw new AppError("Error generating tokens", 500);
+    if (!tokenResponse)
+      return next(new AppError("Error generating tokens", 500));
 
     const { accessToken, refreshToken } = tokenResponse;
 
@@ -90,13 +95,14 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "Internal Server Error";
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const logoutUser = async (
   req: CustomRequest,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const userId = req.user?.id;
 
@@ -130,19 +136,21 @@ export const logoutUser = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const refreshAccessToken = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const incomingRefreshToken =
     req.cookies?.refreshToken || req.body.refreshToken;
 
   try {
-    if (!incomingRefreshToken) throw new AppError("Unauthorized access", 401);
+    if (!incomingRefreshToken)
+      return next(new AppError("Unauthorized access", 401));
 
     const decodedToken = jwt.verify(
       incomingRefreshToken,
@@ -151,10 +159,10 @@ export const refreshAccessToken = async (
 
     const user = await User.findById((decodedToken as jwt.JwtPayload).id);
 
-    if (!user) throw new AppError("Invalid refresh token", 401);
+    if (!user) return next(new AppError("Invalid refresh token", 401));
 
     if (incomingRefreshToken !== user.refreshToken)
-      throw new AppError("Refresh token is expired or invalid", 401);
+      return next(new AppError("Refresh token is expired or invalid", 401));
 
     const options = {
       httpOnly: true,
@@ -163,7 +171,8 @@ export const refreshAccessToken = async (
 
     const tokenResponse = await generateAccessAndRefreshToken(user._id);
 
-    if (!tokenResponse) throw new AppError("Error generating tokens", 500);
+    if (!tokenResponse)
+      return next(new AppError("Error generating tokens", 500));
 
     const { accessToken, refreshToken } = tokenResponse;
 
@@ -191,13 +200,14 @@ export const refreshAccessToken = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const changeCurrentPassword = async (
   req: CustomRequest,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const userId = req.user?.id;
   const { oldPassword, newPassword } = req.body;
@@ -205,11 +215,11 @@ export const changeCurrentPassword = async (
   try {
     const user = await User.findById(userId).select("+password");
 
-    if (!user) throw new AppError("User not found", 404);
+    if (!user) return next(new AppError("User not found", 404));
 
     const isPasswordValid = user?.isPasswordCorrect(oldPassword);
 
-    if (!isPasswordValid) throw new AppError("Invalid password", 401);
+    if (!isPasswordValid) return next(new AppError("Invalid password", 401));
 
     user.password = newPassword;
     await user.save();
@@ -223,13 +233,14 @@ export const changeCurrentPassword = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const getUser = async (
   req: CustomRequest,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const userId = req.user?.id;
 
@@ -238,7 +249,7 @@ export const getUser = async (
       "-password -refreshToken -createdAt -updatedAt -__v"
     );
 
-    if (!user) throw new AppError("User not found", 404);
+    if (!user) return next(new AppError("User not found", 404));
 
     SendResponse(res, {
       message: "User fetched successfully",
@@ -249,20 +260,21 @@ export const getUser = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const forgotPassword = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { email } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
 
-    if (!existingUser) throw new AppError("User not found", 404);
+    if (!existingUser) return next(new AppError("User not found", 404));
 
     const token = await bcrypt.hash(email, 10);
 
@@ -288,13 +300,14 @@ export const forgotPassword = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };
 
 export const resetPassword = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   const { token } = req.query;
   const { password } = req.body;
@@ -305,7 +318,8 @@ export const resetPassword = async (
       resetPasswordTokenExpiry: { $gt: Date.now() },
     });
 
-    if (!existingUser) throw new AppError("Invalid or expired token", 404);
+    if (!existingUser)
+      return next(new AppError("Invalid or expired token", 404));
 
     existingUser.password = password;
     existingUser.resetPasswordToken = "";
@@ -322,6 +336,6 @@ export const resetPassword = async (
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
 
-    throw new AppError(message, 500);
+    return next(new AppError(message, 500));
   }
 };

@@ -16,7 +16,7 @@ export default function JSONResponse({
   data = null,
   meta = {},
   status_code = 200,
-  application_code = 200,
+  application_code,
   message = "Operation success!",
 }: JSONResponseType) {
   return {
