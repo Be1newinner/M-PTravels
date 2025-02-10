@@ -1,4 +1,3 @@
-# .github/workflows/deploy.yml
 name: Deploy to Lightsail (info@shipsar.in)
 
 on:
@@ -13,23 +12,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH Key
+      - name: Set up SSH Key and Verify Connection
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.LIGHTSHELL_SSH_KEY }}" > ~/.ssh/lightshell_key
-          chmod 600 ~/.ssh/lightshell_key
-
-      - name: Add SSH Host Key
-        run: |
-          ssh-keyscan -H 3.111.126.28 >> ~/.ssh/known_hosts
+          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 "echo 'SSH Connection Successful!'"
 
   checkout-code:
     needs: setup-ssh
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code on Server
+      - name: Checkout Latest Code on Server
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 << 'EOF'
             set -e
             cd /home/ubuntu/projects/M-PTravels
             git fetch origin main
@@ -41,13 +34,13 @@ jobs:
             fi
           EOF
 
-  setup-install:
+  setup-dependencies:
     needs: checkout-code
     runs-on: ubuntu-latest
     steps:
-      - name: Install Node.js & Bun on Server
+      - name: Install Bun and Dependencies
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 << 'EOF'
             set -e
             cd /home/ubuntu/projects/M-PTravels/backend
             whoami
@@ -57,23 +50,16 @@ jobs:
                 sudo apt update
                 curl -fsSL https://bun.sh/install | bash
             fi
-          EOF
-
-      - name: Install Dependencies on Server
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
-            set -e
-            cd /home/ubuntu/projects/M-PTravels/backend
             bun install --production
           EOF
 
-  deploy-restart:
-    needs: setup-install
+  deploy-application:
+    needs: setup-dependencies
     runs-on: ubuntu-latest
     steps:
-      - name: Ensure PM2 is Installed & Restart Service
+      - name: Ensure PM2 is Installed & Restart Application
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 << 'EOF'
             set -e
             cd /home/ubuntu/projects/M-PTravels/backend
             export PATH=$PATH:/home/ubuntu/.bun/bin
