@@ -38,7 +38,7 @@ jobs:
 
       - name: SSH into Lightsail and deploy
         run: |
-          ssh -t -o StrictHostKeyChecking=no my-lightshell-instance << 'EOF'
+          ssh my-lightshell-instance << 'EOF'
             set -e  # Exit immediately on error
             cd /home/ubuntu/projects/M-PTravels
 
