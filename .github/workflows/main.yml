@@ -7,31 +7,31 @@ on:
       - main
 
 jobs:
-  deploy:
+  setup-ssh:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Set up SSH
+      - name: Set up SSH Key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.LIGHTSHELL_SSH_KEY }}" > ~/.ssh/lightshell_key
           chmod 600 ~/.ssh/lightshell_key
 
-      - name: SSH into Lightsail and deploy
+      - name: Add SSH Host Key
         run: |
-          ssh -O StrictHostKeyChecking=no ubuntu@3.111.126.28 -i ~/.ssh/lightshell_key << 'EOF'
-            set -e  # Exit immediately on error
-            cd /home/ubuntu/projects/M-PTravels
+          ssh-keyscan -H 3.111.126.28 >> ~/.ssh/known_hosts
 
-            # Ensure we have the latest code
+  checkout-code:
+    needs: setup-ssh
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code on Server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
+            set -e
+            cd /home/ubuntu/projects/M-PTravels
             git fetch origin main
             if ! git diff --quiet HEAD origin/main; then
               git reset --hard origin/main
@@ -39,9 +39,17 @@ jobs:
             else
               echo "No changes detected."
             fi
+          EOF
 
-            cd backend
-            # Ensure Node.js and bun are installed on the server (if not installed)
+  setup-install:
+    needs: checkout-code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Node.js & Bun on Server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
+            set -e
+            cd /home/ubuntu/projects/M-PTravels/backend
             whoami
             if ! command -v bun &> /dev/null
             then
@@ -49,21 +57,34 @@ jobs:
                 sudo apt update
                 curl -fsSL https://bun.sh/install | bash
             fi
+          EOF
 
-            # Ensure dependencies are installed
+      - name: Install Dependencies on Server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
+            set -e
+            cd /home/ubuntu/projects/M-PTravels/backend
             bun install --production
+          EOF
 
-            # Add bun's bin directory to PATH to ensure pm2 is accessible
+  deploy-restart:
+    needs: setup-install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure PM2 is Installed & Restart Service
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
+            set -e
+            cd /home/ubuntu/projects/M-PTravels/backend
             export PATH=$PATH:/home/ubuntu/.bun/bin
             source ~/.bashrc
-            
-            if ! command -v pm2 &> /dev/null                                      
+
+            if ! command -v pm2 &> /dev/null
             then
                 echo "pm2 not found, installing pm2..."
                 bun add pm2
             fi
 
-            # Restart PM2 process safely
             if pm2 describe mp-backend > /dev/null; then
               pm2 restart mp-backend
             else
