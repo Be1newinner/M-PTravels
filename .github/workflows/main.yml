@@ -9,12 +9,18 @@ jobs:
   setup-ssh:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Set up SSH Key and Verify Connection
         run: |
-          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 "echo 'SSH Connection Successful!'"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LIGHTSHELL_SSH_KEY }}" | tr -d '\r' > ~/.ssh/lightshell_key
+          chmod 600 ~/.ssh/lightshell_key
+          ssh-keyscan -H 3.111.126.28 >> ~/.ssh/known_hosts
+          
+          # Debug SSH Connection
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 "echo 'SSH Connection Successful!'"
 
   checkout-code:
     needs: setup-ssh
@@ -22,7 +28,7 @@ jobs:
     steps:
       - name: Checkout Latest Code on Server
         run: |
-          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
             set -e
             cd /home/ubuntu/projects/M-PTravels
             git fetch origin main
@@ -40,13 +46,13 @@ jobs:
     steps:
       - name: Install Bun and Dependencies
         run: |
-          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
             set -e
             cd /home/ubuntu/projects/M-PTravels/backend
             whoami
             if ! command -v bun &> /dev/null
             then
-                echo "bun not found, installing..."
+                echo "Bun not found, installing..."
                 sudo apt update
                 curl -fsSL https://bun.sh/install | bash
             fi
@@ -59,7 +65,7 @@ jobs:
     steps:
       - name: Ensure PM2 is Installed & Restart Application
         run: |
-          ssh -o StrictHostKeyChecking=no -i <(echo "${{ secrets.LIGHTSHELL_SSH_KEY }}") ubuntu@3.111.126.28 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
             set -e
             cd /home/ubuntu/projects/M-PTravels/backend
             export PATH=$PATH:/home/ubuntu/.bun/bin
@@ -67,7 +73,7 @@ jobs:
 
             if ! command -v pm2 &> /dev/null
             then
-                echo "pm2 not found, installing pm2..."
+                echo "PM2 not found, installing..."
                 bun add pm2
             fi
 
