@@ -24,21 +24,10 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.LIGHTSHELL_SSH_KEY }}" > ~/.ssh/lightshell_key
           chmod 600 ~/.ssh/lightshell_key
-          ssh-keygen -y -f ~/.ssh/lightshell_key > ~/.ssh/lightshell_key.pub
-          echo "Host my-lightshell-instance
-          HostName 3.111.126.28
-          User ubuntu
-          IdentityFile ~/.ssh/lightshell_key" >> ~/.ssh/config
-          chmod 600 ~/.ssh/config
-
-      - name: Start SSH Agent and Add Key
-        run: |
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/lightshell_key
 
       - name: SSH into Lightsail and deploy
         run: |
-          ssh my-lightshell-instance << 'EOF'
+          ssh ubuntu@3.111.126.28 -i ~/.ssh/lightshell_key << 'EOF'
             set -e  # Exit immediately on error
             cd /home/ubuntu/projects/M-PTravels
 
