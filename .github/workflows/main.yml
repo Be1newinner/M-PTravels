@@ -6,13 +6,14 @@ on:
       - main
 
 jobs:
-  setup-ssh:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up SSH Key and Verify Connection
+      - name: Set Up SSH Key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.LIGHTSHELL_SSH_KEY }}" | tr -d '\r' > ~/.ssh/lightshell_key
@@ -22,10 +23,6 @@ jobs:
           # Debug SSH Connection
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 "echo 'SSH Connection Successful!'"
 
-  checkout-code:
-    needs: setup-ssh
-    runs-on: ubuntu-latest
-    steps:
       - name: Checkout Latest Code on Server
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
@@ -40,16 +37,11 @@ jobs:
             fi
           EOF
 
-  setup-dependencies:
-    needs: checkout-code
-    runs-on: ubuntu-latest
-    steps:
       - name: Install Bun and Dependencies
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
             set -e
             cd /home/ubuntu/projects/M-PTravels/backend
-            whoami
             if ! command -v bun &> /dev/null
             then
                 echo "Bun not found, installing..."
@@ -59,10 +51,6 @@ jobs:
             bun install --production
           EOF
 
-  deploy-application:
-    needs: setup-dependencies
-    runs-on: ubuntu-latest
-    steps:
       - name: Ensure PM2 is Installed & Restart Application
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/lightshell_key ubuntu@3.111.126.28 << 'EOF'
