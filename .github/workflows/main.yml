@@ -1,4 +1,4 @@
-name: Deploy to Lightsail (info@shipsar.in)
+name: Deploy to Lightsail (info@shipsar.in )
 
 on:
   push:
