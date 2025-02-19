@@ -8,7 +8,7 @@ export default function BookNow() {
             <div className="flex justify-between max-md:flex-wrap max-sm:gap-6">
               <div className="w-2/6 max-md:w-full max-md:text-center max-md:px-2">
                 <img
-                  src="logo2.png"
+                  src="logo.webp"
                   alt="logo"
                   className="max-md:w-1/3 max-md:mx-auto "
                 />

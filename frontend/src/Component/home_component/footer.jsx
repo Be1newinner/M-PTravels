@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="flex justify-between max-md:justify-between max-lg:justify-normal max-md:gap-0 max-lg:gap-10 bg-white px-20 py-10 max-xl:flex-wrap max-sm:px-4 max-xl:px-8 ">
       <div className="w-1/4 max-sm:w-full max-md:w-2/3 max-lg:w-1/2">
-        <img src="logo2.png" alt="logo" className="w-1/3 max-xl:w-1/5"/>
+        <img src="logo.webp" alt="logo" className="w-1/3 max-xl:w-1/5"/>
         <p className="text-gray-500 py-4">
           Lorem ipsum dolor sit amet consectetur. Aliquet vulputate augue
           penatibus in libero et id aliquam. In ridiculus pretium est velit
