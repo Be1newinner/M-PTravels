@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
+import { Colors } from "~/constants/colors";
 
 const Slider = lazy(() => import("react-slick")); // ✅ Lazy load react-slick
 
@@ -41,8 +42,18 @@ export default function Sliderpart() {
           <p className="">Trips Deals</p>
         </div>
         <div className="flex gap-4">
-          <FaChevronLeft className="bg-blue-600 rounded-lg h-10 w-10 p-2 text-white" />
-          <FaChevronRight className="bg-blue-600 rounded-lg h-10 w-10 p-2 text-white" />
+          <FaChevronLeft
+            className={[
+              "rounded-lg h-10 w-10 p-2 text-white",
+              Colors.primary,
+            ].join(" ")}
+          />
+          <FaChevronRight
+            className={[
+              "rounded-lg h-10 w-10 p-2 text-white",
+              Colors.primary,
+            ].join(" ")}
+          />
         </div>
       </div>
 
@@ -66,7 +77,12 @@ export default function Sliderpart() {
                       <p className="text-sm">Economy Class</p>
                       <p className="font-bold">$150</p>
                     </div>
-                    <button className="bg-blue-600 h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700">
+                    <button
+                      className={[
+                        "h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700",
+                        Colors.primary,
+                      ].join(" ")}
+                    >
                       Booking Now
                     </button>
                   </div>
@@ -88,7 +104,12 @@ export default function Sliderpart() {
                       <p className="text-sm">Economy Class</p>
                       <p className="font-bold">$80</p>
                     </div>
-                    <button className="bg-blue-600 h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700">
+                    <button
+                      className={[
+                        "h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700",
+                        Colors.primary,
+                      ].join(" ")}
+                    >
                       Booking Now
                     </button>
                   </div>
@@ -111,7 +132,12 @@ export default function Sliderpart() {
                       <p className="text-sm">Economy Class</p>
                       <p className="font-bold">$150</p>
                     </div>
-                    <button className="bg-blue-600 h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700">
+                    <button
+                      className={[
+                        "h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700",
+                        Colors.primary,
+                      ].join(" ")}
+                    >
                       Booking Now
                     </button>
                   </div>
@@ -133,7 +159,12 @@ export default function Sliderpart() {
                       <p className="text-sm">Economy Class</p>
                       <p className="font-bold">$5000</p>
                     </div>
-                    <button className="bg-blue-600 h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700">
+                    <button
+                      className={[
+                        "h-10 text-white rounded-lg shadow-2xl px-4  hover:bg-white hover:text-black duration-700",
+                        Colors.primary,
+                      ].join(" ")}
+                    >
                       Booking Now
                     </button>
                   </div>

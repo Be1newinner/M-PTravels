@@ -1,3 +1,5 @@
+import { Colors } from "~/constants/colors";
+
 export default function contactForm() {
   return (
     <div className=" h-full bg-slate-50 ">
@@ -53,7 +55,10 @@ export default function contactForm() {
             <input
               type="submit"
               value="Send Message"
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl mt-4 shadow-lg hover:text-black hover:bg-white duration-700 font-medium "
+              className={[
+                "text-white px-6 py-3 rounded-xl mt-4 shadow-lg hover:text-black hover:bg-white duration-700 font-medium",
+                Colors.primary,
+              ].join(" ")}
             />
           </div>
         </div>

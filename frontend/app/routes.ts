@@ -4,7 +4,7 @@ export default [
   index("routes/Home.tsx"),
   route("about", "routes/About.tsx"),
   route("contact", "routes/ContactUs.tsx"),
-  route("news_listing", "routes/News.tsx"),
+  route("news", "routes/News.tsx"),
   route("privacy", "routes/Privacy.tsx"),
   route("tour_package", "routes/TourPackage.tsx"),
   route("trip_booking", "routes/TripBooking.tsx"),

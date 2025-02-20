@@ -1,13 +1,19 @@
 import { Link } from "react-router";
 import { CiUser } from "react-icons/ci";
 import { FaCalendarAlt } from "react-icons/fa";
+import { Colors } from "~/constants/colors";
 
 export default function LetestNews() {
   return (
     <div className="w-full px-20 h-full bg-gray-200 max-md:px-2 max-xl:px-10 ">
       <div className="flex justify-between py-10 ">
         <p className="text-3xl font-bold max-sm:text-2xl">Our Latest News</p>
-        <button className="bg-blue-600 text-sm font-medium text-white shadow-2xl px-6 py-3 rounded-xl hover:bg-white hover:text-black duration-700 max-md:">
+        <button
+          className={[
+            "text-sm font-medium text-white shadow-2xl px-6 py-3 rounded-xl hover:bg-white hover:text-black duration-700",
+            Colors.primary,
+          ].join(" ")}
+        >
           Show More
         </button>
       </div>
@@ -41,7 +47,12 @@ export default function LetestNews() {
                     Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend
                     tortor.
                   </p>
-                  <button className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700">
+                  <button
+                    className={[
+                      "text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700",
+                      Colors.primary,
+                    ].join(" ")}
+                  >
                     Read More
                   </button>
                 </div>
@@ -77,7 +88,12 @@ export default function LetestNews() {
                   Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend
                   tortor.
                 </p>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700">
+                <button
+                  className={[
+                    "text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700",
+                    Colors.primary,
+                  ].join(" ")}
+                >
                   Read More
                 </button>
               </div>
@@ -112,7 +128,12 @@ export default function LetestNews() {
                   Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend
                   tortor.
                 </p>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700">
+                <button
+                  className={[
+                    "text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700",
+                    Colors.primary,
+                  ].join(" ")}
+                >
                   Read More
                 </button>
               </div>
@@ -147,7 +168,12 @@ export default function LetestNews() {
                   Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend
                   tortor.
                 </p>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700">
+                <button
+                  className={[
+                    "text-white px-6 py-2 rounded-xl hover:bg-white hover:text-black duration-700",
+                    Colors.primary,
+                  ].join(" ")}
+                >
                   Read More
                 </button>
               </div>

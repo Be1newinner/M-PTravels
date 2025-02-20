@@ -8,6 +8,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { ImSpoonKnife } from "react-icons/im";
 import { LuTicket } from "react-icons/lu";
 import { LuHotel } from "react-icons/lu";
+import { Colors } from "~/constants/colors";
 
 export default function SideBar() {
   // const Visiting = [
@@ -315,7 +316,12 @@ export default function SideBar() {
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
                     <Link to="/trip_booking">
-                      <button className="bg-blue-600 text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6">
+                      <button
+                        className={[
+                          "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
+                          Colors.primary,
+                        ].join(" ")}
+                      >
                         Select
                       </button>
                     </Link>
@@ -393,7 +399,12 @@ export default function SideBar() {
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
                     <Link to="/trip_booking">
-                      <button className="bg-blue-600 text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6">
+                      <button
+                        className={[
+                          "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
+                          Colors.primary,
+                        ].join(" ")}
+                      >
                         Select
                       </button>
                     </Link>
@@ -471,7 +482,12 @@ export default function SideBar() {
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
                     <Link to="/trip_booking">
-                      <button className="bg-blue-600 text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6">
+                      <button
+                        className={[
+                          "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
+                          Colors.primary,
+                        ].join(" ")}
+                      >
                         Select
                       </button>
                     </Link>
@@ -549,7 +565,12 @@ export default function SideBar() {
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
                     <Link to="/trip_booking">
-                      <button className="bg-blue-600 text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6">
+                      <button
+                        className={[
+                          "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
+                          Colors.primary,
+                        ].join(" ")}
+                      >
                         Select
                       </button>
                     </Link>
@@ -627,7 +648,12 @@ export default function SideBar() {
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
                     <Link to="/trip_booking">
-                      <button className="bg-blue-600 text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6">
+                      <button
+                        className={[
+                          "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
+                          Colors.primary,
+                        ].join(" ")}
+                      >
                         Select
                       </button>
                     </Link>
@@ -705,7 +731,12 @@ export default function SideBar() {
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
                     <Link to="/trip_booking">
-                      <button className="bg-blue-600 text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6">
+                      <button
+                        className={[
+                          "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
+                          Colors.primary,
+                        ].join(" ")}
+                      >
                         Select
                       </button>
                     </Link>

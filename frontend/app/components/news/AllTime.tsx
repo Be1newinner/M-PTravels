@@ -1,6 +1,7 @@
 import { CiUser } from "react-icons/ci";
 import { LuCalendarDays } from "react-icons/lu";
 import { Link } from "react-router";
+import { Colors } from "~/constants/colors";
 
 export default function AllTime() {
   const list = [
@@ -70,24 +71,49 @@ export default function AllTime() {
     <div className="bg-gray-200 py-4">
       <div className="px-72 max-md:px-4 max-lg:px-8 max-xl:px-24 max-2xl:px-44">
         <div className="text-3xl max-sm:text-2xl font-medium my-4 max-sm:px-2 flex max-xl:flex-wrap max-md:px-0 justify-center bg-white rounded-xl w-full items-center">
-          <button className="bg-blue-600 px-8 max-sm:px-4 py-4 p-2 rounded-lg text-white hover:bg-white hover:text-black duration-700 shadow-md">
+          <button
+            className={[
+              "px-8 max-sm:px-4 py-4 p-2 rounded-lg text-white hover:bg-white hover:text-black duration-700 shadow-md",
+              Colors.primary,
+            ].join(" ")}
+          >
             All Time
           </button>
           <p className="font-light"></p>
-          <button className="hover:bg-blue-600 px-7 rounded-lg py-4 hover:text-white duration-700">
+          <button
+            className={[
+              "px-7 rounded-lg py-4 hover:text-white duration-700",
+              Colors.primaryHover,
+            ].join(" ")}
+          >
             Today
           </button>
           <p className="font-light">|</p>
           <hr className="border-l-2 " />
-          <button className="hover:bg-blue-600 px-8 py-4 rounded-lg hover:text-white duration-700">
+          <button
+            className={[
+              "px-8 py-4 rounded-lg hover:text-white duration-700",
+              Colors.primaryHover,
+            ].join(" ")}
+          >
             This Week
           </button>
           <p className="font-light">|</p>
-          <button className="hover:bg-blue-600 px-7 py-4 rounded-lg hover:text-white duration-700">
+          <button
+            className={[
+              "px-7 py-4 rounded-lg hover:text-white duration-700",
+              Colors.primaryHover,
+            ].join(" ")}
+          >
             This Month
           </button>
           <p className="font-light">|</p>
-          <button className="hover:bg-blue-600 rounded-lg px-7 py-4 hover:text-white duration-700">
+          <button
+            className={[
+              " rounded-lg px-7 py-4 hover:text-white duration-700",
+              Colors.primaryHover,
+            ].join(" ")}
+          >
             This Year
           </button>
         </div>
@@ -122,7 +148,12 @@ export default function AllTime() {
               </Link>
               <div className="py-2">{item.para}</div>
               <div>
-                <button className="font-medium bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black duration-700 shadow-lg">
+                <button
+                  className={[
+                    "font-medium text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black duration-700 shadow-lg",
+                    Colors.primaryHover,
+                  ].join(" ")}
+                >
                   Read More
                 </button>
               </div>

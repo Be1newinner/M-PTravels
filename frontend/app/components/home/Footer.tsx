@@ -4,8 +4,17 @@ import { FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { Link } from "react-router";
+import Informations from "app/constants/informations.json";
+import { Colors } from "~/constants/colors";
 
 export default function Footer() {
+  const socialMediaLinks = [
+    { name: "Facebook", icon: FaFacebookF, url: "https://facebook.com" },
+    { name: "Instagram", icon: FaInstagram, url: "https://instagram.com" },
+    { name: "LinkedIn", icon: FaLinkedinIn, url: "https://linkedin.com" },
+    { name: "Twitter", icon: FaXTwitter, url: "https://twitter.com" },
+  ];
+
   return (
     <footer className="flex justify-between max-md:justify-between max-lg:justify-normal max-md:gap-0 max-lg:gap-10 bg-white px-20 py-10 max-xl:flex-wrap max-sm:px-4 max-xl:px-8 ">
       <div className="w-1/4 max-sm:w-full max-md:w-2/3 max-lg:w-1/2">
@@ -51,7 +60,7 @@ export default function Footer() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/news_listing">Blogs</Link>
+            <Link to="/news">Blogs</Link>
           </li>
           <li className="py-4">
             <Link to="/about">About</Link>
@@ -87,30 +96,32 @@ export default function Footer() {
         </Link>
         <div className="flex items-center gap-3 py-2 ">
           <CiLocationOn className="text-3xl " />
-          <p className="text-sm"> Saket, New Delhi, 110080</p>
+          <p className="text-sm"> {Informations.address}</p>
         </div>
         <div className="flex gap-3 text-2xl items-center">
           <MdOutlinePhone className="" />
-          <p className="text-blue-600">+91 9720169030</p>
+          <p className="text-blue-600">+91 {Informations.phone}</p>
         </div>
         <div className="flex gap-3 items-center py-2">
           <FiMail className="text-3xl" />
-          <p>tahirsaifi413@gmail.com</p>
+          <p>{Informations.email}</p>
         </div>
         <p className="text-sm font-bold">Follow Us</p>
-        <div className="flex gap-4 py-2 ">
-          <Link to="https://www.instagram.com/tahirsaifi09/">
-            <FaInstagram className="bg-blue-600 text-white text-5xl p-3 rounded-xl" />
-          </Link>
-          <Link to="https://www.facebook.com/profile.php?id=100017542631967">
-            <FaFacebookF className="bg-blue-600 text-white text-5xl p-3 rounded-xl" />
-          </Link>
-          <Link to="https://www.linkedin.com/in/tahir-saifi-568a95182/">
-            <FaLinkedinIn className="bg-blue-600 text-white text-5xl p-3 rounded-xl" />
-          </Link>
-          <Link to="https://x.com/tahirsaifi09">
-            <FaXTwitter className="bg-blue-600 text-white text-5xl p-3 rounded-xl" />
-          </Link>
+
+        <div className="flex gap-4 py-2">
+          {socialMediaLinks.map((social, index) => {
+            const IconComponent = social.icon;
+            return (
+              <Link key={index} to={social.url} target="_blank">
+                <IconComponent
+                  className={[
+                    "text-white text-5xl p-3 rounded-xl",
+                    Colors.primary,
+                  ].join(" ")}
+                />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </footer>

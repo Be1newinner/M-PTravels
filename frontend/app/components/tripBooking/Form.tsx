@@ -2,6 +2,7 @@ import { GoCheck } from "react-icons/go";
 import { Link } from "react-router";
 import { ImSpoonKnife } from "react-icons/im";
 import { FaWheelchair } from "react-icons/fa6";
+import { Colors } from "~/constants/colors";
 
 export default function Form() {
   return (
@@ -11,14 +12,24 @@ export default function Form() {
           <div className="w-full px-4 py-4 rounded-lg shadow-xl bg-white items-center">
             <ul className="flex max-md:flex-wrap items-center max-sm:gap-5">
               <li className="w-1/2 max-sm:w-full px-0 flex text-center items-center gap-4 ">
-                <button className="h-8 w-8 bg-blue-600 rounded-full text-2xl font-medium flex items-center">
+                <button
+                  className={[
+                    "h-8 w-8 rounded-full text-2xl font-medium flex items-center",
+                    Colors.primary,
+                  ].join(" ")}
+                >
                   <GoCheck className=" mx-auto text-center text-white" />
                 </button>
                 <p className="">Your Selection</p>
                 <hr className="border-2 w-5/12 max-md:w-4/12 max-sm:hidden"></hr>
               </li>
               <li className="w-1/2 px-4 max-sm:px-0 max-md:w-6/12 flex items-center gap-4 ">
-                <button className="h-8 w-8 bg-blue-600 rounded-full text-white font-medium">
+                <button
+                  className={[
+                    "h-8 w-8 rounded-full text-white font-medium",
+                    Colors.primary,
+                  ].join(" ")}
+                >
                   2
                 </button>
                 <p>Your Details</p>
@@ -171,7 +182,10 @@ export default function Form() {
             <input
               type="submit"
               value="Next"
-              className="h-12 w-full bg-blue-600 text-white shadow-lg hover:bg-white hover:text-black duration-700 rounded-lg my-8"
+              className={[
+                "h-12 w-full text-white shadow-lg hover:bg-white hover:text-black duration-700 rounded-lg my-8",
+                Colors.primary,
+              ].join(" ")}
             />
           </form>
         </div>

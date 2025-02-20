@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Colors } from "~/constants/colors";
 
 export default function BookNow() {
   return (
@@ -19,15 +20,17 @@ export default function BookNow() {
                     <div className="inline bg-gray-200 px-2 py-1">All</div>
                     <div className="inline bg-gray-200 px-2 py-1">Over</div>
                     <div className="inline bg-gray-200 px-2 py-1 text-blue-600">
-                      The
-                    </div>
-                    <div className="inline bg-gray-200 px-2 py-1 text-blue-600">
                       India
                     </div>
                   </div>
                 </div>
                 <Link to="/TripBooking" className="max-md:text-center">
-                  <button className=" px-6 py-3 text-sm text-white rounded-lg bg-blue-600 hover:bg-white hover:text-black duration-700 ">
+                  <button
+                    className={[
+                      "px-6 py-3 text-sm text-white rounded-lg hover:bg-white hover:text-black duration-700",
+                      Colors.primary,
+                    ].join(" ")}
+                  >
                     Booking Now
                   </button>
                 </Link>

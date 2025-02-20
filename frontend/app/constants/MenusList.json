@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "pageName": "Home",
+    "path": "/"
+  },
+  {
+    "id": 2,
+    "pageName": "Tour Package",
+    "path": "/tour_package"
+  },
+  {
+    "id": 3,
+    "pageName": "News",
+    "path": "/news"
+  },
+  {
+    "id": 4,
+    "pageName": "Contact",
+    "path": "/contact"
+  },
+  {
+    "id": 5,
+    "pageName": "About",
+    "path": "/about"
+  }
+]
