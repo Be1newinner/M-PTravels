@@ -193,7 +193,12 @@ export default function Form() {
                   <p className="text-sm font-medium">From</p>
                   <div className="flex flex-col items-center">
                     <p>0h 50m</p>
-                    <Image src="route-plan.png" alt="plan "></Image>
+                    <Image
+                      src="/route-plan.png"
+                      alt="plan "
+                      width={162}
+                      height={24}
+                    ></Image>
                     <p className="text-sm font-medium">1 Stop</p>
                   </div>
                   <p className="text-sm font-medium">To</p>

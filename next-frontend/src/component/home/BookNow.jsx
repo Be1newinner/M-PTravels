@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function BookNow() {
@@ -8,10 +9,16 @@ export default function BookNow() {
           <div className="w-full top-24 relative px-20 text-5xl font-bold max-sm:px-2 max-sm:top-2 max-lg:top-4 max-md:top-0 max-md:px-6 max-lg:px-4">
             <div className="flex justify-between max-md:flex-wrap max-sm:gap-6">
               <div className="w-2/6 max-md:w-full max-md:text-center max-md:px-2">
-                <img
-                  src="logo.webp"
+                <Image
+                  src="/logo.webp"
                   alt="logo"
                   className="max-md:w-1/3 max-md:mx-auto "
+                  width={500}
+                  height={500}
+                  style={{
+                    height: 200,
+                    width: 200,
+                  }}
                 />
                 <div className="">
                   <div className="gap-4 flex flex-wrap max-md:justify-center">
@@ -35,20 +42,26 @@ export default function BookNow() {
               <div className="w-11/12 flex items-center max-md:w-full max-lg:w-9/12">
                 <div className="mt-4 " id="hero-section">
                   <div className="flex relative items-center justify-center gap-2 z-40">
-                    <img
-                      src="Temple.jpg"
+                    <Image
+                      src="/Temple.jpg"
                       alt="paris"
                       className="w-1/5 h-1/5 rounded-3xl border-4 border-white"
+                      width={736}
+                      height={1308}
                     />
-                    <img
-                      src="corridor-.jpg"
+                    <Image
+                      src="/corridor-.jpg"
                       alt="dubai"
                       className="w-2/6 rounded-3xl border-4 border-white"
+                      width={853}
+                      height={1280}
                     />
-                    <img
-                      src="IndiaGate.jpg"
+                    <Image
+                      src="/IndiaGate.jpg"
                       alt="italy"
                       className="w-1/5 h-1/5 rounded-3xl border-4 border-white"
+                      width={236}
+                      height={419}
                     />
                   </div>
                 </div>

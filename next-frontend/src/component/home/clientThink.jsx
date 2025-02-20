@@ -15,16 +15,26 @@ export default function ClientThink() {
           <div className="p-12 max-sm:p-2 ">
             <div className="flex justify-between">
               <div className="flex ">
-                <Image src="user-3.png" alt="user-3" className="z-20" />
                 <Image
-                  src="user-1.png"
-                  alt="user-1"
-                  className="-translate-x-6 z-10"
+                  src="/user-3.png"
+                  alt="user-3"
+                  className="z-20"
+                  height={64}
+                  width={64}
                 />
                 <Image
-                  src="user-2.png"
+                  src="/user-1.png"
+                  alt="user-1"
+                  className="-translate-x-6 z-10"
+                  height={64}
+                  width={64}
+                />
+                <Image
+                  src="/user-2.png"
                   alt="user-2"
                   className="-translate-x-12"
+                  height={64}
+                  width={64}
                 />
               </div>
               <div className="flex text-2xl gap-6 max-sm:hidden">

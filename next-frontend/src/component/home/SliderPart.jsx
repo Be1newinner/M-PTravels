@@ -2,6 +2,7 @@
 
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import Image from "next/image";
 
 export default function Sliderpart() {
   const settings = {
@@ -52,11 +53,13 @@ export default function Sliderpart() {
           <div className="px-4 max-md:px-0">
             <div className=" bg-gray-100 rounded-lg ">
               <div className="p-4 relative overflow-hidden">
-                <img
-                  src="visit-agra.jpg"
+                <Image
+                  src="/visit-agra.jpg"
                   alt="flight"
                   className="w-full hover:scale-105 duration-300 rounded-lg pb-6"
-                ></img>
+                  width={730}
+                  height={475}
+                />
                 <h1 className=" font-bold">Delhi to Agra</h1>
                 <p>26 Nov, 2024 - 1 Dec,2024</p>
                 <div className="flex justify-between">
@@ -74,11 +77,13 @@ export default function Sliderpart() {
           <div className="px-4">
             <div className="bg-gray-100 rounded-lg">
               <div className="p-4 relative">
-                <img
-                  src="humayun-s-tomb.jpg"
+                <Image
+                  src="/humayun-s-tomb.jpg"
                   alt="flight-1"
                   className="w-full hover:scale-105 duration-300 rounded-lg pb-6"
-                ></img>
+                  width={2560}
+                  height={1707}
+                />
                 <h1 className=" font-bold">Noida to Delhi</h1>
                 <p>26 Nov, 2024 - 1 Dec,2024</p>
                 <div className="flex justify-between">
@@ -96,11 +101,13 @@ export default function Sliderpart() {
           <div className="px-4">
             <div className="bg-gray-100 rounded-lg">
               <div className="p-4 relative">
-                <img
-                  src="JAIPUR.jpg"
+                <Image
+                  src="/JAIPUR.jpg"
                   alt="flight-3"
                   className="w-full hover:scale-105 duration-300 rounded-lg pb-6"
-                ></img>
+                  width={700}
+                  height={467}
+                />
                 <h1 className=" font-bold">Delhi to Jaiypur</h1>
                 <p>26 Nov, 2024 - 1 Dec,2024</p>
                 <div className="flex justify-between">
@@ -118,11 +125,13 @@ export default function Sliderpart() {
           <div className="px-4">
             <div className="bg-gray-100 rounded-lg">
               <div className="p-4 relative">
-                <img
-                  src="https://uiparadox.co.uk/templates/flynow/v2/assets/media/images/flight-4.png"
+                <Image
+                  src="/flight4.png"
                   alt="flight-4"
                   className="w-full hover:scale-105 duration-300 rounded-lg pb-6"
-                ></img>
+                  width={700}
+                  height={464}
+                />
                 <h1 className=" font-bold">Dubai to Canada</h1>
                 <p>26 Nov, 2024 - 1 Dec,2024</p>
                 <div className="flex justify-between">

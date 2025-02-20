@@ -16,15 +16,17 @@ export default function Descover() {
         </div>
         <div className="flex flex-between items-center gap-20 max-lg:gap-6 py-10 max-lg:flex-wrap">
           <div className="max-xl:w-1/2 max-sm:px-2 max-md:px-10 max-lg:w-full">
-            <Image src="map.png" alt="map" />
+            <Image src="/map.png" alt="map" width={849} height={828} />
           </div>
           <div className="w-8/12 flex flex-wrap max-lg:w-full max-md:w-full ">
             <div className="w-1/2 relative group overflow-hidden pt-8 pr-4 max-md:w-full max-md:pr-0 sm:w-1/2 sm:pr-2">
               <div className="p-4 rounded-lg bg-white md:p-2">
                 <Image
-                  src="hawa-mahal-of-rajasthan-photo.jpg"
+                  src="/hawa-mahal-of-rajasthan-photo.jpg"
                   alt="image-1"
                   className="group-hover:scale-105 duration-300 rounded-lg"
+                  width={1742}
+                  height={980}
                 />
                 <p className="font-bold pt-4">Hawa Mahal</p>
                 <div className="flex gap-2 py-2 text-gray-500 items-center md:text-sm">
@@ -41,9 +43,11 @@ export default function Descover() {
             <div className="w-1/2 relative group overflow-hidden pt-8 pl-4 max-md:w-full max-md:pl-0 sm:w-1/2 sm:pl-2">
               <div className="p-4 rounded-lg bg-white md:p-2">
                 <Image
-                  src="KASHMIR1.jpg"
+                  src="/KASHMIR1.jpg"
                   alt="image-2"
                   className="rounded-lg group-hover:scale-105 duration-300"
+                  width={1000}
+                  height={575}
                 />
                 <p className="font-bold pt-4">Gulmarg Gondola </p>
                 <div className="flex gap-2 py-2 text-gray-500 items-center md:text-sm">
@@ -60,9 +64,11 @@ export default function Descover() {
             <div className="w-1/2 relative group overflow-hidden pt-8 pr-4 max-sm:w-full max-md:pr-0 sm:w-1/2 sm:pr-2">
               <div className="p-4 rounded-lg bg-white text-sm md:p-2">
                 <Image
-                  src="Taj Mahal.jpg"
+                  src="/TajMahal.jpg"
                   alt="image-3"
                   className="rounded-lg group-hover:scale-105 duration-300"
+                  width={3000}
+                  height={1987}
                 />
                 <p className="font-bold pt-4">Agra</p>
                 <div className="flex gap-2 py-2 text-gray-500 items-center md:text-sm">
@@ -79,9 +85,11 @@ export default function Descover() {
             <div className="w-1/2 relative group overflow-hidden pt-8 pl-4 max-sm:w-full max-md:pl-0 sm:w-1/2 sm:pl-2">
               <div className="p-4 rounded-lg bg-white md:p-2">
                 <Image
-                  src="Maharastra.jpg"
+                  src="/Maharastra.jpg"
                   alt="image-4"
                   className="rounded-lg group-hover:scale-105 duration-300"
+                  width={612}
+                  height={408}
                 />
                 <p className="font-bold pt-4">Mumbai Maharashtra</p>
                 <div className="flex gap-2 py-2 text-gray-500 items-center md:text-sm md:gap-0">

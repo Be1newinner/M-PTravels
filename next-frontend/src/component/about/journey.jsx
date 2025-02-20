@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { IoPlayCircleOutline } from "react-icons/io5";
@@ -27,10 +28,12 @@ export default function Journey() {
             </p>
           </div>
           <div className="w-full relative px-10 ">
-            <img
-              src="blog-banner.png"
+            <Image
+              src="/blog-banner.png"
               alt="Blog Banner"
               className="rounded-3xl max-sm:rounded-2xl"
+              width={1680}
+              height={480}
             />
             <button
               onClick={handleVideo}
@@ -53,7 +56,7 @@ export default function Journey() {
               />
             </div>
             <video
-              src="airline-ad.mp4"
+              src="/airline-ad.mp4"
               controls
               alt="airline-ad"
               className="rounded-xl"

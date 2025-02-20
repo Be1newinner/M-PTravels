@@ -90,9 +90,18 @@ export default function Navbar() {
 
   return (
     <div className="h-full flex items-center justify-between px-10 py-2 bg-[#ECECF2] max-md:px-3 max-xl:px-10 max-md:py-2 max-xl:py-4 relative">
-      <a href="/" className="w-24 aspect-square">
-        <Image src="/logo.webp" alt="logo" width={200} height={200}></Image>
-      </a>
+      <Link href="/" className="w-24 aspect-square">
+        <Image
+          src="/logo.webp"
+          alt="logo"
+          width={200}
+          height={200}
+          style={{
+            height: 100,
+            width: 100,
+          }}
+        />
+      </Link>
 
       <div className="flex justify-between max-sm:h-12 items-center max-xl:w-full ">
         <button onClick={toggleDropDown} className="flex justify-end">

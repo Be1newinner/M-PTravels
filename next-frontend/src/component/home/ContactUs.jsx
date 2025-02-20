@@ -1,5 +1,6 @@
 import { FaRegUserCircle } from "react-icons/fa";
 import { CiUser } from "react-icons/ci";
+import Image from "next/image";
 
 export default function ContactUs() {
   return (
@@ -43,10 +44,12 @@ export default function ContactUs() {
           </div>
         </div>
         <div className="w-3/4 max-lg:w-full">
-          <img
-            src="achievement-image.png"
+          <Image
+            src="/achievement-image.png"
             alt="achivement"
             className="rounded-3xl"
+            width={1203}
+            height={699}
           />
         </div>
       </div>

@@ -12,7 +12,17 @@ export default function Footer() {
   return (
     <footer className="flex justify-between max-md:justify-between max-lg:justify-normal max-md:gap-0 max-lg:gap-10 bg-white px-20 py-10 max-xl:flex-wrap max-sm:px-4 max-xl:px-8 ">
       <div className="w-1/4 max-sm:w-full max-md:w-2/3 max-lg:w-1/2">
-        <Image src="logo.webp" alt="logo" className="w-1/3 max-xl:w-1/5"/>
+        <Image
+          src="/logo.webp"
+          alt="logo"
+          className="w-1/3 max-xl:w-1/5"
+          width={500}
+          height={500}
+          style={{
+            height: 200,
+            width: 200
+          }}
+        />
         <p className="text-gray-500 py-4">
           Lorem ipsum dolor sit amet consectetur. Aliquet vulputate augue
           penatibus in libero et id aliquam. In ridiculus pretium est velit
@@ -82,7 +92,12 @@ export default function Footer() {
         </ul>
       </div>
       <div className="w-1/4 max-md:w-full max-xl:mt-4 ">
-        <Link href="/privacyPage" className="text-2xl font-medium max-sm:mt-4 hover:text-blue-600">Privacy Policy</Link>
+        <Link
+          href="/privacyPage"
+          className="text-2xl font-medium max-sm:mt-4 hover:text-blue-600"
+        >
+          Privacy Policy
+        </Link>
         <div className="flex items-center gap-3 py-2 ">
           <CiLocationOn className="text-3xl " />
           <p className="text-sm"> Saket, New Delhi, 110080</p>

@@ -24,7 +24,12 @@ export default function DreamFlight() {
           </Link>
         </div>
         <div className="pr-20 max-xl:pr-10 py-20 items-center max-md:pr-2 max-sm:pt-0 sm:pt-10 max-sm:w-full max-xl:w-8/12 max-2xl:w-10/12">
-          <Image src="/online-cab-booking.png" alt="plane"></Image>
+          <Image
+            src="/online-cab-booking.png"
+            alt="plane"
+            width={639}
+            height={450}
+          ></Image>
         </div>
       </div>
     </div>

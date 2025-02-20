@@ -14,7 +14,7 @@ import ClientThink from "@/component/home/clientThink";
 
 export default function FlyNow() {
   return (
-    <div>
+    <>
       <Navbar />
       <DreamFlight />
       <ShowFlight />
@@ -26,6 +26,6 @@ export default function FlyNow() {
       <ClientThink />
       <LetestNews />
       <Footer />
-    </div>
+    </>
   );
 }

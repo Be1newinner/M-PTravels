@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CiUser } from "react-icons/ci";
 import { LuCalendarDays } from "react-icons/lu";
@@ -5,7 +6,7 @@ import { LuCalendarDays } from "react-icons/lu";
 export default function AllTime() {
   const list = [
     {
-      photo: "blog-1.png",
+      photo: "/blog-1.png",
       userIcon: <CiUser />,
       userName: "Malisa John",
       calendarIcon: <LuCalendarDays />,
@@ -15,7 +16,7 @@ export default function AllTime() {
       para: "Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend tortor lectus adipiscing aliquam.",
     },
     {
-      photo: "blog-2.png",
+      photo: "/blog-2.png",
       userIcon: <CiUser />,
       userName: "Malisa John",
       calendarIcon: <LuCalendarDays />,
@@ -25,7 +26,7 @@ export default function AllTime() {
       para: "Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend tortor lectus adipiscing aliquam.",
     },
     {
-      photo: "blog-3.png",
+      photo: "/blog-3.png",
       userIcon: <CiUser />,
       userName: "Malisa John",
       calendarIcon: <LuCalendarDays />,
@@ -35,7 +36,7 @@ export default function AllTime() {
       para: "Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend tortor lectus adipiscing aliquam.",
     },
     {
-      photo: "blog-4.png",
+      photo: "/blog-4.png",
       userIcon: <CiUser />,
       userName: "Malisa John",
       calendarIcon: <LuCalendarDays />,
@@ -45,7 +46,7 @@ export default function AllTime() {
       para: "Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend tortor lectus adipiscing aliquam.",
     },
     {
-      photo: "blog-5.png",
+      photo: "/blog-5.png",
       userIcon: <CiUser />,
       userName: "Malisa John",
       calendarIcon: <LuCalendarDays />,
@@ -55,7 +56,7 @@ export default function AllTime() {
       para: "Lorem ipsum dolor sit amet consectetur. Feugiat sit eleifend tortor lectus adipiscing aliquam.",
     },
     {
-      photo: "blog-6.png",
+      photo: "/blog-6.png",
       userIcon: <CiUser />,
       userName: "Malisa John",
       calendarIcon: <LuCalendarDays />,
@@ -99,10 +100,12 @@ export default function AllTime() {
             key={index}
             className="p-4 mt-4 w-[32%] max-md:w-full max-lg:w-[48%] max-xl:w-full max-xl:flex max-lg:flex-wrap max-lg:gap-0 max-xl:gap-8 rounded-xl h-full bg-white group relative"
           >
-            <img
+            <Image
               src={item.photo}
               alt="blogs"
               className="rounded-xl max-lg:w-full group-hover:scale-105 duration-300 max-xl:w-1/2"
+              width={772}
+              height={524}
             />
             <div>
               <div className="flex max-sm:text-sm max-lg:text-xl max-lg:gap-2 text-center items-center gap-6 max-sm:gap-4 text-xl text-gray-500 py-3">
@@ -130,12 +133,20 @@ export default function AllTime() {
           </div>
         ))}
         <div className="w-full flex pb-8 justify-center">
-        <ul className="flex gap-6 relative items-center ">
-          <li className="px-6 py-2 bg-blue-500 rounded-xl text-white hover:scale-110 duration-300 hover:bg-white hover:text-black">1</li>
-          <li className="px-6 py-2 rounded-xl bg-slate-100 shadow-lg hover:scale-110 hover:text-white hover:bg-blue-500 duration-700 text-black">2</li>
-          <li className="px-6 py-2 rounded-xl bg-slate-100 shadow-lg hover:scale-110 hover:text-white hover:bg-blue-500 duration-700 text-black">3</li>
-          <li className="px-6 py-2 rounded-xl bg-slate-100 shadow-lg hover:scale-110 hover:text-white hover:bg-blue-500 duration-700 text-black">4</li>
-        </ul>
+          <ul className="flex gap-6 relative items-center ">
+            <li className="px-6 py-2 bg-blue-500 rounded-xl text-white hover:scale-110 duration-300 hover:bg-white hover:text-black">
+              1
+            </li>
+            <li className="px-6 py-2 rounded-xl bg-slate-100 shadow-lg hover:scale-110 hover:text-white hover:bg-blue-500 duration-700 text-black">
+              2
+            </li>
+            <li className="px-6 py-2 rounded-xl bg-slate-100 shadow-lg hover:scale-110 hover:text-white hover:bg-blue-500 duration-700 text-black">
+              3
+            </li>
+            <li className="px-6 py-2 rounded-xl bg-slate-100 shadow-lg hover:scale-110 hover:text-white hover:bg-blue-500 duration-700 text-black">
+              4
+            </li>
+          </ul>
         </div>
       </div>
     </div>

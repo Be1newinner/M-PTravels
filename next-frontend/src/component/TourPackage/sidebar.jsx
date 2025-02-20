@@ -7,6 +7,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { ImSpoonKnife } from "react-icons/im";
 import { LuTicket, LuHotel } from "react-icons/lu";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SideBar() {
   // const Visiting = [
@@ -251,11 +252,13 @@ export default function SideBar() {
         <div className="w-8/12 max-xl:w-full">
           <div className="flex max-md:flex-wrap shadow-lg gap-8 p-6 my-6 rounded-3xl bg-white">
             <div className="flex justify-between max-md:flex-wrap gap-8">
-              <img
-                src="Taj mahal1.jpg"
+              <Image
+                src="/Tajmahal1.jpg"
                 alt="Taj Mahal"
                 className="w-1/4 max-md:w-full rounded-xl "
-              ></img>
+                width={1200}
+                height={1200}
+              />
               <div className="flex w-full justify-between max-sm:flex-wrap ">
                 <div>
                   <p className="text-2xl font-medium">Taj Mahal</p>
@@ -329,11 +332,13 @@ export default function SideBar() {
 
           <div className="flex max-md:flex-wrap shadow-lg gap-8 p-6 my-6 rounded-3xl bg-white">
             <div className="flex justify-between max-md:flex-wrap gap-8">
-              <img
-                src="Rajasthan.jpg"
+              <Image
+                src="/Rajasthan.jpg"
                 alt="Rajasthan"
                 className="w-1/4 max-md:w-full rounded-xl "
-              ></img>
+                width={750}
+                height={915}
+              />
               <div className="flex w-full justify-between max-sm:flex-wrap ">
                 <div>
                   <p className="text-2xl font-medium">Rajasthan</p>
@@ -407,11 +412,13 @@ export default function SideBar() {
 
           <div className="flex max-md:flex-wrap shadow-lg gap-8 p-6 my-6 rounded-3xl bg-white">
             <div className="flex justify-between max-md:flex-wrap gap-8">
-              <img
-                src="Uttarakhand.jpg"
+              <Image
+                src="/Uttarakhand.jpg"
                 alt="Uttarakhand"
                 className="w-1/4 max-md:w-full rounded-xl "
-              ></img>
+                width={640}
+                height={960}
+              />
               <div className="flex w-full justify-between max-sm:flex-wrap ">
                 <div>
                   <p className="text-2xl font-medium">Uttarakhand</p>
@@ -485,11 +492,13 @@ export default function SideBar() {
 
           <div className="flex max-md:flex-wrap shadow-lg gap-8 p-6 my-6 rounded-3xl bg-white">
             <div className="flex justify-between max-md:flex-wrap gap-8">
-              <img
-                src="Madhya Pradesh.jpg"
+              <Image
+                src="/MadhyaPradesh.jpg"
                 alt="Madhya Pradesh"
                 className="w-1/4 max-md:w-full rounded-xl "
-              ></img>
+                width={900}
+                height={1200}
+              />
               <div className="flex w-full justify-between max-sm:flex-wrap ">
                 <div>
                   <p className="text-2xl font-medium">Madhya Pradesh</p>
@@ -563,11 +572,13 @@ export default function SideBar() {
 
           <div className="flex max-md:flex-wrap shadow-lg gap-8 p-6 my-6 rounded-3xl bg-white">
             <div className="flex justify-between max-md:flex-wrap gap-8">
-              <img
+              <Image
                 src="KutubMinar.jpg"
                 alt="Qutub Minar"
                 className="w-1/4 max-md:w-full rounded-xl "
-              ></img>
+                width={3000}
+                height={4500}
+              />
               <div className="flex w-full justify-between max-sm:flex-wrap ">
                 <div>
                   <p className="text-2xl font-medium">Qutub Minar</p>
@@ -641,11 +652,13 @@ export default function SideBar() {
 
           <div className="flex max-md:flex-wrap shadow-lg gap-8 p-6 my-6 rounded-3xl bg-white">
             <div className="flex justify-between max-md:flex-wrap gap-8">
-              <img
-                src="kerala-december.jpg"
+              <Image
+                src="/kerala-december.jpg"
                 alt="Kerala"
                 className="w-1/4 max-md:w-full rounded-xl "
-              ></img>
+                width={1200}
+                height={1571}
+              />
               <div className="flex w-full justify-between max-sm:flex-wrap ">
                 <div>
                   <p className="text-2xl font-medium">Kerala</p>
