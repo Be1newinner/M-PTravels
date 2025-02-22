@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { Colors } from "~/constants/colors";
 
 export default function AllTime() {
-  const list = [
+  const listData = [
     {
       photo: "blog-1.png",
       userIcon: <CiUser />,
@@ -120,7 +120,7 @@ export default function AllTime() {
       </div>
 
       <div className=" flex items-center justify-start gap-6 flex-wrap mt-6 px-24 max-md:px-4 max-lg:px-8 max-2xl:px-16 mx-auto max-2xl:gap-5">
-        {list.map((item, index) => (
+        {listData.map((item, index) => (
           <div
             key={index}
             className="p-4 mt-4 w-[32%] max-md:w-full max-lg:w-[48%] max-xl:w-full max-xl:flex max-lg:flex-wrap max-lg:gap-0 max-xl:gap-8 rounded-xl h-full bg-white group relative"
@@ -132,10 +132,6 @@ export default function AllTime() {
             />
             <div>
               <div className="flex max-sm:text-sm max-lg:text-xl max-lg:gap-2 text-center items-center gap-6 max-sm:gap-4 text-xl text-gray-500 py-3">
-                <div className="flex  items-center gap-2">
-                  {item.userIcon} {item.userName}
-                </div>
-                <div className="font-m text-3xl max-sm:text-xl">|</div>
                 <div className="flex items-center gap-2">
                   {item.calendarIcon} {item.date}
                 </div>

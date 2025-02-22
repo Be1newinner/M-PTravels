@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
           <h1 className="text-center pl-8 max-lg:pl-0 text-5xl max-sm:text-2xl font-bold w-1/3">
             Privacy Policy
           </h1>
-          <img src="Location.png" alt="plan" className="w-1/4 max-sm:w-1/4 max-sm: bg-slate-200" />
+          <img src="/images/location.png" alt="plan" className="w-1/4 max-sm:w-1/4 max-sm: bg-slate-200" />
         </div>
       </div>
       </div>

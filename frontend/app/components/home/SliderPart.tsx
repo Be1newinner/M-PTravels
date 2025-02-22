@@ -37,7 +37,7 @@ export default function Sliderpart() {
   };
   return (
     <div className="h-full w-full bg-[#dedee0] ">
-      <div className="flex justify-between text-3xl font-bold px-20 py-10 -translate-y-28 max-sm:px-6 max-md:px-6 max-lg:px-12 max-xl:px-14">
+      <div className="container bg-red-500 flex justify-between text-3xl font-bold py-10 -translate-y-28">
         <div>
           <p className="">Trips Deals</p>
         </div>
@@ -59,7 +59,7 @@ export default function Sliderpart() {
 
       {/* Slider part */}
 
-      <div className="w-11/12 mx-auto -translate-y-24 max-sm:w-10/12">
+      <div className="container w-11/12 mx-auto -translate-y-24 max-sm:w-10/12">
         <Suspense fallback={<div>Loading Slider...</div>}>
           <Slider {...settings}>
             <div className="px-4 max-md:px-0">

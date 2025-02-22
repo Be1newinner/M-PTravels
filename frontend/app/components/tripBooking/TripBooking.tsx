@@ -12,7 +12,7 @@ export default function TripBooking() {
             Trip Booking
           </h1>
           <img
-            src="Location.png"
+            src="/images/location.png"
             alt="plan"
             className="w-1/4 max-sm:w-1/4 max-sm: bg-slate-200"
           />

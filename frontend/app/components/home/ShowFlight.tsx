@@ -4,7 +4,7 @@ import Available from "./Available";
 export default function ShowFlight() {
   return (
     <div className="h-full w-full bg-[#dedee0] shadow-2xl">
-      <div className="flex justify-center h-full px-16 max-xl:px-6 max-sm:px-4 z-50 -translate-y-1/2 max-sm:-translate-y-1/3">
+      <div className="container flex justify-center h-full z-50 -translate-y-1/2 max-sm:-translate-y-1/3">
         <div className="w-full h-full px-14 max-xl:px-10 py-10 shadow-xl rounded-3xl bg-gray-100 max-sm:px-2 max-md:p-8">
           <div className="w-full flex h-42 px-5 py-8 rounded items-center bg-slate-200 max-md:h-full max-xl:flex-wrap max-xl:gap-6">
             <div className="flex border-r h-full items-center border-black gap-6 w-2/4 max-xl:w-full max-sm:flex-wrap max-md:gap-3 max-xl:border-none">
@@ -78,7 +78,7 @@ export default function ShowFlight() {
           </div>
         </div>
       </div>
-      <div className="-translate-y-20">
+      <div className="container -translate-y-24">
         <Available />
       </div>
     </div>

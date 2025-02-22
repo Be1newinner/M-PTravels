@@ -9,13 +9,13 @@ import ContactUs from "~/components/home/ContactUs";
 
 // import Available from "~/Component/home_component/available";
 
-import ClientThink from "~/components/home/ClientThink";
+import Testimonials from "~/components/home/Testimonials";
 import LatestNews from "~/components/home/LetestNews";
 import Footer from "~/components/home/Footer";
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
       <DreamFlight />
       <ShowFlight />
@@ -26,7 +26,7 @@ export default function HomePage() {
       <Discover />
       <ContactUs />
 
-      <ClientThink />
+      <Testimonials />
       <LatestNews />
       <Footer />
     </div>

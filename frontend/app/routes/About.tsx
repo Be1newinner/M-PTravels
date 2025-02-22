@@ -4,7 +4,7 @@ import Journey from "~/components/about/Journey";
 import OurHistory from "~/components/about/OurHistory";
 import ContactUs from "~/components/home/ContactUs";
 import Available from "~/components/home/Available";
-import ClientThink from "~/components/home/ClientThink";
+import Testimonials from "~/components/home/Testimonials";
 import Footer from "~/components/home/Footer";
 export default function AboutPage() {
   return (
@@ -17,7 +17,7 @@ export default function AboutPage() {
       <div className="px-4 max-xl:px-0 max-2xl:px-4 max-lg:px-0">
         <Available />
       </div>
-      <ClientThink />
+      <Testimonials />
       <Footer />
     </div>
   );

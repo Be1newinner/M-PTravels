@@ -36,3 +36,46 @@
   height: 100%;
   width: 100%;
 }
+
+button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to right, #60a5fa, #3b82f6);
+  color: white;
+  border-radius: 6px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #2563eb, #60a5fa);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  mix-blend-mode: overlay;
+}
+
+button:hover {
+  color: black;
+
+  &::before {
+    opacity: 1;
+  }
+}
+
+.container {
+  max-width: 1280px;
+  width: calc(100% - 20px);
+  margin: auto auto;
+}

@@ -4,6 +4,8 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { Colors } from "~/constants/colors";
 
 export default function LetestNews() {
+
+
   return (
     <div className="w-full px-20 h-full bg-gray-200 max-md:px-2 max-xl:px-10 ">
       <div className="flex justify-between py-10 ">
