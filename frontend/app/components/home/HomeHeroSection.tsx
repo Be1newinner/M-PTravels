@@ -1,10 +1,10 @@
 import { Link } from "react-router";
 import Information from "app/constants/informations.json";
 
-export default function DreamFlight() {
+export default function HomeHeroSection() {
   return (
     <div className="bg-[#ECECF2]">
-      <div className="bg-red-500 container flex justify-between py-4 max-sm:flex-wrap h-screen  max-sm:px-3 max-xl:px-0">
+      <div className="container flex justify-between py-4 max-sm:flex-wrap h-screen  max-sm:px-3 max-xl:px-0">
         <div className="max-xl:pt-10 pt-32 w-4/12 max-lg:w-5/12  max-sm:px-2 max-md:pt-6 max-sm:w-full  max-md:px-4">
           <div className="inline-block flax text-5xl font-bold max-sm:w-full max-md:text-4xl max-sm:flex-wrap">
             <h1>

@@ -2,10 +2,10 @@ import { CiLocationOn } from "react-icons/ci";
 import { RiHotelFill } from "react-icons/ri";
 import { Colors } from "~/constants/colors";
 
-export default function Descover() {
+export default function TravelDestinations() {
   return (
-    <div>
-      <div className="w-full p-20 max-lg:p-20 bg-gray-200 max-md:px-2 max-sm:py-4 max-lg:px-10 max-xl:px-12">
+    <div className="bg-gray-200 w-full">
+      <div className="container pt-16 pb-8 max-lg:pb-20 max-sm:pb-4">
         <div className="flex justify-between max-xl:flex-wrap ">
           <h1 className="text-3xl max-sm:text-2xl font-bold">
             Popular Indian Travel Destinations

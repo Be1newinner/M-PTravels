@@ -5,7 +5,7 @@ import { Colors } from "~/constants/colors";
 
 const Slider = lazy(() => import("react-slick")); // ✅ Lazy load react-slick
 
-export default function Sliderpart() {
+export default function PackageSlider() {
   const settings = {
     infinite: true,
     speed: 500,
@@ -37,7 +37,7 @@ export default function Sliderpart() {
   };
   return (
     <div className="h-full w-full bg-[#dedee0] ">
-      <div className="container bg-red-500 flex justify-between text-3xl font-bold py-10 -translate-y-28">
+      <div className="container flex justify-between text-3xl font-bold py-10 -translate-y-28">
         <div>
           <p className="">Trips Deals</p>
         </div>

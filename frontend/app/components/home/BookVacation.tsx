@@ -1,7 +1,7 @@
 import { GoArrowSwitch } from "react-icons/go";
 import Available from "./Available";
 
-export default function ShowFlight() {
+export default function BookVacation() {
   return (
     <div className="h-full w-full bg-[#dedee0] shadow-2xl">
       <div className="container flex justify-center h-full z-50 -translate-y-1/2 max-sm:-translate-y-1/3">
