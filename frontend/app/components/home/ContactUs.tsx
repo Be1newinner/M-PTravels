@@ -8,7 +8,7 @@ export default function ContactUs() {
       <div className="container h-full pb-10 py-10">
         <div className=" flex gap-6 shadow-lg rounded-3xl px-14 py-20 bg-gray-100 h-full max-lg:flex-wrap max-lg:p-4 max-2xl:p-10 ">
           <div className="w-3/4 max-md:w-full max-lg:w-full">
-            <p className="text-blue-600 text-lg">Achievement</p>
+            <p className={`text-lg ${Colors.textPrimary}`}>Achievement</p>
             <h1 className="text-3xl font-bold py-2 max-lg:text-2xl">
               Your Destination Awaits, Book Now
             </h1>
@@ -20,20 +20,26 @@ export default function ContactUs() {
             <div className="flex gap-8 py-4 max-sm:flex-wrap ">
               <div className="flex justify-between p-6 w-1/2 rounded-lg shadow-lg items-center bg-gray-200 max-sm:w-full">
                 <div>
-                  <p className="text-3xl font-bold text-blue-600 ">12870 +</p>
+                  <p className={`text-3xl font-bold  ${Colors.textPrimary}`}>
+                    12870 +
+                  </p>
                   <p className="text-lg ">Happy customers</p>
                 </div>
                 <div>
-                  <CiUser className="text-5xl text-blue-600" />
+                  <CiUser className={`text-5xl  ${Colors.textPrimary}`} />
                 </div>
               </div>
               <div className="flex justify-between p-6 w-1/2 rounded-lg shadow-xl items-center bg-gray-200 max-sm:w-full">
                 <div>
-                  <p className="text-3xl font-bold text-blue-600">100 %</p>
+                  <p className={`text-3xl font-bold  ${Colors.textPrimary}`}>
+                    100 %
+                  </p>
                   <p className="text-lg">Client Satisfied</p>
                 </div>
                 <div>
-                  <FaRegUserCircle className="text-5xl text-blue-600" />
+                  <FaRegUserCircle
+                    className={`text-5xl  ${Colors.textPrimary}`}
+                  />
                 </div>
               </div>
             </div>

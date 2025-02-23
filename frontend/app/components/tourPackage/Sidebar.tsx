@@ -22,7 +22,9 @@ export default function SideBar() {
       <div className="px-16 py-10 flex justify-between max-lg:flex-wrap max-sm:px-2 max-md:gap-3 max-2xl:gap-8 max-xl:px-14 max-md:px-6">
         <div className="flex px-14 gap-2 py-5 shadow-lg rounded-lg bg-gray-100 max-xl:px-2 max-2xl:px-5 max-xl:w-full items-center max-xl:justify-center ">
           <div className="flex gap-4">
-            <SiTicktick className="text-4xl text-center text-blue-600 " />
+            <SiTicktick
+              className={`text-4xl text-center  ${Colors.textPrimary}`}
+            />
             <h1 className="text-2xl max-sm:text-xl max-2xl:text-xl font-medium">
               Free Cancellation
             </h1>
@@ -30,7 +32,7 @@ export default function SideBar() {
         </div>
         <div className="flex px-14 gap-2 py-5 shadow-lg rounded-lg items-center bg-gray-100 max-xl:w-full max-2xl:px-5 max-xl:px-2 max-xl:justify-center">
           <div className="flex gap-4 text-center">
-            <TbEyeDollar className="text-4xl text-blue-600 " />
+            <TbEyeDollar className={`text-4xl  ${Colors.textPrimary}`} />
 
             <h1 className="text-2xl max-sm:text-xl max-2xl:text-xl font-medium">
               No Hidden Charges
@@ -39,7 +41,7 @@ export default function SideBar() {
         </div>
         <div className="flex px-14 gap-2 rounded-lg shadow-lg py-5 items-center bg-gray-100 max-xl:px-2 max-2xl:px-5 max-xl:w-full max-xl:justify-center">
           <div className="flex gap-4">
-            <AiOutlineComment className="text-4xl text-blue-600 " />
+            <AiOutlineComment className={`text-4xl  ${Colors.textPrimary}`} />
             <h1 className="text-2xl max-sm:text-xl max-xl:text-2xl max-2xl:text-xl font-medium">
               24/7 Customer Service
             </h1>
@@ -60,7 +62,9 @@ export default function SideBar() {
                     Destination/ property
                   </p>
                   <div className="flex text-center items-center gap-4">
-                    <IoSearchOutline className="text-3xl text-blue-500 " />
+                    <IoSearchOutline
+                      className={`text-3xl  ${Colors.textPrimary}`}
+                    />
                     <input
                       type="text"
                       name="search"
@@ -76,7 +80,9 @@ export default function SideBar() {
                     Check-in date
                   </p>
                   <div className="flex items-center gap-4">
-                    <FaRegCalendarAlt className="text-xl text-blue-500 " />
+                    <FaRegCalendarAlt
+                      className={`text-xl  ${Colors.textPrimary}`}
+                    />
                     <input
                       type="date"
                       name="date"
@@ -106,7 +112,7 @@ export default function SideBar() {
                   <p>$100</p>
                   <p>$3000</p>
                 </div>
-                <input type="range" name="range" className="w-full"></input>
+                <input type="range" name="range" className="w-full" />
               </div>
               <div className="px-5">
                 <hr className=" border-gray-500 " />
@@ -114,7 +120,7 @@ export default function SideBar() {
               <p className="px-5 py-5 text-2xl font-medium">Popular Filters</p>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id1" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id1" name="Separate Rooms" />
                   <label htmlFor="id1">Separate Rooms</label>
                 </div>
                 <div>
@@ -123,7 +129,7 @@ export default function SideBar() {
               </div>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id2" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id2" name="Separate Rooms" />
                   <label htmlFor="id2">Self Catering</label>
                 </div>
                 <div>
@@ -132,7 +138,7 @@ export default function SideBar() {
               </div>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id3" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id3" name="Separate Rooms" />
                   <label htmlFor="id3">No Prepayment</label>
                 </div>
                 <div>
@@ -145,7 +151,7 @@ export default function SideBar() {
               <p className="px-5 py-5 text-2xl font-medium">Fun things to do</p>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id4" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id4" name="Separate Rooms" />
                   <label htmlFor="id4">City Tour</label>
                 </div>
                 <div>
@@ -154,7 +160,7 @@ export default function SideBar() {
               </div>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id5" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id5" name="Separate Rooms" />
                   <label htmlFor="id5">Heritage</label>
                 </div>
                 <div>
@@ -163,7 +169,7 @@ export default function SideBar() {
               </div>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id6" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id6" name="Separate Rooms" />
                   <label htmlFor="id6">Localities</label>
                 </div>
                 <div>
@@ -178,7 +184,7 @@ export default function SideBar() {
               </p>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id7" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id7" name="Separate Rooms" />
                   <label htmlFor="id7">Free Cancellation</label>
                 </div>
                 <div>
@@ -187,7 +193,7 @@ export default function SideBar() {
               </div>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id8" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id8" name="Separate Rooms" />
                   <label htmlFor="id8">Book without credit card</label>
                 </div>
                 <div>
@@ -196,7 +202,7 @@ export default function SideBar() {
               </div>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input type="checkbox" id="id9" name="Separate Rooms"></input>
+                  <input type="checkbox" id="id9" name="Separate Rooms" />
                   <label htmlFor="id9">No Prepayment</label>
                 </div>
                 <div>
@@ -209,11 +215,7 @@ export default function SideBar() {
               <p className="px-5 py-5 text-2xl font-medium">Facilities</p>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input
-                    type="checkbox"
-                    id="id10"
-                    name="Separate Rooms"
-                  ></input>
+                  <input type="checkbox" id="id10" name="Separate Rooms" />
                   <label htmlFor="id10">Non-Smoking Rooms</label>
                 </div>
                 <div>
@@ -222,11 +224,7 @@ export default function SideBar() {
               </div>
               <div className="px-5 py-2 flex justify-between text-lg font-medium">
                 <div className="flex gap-2">
-                  <input
-                    type="checkbox"
-                    id="Free WiFi"
-                    name="Separate Rooms"
-                  ></input>
+                  <input type="checkbox" id="Free WiFi" name="Separate Rooms" />
                   <label htmlFor="Free WiFi">Free WiFi</label>
                 </div>
                 <div>
@@ -239,7 +237,7 @@ export default function SideBar() {
                     type="checkbox"
                     id="Family Rooms"
                     name="Separate Rooms"
-                  ></input>
+                  />
                   <label htmlFor="Family Rooms">Family Rooms</label>
                 </div>
                 <div>

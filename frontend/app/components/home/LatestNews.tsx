@@ -44,13 +44,13 @@ export default function LetestNews() {
   ];
 
   return (
-    <div className="bg-gray-200 w-full pb-16">
+    <div className="bg-gray-200 w-full py-8 sm:pt-0 pb-16">
       <div className="container h-full">
         <div className="flex justify-between pb-4">
           <p className="text-3xl font-bold max-sm:text-2xl">Our Latest News</p>
           <button
             className={[
-              "text-sm font-medium text-white shadow-2xl px-6 py-3 rounded-xl hover:bg-white hover:text-black duration-700",
+              "px-6 py-3",
               Colors.primary,
             ].join(" ")}
           >
@@ -59,7 +59,7 @@ export default function LetestNews() {
         </div>
         <div className="flex flex-wrap gap-4">
           {blogsData.map((item) => (
-            <div key={item.id} className="w-[calc(50%-16px)] group">
+            <div key={item.id} className="w-full sm:w-[calc(50%-16px)] group">
               <div className="relative overflow-hidden border border-white group-hover:border-blue-300 rounded-2xl bg-white cursor-pointer">
                 <div className="gap-4 p-4 flex max-lg:flex-wrap">
                   <div className="aspect-square overflow-hidden rounded-xl max-w-[500px] max-h-[500px]">

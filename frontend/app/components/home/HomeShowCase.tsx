@@ -19,7 +19,9 @@ export default function HomeShowCase() {
                     <div className="inline bg-gray-200 px-2 py-1">TRAVEL</div>
                     <div className="inline bg-gray-200 px-2 py-1">All</div>
                     <div className="inline bg-gray-200 px-2 py-1">Over</div>
-                    <div className="inline bg-gray-200 px-2 py-1 text-blue-600">
+                    <div
+                      className={`inline bg-gray-200 px-2 py-1  ${Colors.textPrimary}`}
+                    >
                       India
                     </div>
                   </div>

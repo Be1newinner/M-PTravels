@@ -1,6 +1,7 @@
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import TestimonialsData from "app/constants/testimonials.json";
 import StringData from "app/constants/string.json";
+import { Colors } from "~/constants/colors";
 
 export default function Testimonials() {
   return (
@@ -8,7 +9,7 @@ export default function Testimonials() {
       <div className="container h-full pb-10 max-sm:pb-2">
         <div className="h-full w-full shadow-md rounded-3xl gap-6 items-center flex p-20 bg-gray-100 max-xl:flex-wrap max-xl:py-8 max-xl:p-4">
           <div className="w-2/4 p-10 max-xl:w-full max-md:p-0 max-xl:p-4">
-            <p className="text-blue-600 text-lg">Testimonials</p>
+            <p className={`text-lg ${Colors.textPrimary}`} >Testimonials</p>
             <h1 className="text-5xl max-sm:text-4xl font-bold py-2">
               {StringData.testimonials}
             </h1>

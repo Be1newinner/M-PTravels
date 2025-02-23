@@ -5,7 +5,7 @@ import { TbMailFilled } from "react-icons/tb";
 import { FaPhoneAlt } from "react-icons/fa";
 import MenuList from "app/constants/MenusList.json";
 import Informations from "app/constants/informations.json";
-
+import { Colors } from "app/constants/colors";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,7 +24,7 @@ export default function Navbar() {
 
         <div className="flex justify-between max-sm:h-12 items-center max-xl:w-ful">
           <button onClick={toggleDropDown} className="flex justify-end">
-            <IoReorderThreeOutline className="text-white px-1 text-5xl max-md:text-4xl xl:hidden" />
+            <IoReorderThreeOutline className="text-white px-1 py-2 text-5xl  xl:hidden" />
           </button>
           {isOpen && (
             <ul className="absolute top-20 right-0 bg-black z-50  text-white font-medium max-sm:w-full p-6 xl:hidden">
@@ -64,7 +64,7 @@ export default function Navbar() {
                   to={item.path}
                   className={`underline-offset-4  ${
                     location.pathname === item.path
-                      ? "text-blue-600 underline text-xl"
+                      ? `underline text-xl ${Colors.textPrimary}`
                       : "text-black hover:underline"
                   } py-4`}
                 >

@@ -10,15 +10,12 @@ import Testimonials from "~/components/home/Testimonials";
 import LatestNews from "~/components/home/LatestNews";
 import Footer from "~/components/home/Footer";
 
-// import Available from "~/Component/home_component/available";
-
 export default function HomePage() {
   return (
     <div className="overflow-hidden">
       <Navbar />
       <HomeHeroSection />
       <BookVacation />
-      {/* <Available /> */}
       <PackageSlider />
       <HomeShowCase />
       <TravelDestinations />

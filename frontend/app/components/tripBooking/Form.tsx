@@ -149,7 +149,7 @@ export default function Form() {
                   <p>
                     By signing in or creating an account, you agree with our
                   </p>
-                  <Link to="#" className="text-blue-500">
+                  <Link to="#" className={Colors.textPrimary}>
                     Terms & conditions
                   </Link>
                 </div>

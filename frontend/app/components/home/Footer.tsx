@@ -29,7 +29,7 @@ export default function Footer() {
             className="flex-1 outline-none bg-transparent p-3 max-sm:p-2 rounded-md text-gray-700 placeholder-gray-400"
           />
           <span className="text-gray-400">|</span>
-          <button>Subscribe</button>
+          <button className="px-6 py-1">Subscribe</button>
         </div>
       </div>
       <div>
@@ -96,7 +96,7 @@ export default function Footer() {
         </div>
         <div className="flex gap-3 text-2xl items-center">
           <MdOutlinePhone className="" />
-          <p className="text-blue-600">+91 {Informations.phone}</p>
+          <p className={Colors.textPrimary}>+91 {Informations.phone}</p>
         </div>
         <div className="flex gap-3 items-center py-2">
           <FiMail className="text-3xl" />

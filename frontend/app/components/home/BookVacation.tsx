@@ -1,42 +1,54 @@
 import { GoArrowSwitch } from "react-icons/go";
 import Available from "./Available";
+import { Colors } from "~/constants/colors";
 
 export default function BookVacation() {
+  const inputClass =
+    "outline-none bg-slate-300 placeholder:text-black-500 text-md px-4 rounded-lg h-12 w-full";
+
+  const labelClass = "text-gray-500 font-semibold";
+
   return (
-    <div className="h-full w-full bg-[#dedee0] shadow-2xl">
-      <div className="container flex justify-center h-full z-50 -translate-y-1/2 max-sm:-translate-y-1/3">
-        <div className="w-full h-full px-14 max-xl:px-10 py-10 shadow-xl rounded-3xl bg-gray-100 max-sm:px-2 max-md:p-8">
-          <div className="w-full flex h-42 px-5 py-8 rounded items-center bg-slate-200 max-md:h-full max-xl:flex-wrap max-xl:gap-6">
-            <div className="flex border-r h-full items-center border-black gap-6 w-2/4 max-xl:w-full max-sm:flex-wrap max-md:gap-3 max-xl:border-none">
+    <div className="h-full w-full bg-[#dedee0] shadow-2xl mb-8">
+      <div className="container flex justify-center h-full z-50 -translate-y-28 max-sm:-translate-y-20">
+        <div className="w-full h-full p-6 shadow-xl rounded-3xl bg-gray-100">
+          <div className="w-full rounded-2xl flex p-6 items-center bg-slate-200 max-xl:flex-wrap">
+            <div className="flex w-full items-center justify-between border-black gap-y-4 max-xl:w-full max-sm:flex-wrap max-xl:border-none">
               <div className="max-md:w-full max-xl:w-5/12">
-                <label className="text-gray-500 max-sm:text-xl max-sm:font-bold">
+                <label htmlFor="travel-from" className={labelClass}>
                   From
                 </label>
-                <div className="max-md:w-11/12 max-sm:w-1/2 ">
+                <div>
                   <input
                     type="text"
-                    placeholder="From"
-                    className="outline-none bg-slate-200 placeholder:text-gray-500 text-xl max-md:w-5/12 max-sm:w-full"
-                  ></input>
+                    id="travel-from"
+                    placeholder="your origin location"
+                    className={inputClass}
+                  />
                 </div>
               </div>
-              <GoArrowSwitch className="text-3xl max-md:text-5xl max-sm:text-3xl text-blue-600 " />
+              <GoArrowSwitch
+                className={[
+                  "text-3xl max-md:text-5xl max-sm:text-3xl hidden md:inline",
+                  Colors.textPrimary,
+                ].join(" ")}
+              />
               <div className="max-sm:w-full">
-                <label className="text-gray-500 max-sm:text-xl max-sm:font-bold">
+                <label htmlFor="travel-to" className={labelClass}>
                   To
                 </label>
-                <div className="max-md:w-5/12 max-sm:w-1/2">
+                <div>
                   <input
                     type="text"
-                    placeholder="To"
-                    className="outline-none bg-slate-200 placeholder:text-gray-500 text-xl max-sm:w-full "
-                  ></input>
+                    id="travel-to"
+                    placeholder="your origin location"
+                    className={inputClass}
+                  />
                 </div>
               </div>
-            </div>
-            <div className="flex px-5 w-2/4 gap-6 items-center max-md:flex-wrap max-xl:px-0 max-xl:w-full max-md:pt-4">
+              <div className="h-20 bg-gray-400 w-0.25 hidden md:inline" />
               <div>
-                <label htmlFor="departing" className="text-gray-500">
+                <label htmlFor="departing" className={labelClass}>
                   Departing
                 </label>
                 <div>
@@ -44,12 +56,13 @@ export default function BookVacation() {
                     type="date"
                     id="departing"
                     name="departing"
-                    className="bg-slate-200 text-black text-xl"
-                  ></input>
+                    className={inputClass}
+                    defaultValue={new Date().toISOString().split("T")[0]}
+                  />
                 </div>
               </div>
               <div>
-                <label htmlFor="returning" className="text-gray-500">
+                <label htmlFor="returning" className={labelClass}>
                   Returning
                 </label>
                 <div>
@@ -57,28 +70,37 @@ export default function BookVacation() {
                     type="date"
                     id="returning"
                     name="returning"
-                    className="bg-slate-200 text-black text-xl"
-                  ></input>
+                    className={inputClass}
+                    defaultValue={
+                      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  />
                 </div>
               </div>
-              <div>
-                <label htmlFor="passenger" className="text-gray-500">
-                  Passengers and Class
+              <div className="flex flex-col items-center">
+                <label htmlFor="passengers_count" className={labelClass}>
+                  Total Passengers
                 </label>
                 <div>
-                  <h1 className="text-xl">2 Passengers / Business</h1>
+                  <input
+                    type="number"
+                    min={0}
+                    className={inputClass + " text-center"}
+                    max={100}
+                    defaultValue={0}
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex justify-end gap-3 mt-6 max-xl:flex-wrap">
-            <button className="h-12 w-48 justify-center rounded-lg text-white shadow-2xl flex items-center px-2 py-2 bg-blue-500 hover:bg-white hover:text-black duration-500">
-              Continue
-            </button>
+          <div className="flex justify-end mt-4 max-xl:flex-wrap">
+            <button className="h-12 sm:max-w-48 w-full">Submit enquiry</button>
           </div>
         </div>
       </div>
-      <div className="container -translate-y-24">
+      <div className="container -translate-y-4 sm:-translate-y-8">
         <Available />
       </div>
     </div>
