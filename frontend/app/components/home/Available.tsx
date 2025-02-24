@@ -28,7 +28,7 @@ export default function Available() {
       {AvailableData.map((item) => (
         <div
           key={item.id}
-          className="flex sm:flex-1 basis-full px-14 gap-2 py-5 shadow-lg rounded-lg bg-gray-100 max-xl:px-2 max-2xl:px-5 max-xl:w-full items-center max-xl:justify-center"
+          className="flex sm:flex-1 basis-full px-14 gap-2 py-5 shadow-lg rounded-lg bg-white max-xl:px-2 max-2xl:px-5 max-xl:w-full items-center max-xl:justify-center"
         >
           <item.icon className={["text-5xl", Colors.textPrimary].join(" ")} />
           <div>

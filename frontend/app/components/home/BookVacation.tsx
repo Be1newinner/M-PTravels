@@ -9,7 +9,7 @@ export default function BookVacation() {
   const labelClass = "text-gray-500 font-semibold";
 
   return (
-    <div className="h-full w-full bg-[#dedee0] shadow-2xl mb-8">
+    <div className="h-full w-full bg-gray-200 shadow-2xl mb-8">
       <div className="container flex justify-center h-full z-50 -translate-y-28 max-sm:-translate-y-20">
         <div className="w-full h-full p-6 shadow-xl rounded-3xl bg-gray-100">
           <div className="w-full rounded-2xl flex p-6 items-center bg-slate-200 max-xl:flex-wrap">

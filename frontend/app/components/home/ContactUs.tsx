@@ -8,20 +8,25 @@ export default function ContactUs() {
       <div className="container h-full pb-10 py-10">
         <div className=" flex gap-6 shadow-lg rounded-3xl px-14 py-20 bg-gray-100 h-full max-lg:flex-wrap max-lg:p-4 max-2xl:p-10 ">
           <div className="w-3/4 max-md:w-full max-lg:w-full">
-            <p className={`text-lg ${Colors.textPrimary}`}>Achievement</p>
+            <p className={`text-2xl font-bold ${Colors.textPrimary}`}>
+              Achievements
+            </p>
             <h1 className="text-3xl font-bold py-2 max-lg:text-2xl">
               Your Destination Awaits, Book Now
             </h1>
             <p className="text-gray-500">
-              Lorem ipsum dolor sit amet consectetur. Sed leo sit semper sed
-              facilisis ultrices urna eu. In tellus interdum vel ac massa
-              interdum viverra elementum auctor.
+              With thousands of happy travelers, we take pride in providing
+              safe, reliable, and affordable bus services. Our seamless booking
+              experience, punctual schedules, and top-notch customer service set
+              us apart. Travel hassle-free with real-time tracking, comfortable
+              seating, and exclusive discounts. Your destination awaits—book now
+              and ride with confidence! 🚍✨
             </p>
             <div className="flex gap-8 py-4 max-sm:flex-wrap ">
               <div className="flex justify-between p-6 w-1/2 rounded-lg shadow-lg items-center bg-gray-200 max-sm:w-full">
                 <div>
                   <p className={`text-3xl font-bold  ${Colors.textPrimary}`}>
-                    12870 +
+                    1270 +
                   </p>
                   <p className="text-lg ">Happy customers</p>
                 </div>

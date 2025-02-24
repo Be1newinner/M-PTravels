@@ -1,4 +1,3 @@
-
 import Navbar from "~/components/home/Navbar";
 import HomeHeroSection from "~/components/home/HomeHeroSection";
 import BookVacation from "~/components/home/BookVacation";
