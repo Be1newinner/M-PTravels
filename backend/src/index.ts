@@ -23,7 +23,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(cors());
-
 // Setup Swagger (Move it before routes)
 setupSwagger(app);
 

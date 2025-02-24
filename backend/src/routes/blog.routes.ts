@@ -47,11 +47,14 @@ const router: Router = Router();
  *       401:
  *         description: Unauthorized
  */
-router.route("/").post(verifyJWT, upload.single("image"), createBlog);
+// router.route("/").post(verifyJWT, upload.single("image"), createBlog);
+// router.route("/").post(, createBlog);
+
+router.post("/", upload.single("image"), createBlog);
 
 /**
  * @swagger
- * /blog:
+ * /F:
  *   get:
  *     summary: Get all blogs
  *     tags: [Blogs]
@@ -101,7 +104,7 @@ router.get("/search", searchBlogs);
  *       404:
  *         description: Blog not found
  */
-router.route("/:id").get(getBlog);
+router.route("/:slug").get(getBlog);
 
 /**
  * @swagger

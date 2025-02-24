@@ -4,14 +4,14 @@ import { bucket } from "../config/firebaseInit.ts";
 import fs from "fs/promises";
 import { SendResponse } from "../utils/JsonResponse.ts";
 import AppError from "../utils/AppError.ts";
+import { parseQueryInt } from "../utils/parseQueryInt.ts";
 
 export const createBlog = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { title, description } = req.body;
-
+  const { title, blog, slug } = req.body;
   let imageUrl = "";
 
   if (req.file) {
@@ -22,43 +22,73 @@ export const createBlog = async (
     imageUrl = `https://firebasestorage.googleapis.com/v0/b/wingfi-9b5b7.appspot.com/o/${encodeURIComponent(`cab-booking/blogs/${req.file.originalname}`)}?alt=media`;
 
     await fs.rm(req.file.path);
+    // console.log("IMAGE ", req.file);
   }
 
   try {
-    const blog = await Blog.create({
+    const blogData = await Blog.create({
       title,
-      description,
+      blog,
       image: imageUrl,
+      slug,
     });
-
     SendResponse(res, {
       status_code: 201,
       message: "Blog created successfully",
-      data: blog,
+      data: blogData,
     });
   } catch (error: unknown) {
-    console.error("Error while creating blog", error);
+    console.log("Error while creating blog", error);
     const message =
       error instanceof Error ? error.message : "Internal Server Error!";
-
+    console.log({ message });
     return next(new AppError(message, 500));
   }
 };
 
 export const getBlogs = async (
-  _: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const blogs = await Blog.find({}).sort({ createdAt: -1 });
+    const pageNum = parseQueryInt(req.query.page, 1);
+    const limitNum = parseQueryInt(req.query.limit, 6, 20);
 
-    if (blogs.length === 0) return next(new AppError("Blogs not found!", 404));
+    const blogsResponse = await Blog.aggregate([
+      {
+        $facet: {
+          metadata: [{ $count: "total" }],
+          data: [
+            { $sort: { updatedAt: -1 } },
+            { $skip: (pageNum - 1) * limitNum },
+            { $limit: limitNum },
+            {
+              $project: {
+                title: 1,
+                image: 1,
+                updatedAt: 1,
+                slug: 1,
+              },
+            },
+          ],
+        },
+      },
+    ]);
+
+    const blogs = blogsResponse[0]?.data || [];
+    const totalBlogs = blogsResponse[0]?.metadata[0]?.total || 0;
 
     SendResponse(res, {
       status_code: 200,
       message: "Blogs fetched successfully",
       data: blogs,
+      meta: {
+        length: blogs.length,
+        total: totalBlogs,
+        page: pageNum,
+        limit: limitNum,
+      },
     });
   } catch (error: unknown) {
     console.error("Error while creating blog", error);
@@ -74,11 +104,10 @@ export const getBlog = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { id } = req.params;
+  const { slug } = req.params;
 
   try {
-    const blog = await Blog.findById(id);
-    if (!blog) return next(new AppError("Blogs not found!", 404));
+    const blog = await Blog.findOne({ slug });
 
     SendResponse(res, {
       status_code: 200,

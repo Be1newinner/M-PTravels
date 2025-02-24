@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 
 export interface IBlog {
-  _id?: Schema.Types.ObjectId;
   title: string;
-  description: string;
+  blog: string;
   image: string;
+  slug: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -16,9 +16,9 @@ export const blogSchema = new Schema<IBlog>(
       required: [true, "Title is required"],
       trim: true,
     },
-    description: {
+    blog: {
       type: String,
-      required: [true, "Description is required"],
+      required: [true, "Blog Data is required"],
       trim: true,
     },
     image: {
@@ -26,8 +26,13 @@ export const blogSchema = new Schema<IBlog>(
       required: [true, "Image is required"],
       trim: true,
     },
+    slug: {
+      type: String,
+      required: [true, "Slug is required"],
+      trim: true,
+    },
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: true }
 );
 
 const Blog = model<IBlog>("Blog", blogSchema);

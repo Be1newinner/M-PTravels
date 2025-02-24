@@ -8,9 +8,7 @@ export function errorHandler(
   res: Response,
   __: NextFunction
 ) {
-  // console.error("Error:", err);
-
-  console.log(typeof res);
+  console.error("Error:", err);
 
   if (!res || typeof res.status !== "function") return;
 
