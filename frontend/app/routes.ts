@@ -1,11 +1,12 @@
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
+import { PAGES } from "./constants/pages";
 
 export default [
   index("routes/Home.tsx"),
-  route("about", "routes/About.tsx"),
-  route("contact", "routes/ContactUs.tsx"),
-  route("news", "routes/News.tsx"),
-  route("privacy", "routes/Privacy.tsx"),
-  route("tour_package", "routes/TourPackage.tsx"),
-  route("trip_booking", "routes/TripBooking.tsx"),
+  route(PAGES.ABOUT, "routes/About.tsx"),
+  route(PAGES.CONTACT, "routes/ContactUs.tsx"),
+  route(PAGES.NEWS, "routes/News.tsx"),
+  route(PAGES.PRIVACY, "routes/Privacy.tsx"),
+  route(PAGES.TOUR_PACKAGES, "routes/TourPackage.tsx"),
+  route(`${PAGES.TOUR_PACKAGES}:tour_id`, "routes/TripBooking.tsx"),
 ] satisfies RouteConfig;

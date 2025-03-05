@@ -1,6 +1,6 @@
 import Navbar from "~/components/home/Navbar";
 import Trip from "~/components/tripBooking/TripBooking";
-import Form from "~/components/tripBooking/Form";
+import TripFillingForm from "~/components/tripBooking/TripFillingForm";
 import Footer from "~/components/home/Footer";
 
 export default function TripBooking() {
@@ -8,7 +8,7 @@ export default function TripBooking() {
     <div>
       <Navbar />
       <Trip />
-      <Form />
+      <TripFillingForm />
       <Footer />
     </div>
   );

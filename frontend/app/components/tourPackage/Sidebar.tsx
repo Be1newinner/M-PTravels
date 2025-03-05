@@ -9,6 +9,7 @@ import { ImSpoonKnife } from "react-icons/im";
 import { LuTicket } from "react-icons/lu";
 import { LuHotel } from "react-icons/lu";
 import { Colors } from "~/constants/colors";
+import { PAGES } from "~/constants/pages";
 
 export default function SideBar() {
   // const Visiting = [
@@ -313,7 +314,7 @@ export default function SideBar() {
                     <span className="text-4xl inline font-medium">$500.00</span>
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
-                    <Link to="/trip_booking">
+                    <Link to={PAGES.TOUR_PACKAGES}>
                       <button
                         className={[
                           "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
@@ -396,7 +397,7 @@ export default function SideBar() {
                     <span className="text-4xl inline font-medium">$500.00</span>
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
-                    <Link to="/trip_booking">
+                    <Link to={PAGES.TOUR_PACKAGES}>
                       <button
                         className={[
                           "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
@@ -479,7 +480,7 @@ export default function SideBar() {
                     <span className="text-4xl inline font-medium">$500.00</span>
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
-                    <Link to="/trip_booking">
+                    <Link to={PAGES.TOUR_PACKAGES}>
                       <button
                         className={[
                           "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
@@ -562,7 +563,7 @@ export default function SideBar() {
                     <span className="text-4xl inline font-medium">$500.00</span>
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
-                    <Link to="/trip_booking">
+                    <Link to={PAGES.TOUR_PACKAGES}>
                       <button
                         className={[
                           "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
@@ -645,7 +646,7 @@ export default function SideBar() {
                     <span className="text-4xl inline font-medium">$500.00</span>
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
-                    <Link to="/trip_booking">
+                    <Link to={PAGES.TOUR_PACKAGES}>
                       <button
                         className={[
                           "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",
@@ -728,7 +729,7 @@ export default function SideBar() {
                     <span className="text-4xl inline font-medium">$500.00</span>
                     <p className="text-sm inline font-medium">/person</p>
                     <p className="text-sm font-medium">Total $550.40</p>
-                    <Link to="/trip_booking">
+                    <Link to={PAGES.TOUR_PACKAGES}>
                       <button
                         className={[
                           "text-white text-sm font-medium shadow-lg rounded-lg hover:text-black hover:bg-white duration-700 px-10 w-full py-3 mt-6",

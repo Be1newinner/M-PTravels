@@ -1,7 +1,7 @@
 import axios from "axios";
 import { type AxiosResponse } from "axios";
 
-const domain = "/";
+const domain = "http://localhost:5001/";
 
 type ApiResponse<T> = {
   status: "success" | "failed";
@@ -56,3 +56,12 @@ export async function patch<T>(
 export async function del<T>(url: string): Promise<ApiResponse<T>> {
   return request<T>("delete", url);
 }
+
+export const BACKEND_SERVER_DOMAIN = "http://localhost:5001/";
+
+export type Custom_API_Response_Type<T> = {
+  application_code: number;
+  data: T;
+  messages: string;
+  status_code: number;
+};

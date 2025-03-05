@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Colors } from "~/constants/colors";
+import { PAGES } from "~/constants/pages";
 
 export default function HomeShowCase() {
   return (
@@ -26,7 +27,7 @@ export default function HomeShowCase() {
                     </div>
                   </div>
                 </div>
-                <Link to="/TripBooking" className="max-md:text-center">
+                <Link to={PAGES.TOUR_PACKAGES} className="max-md:text-center">
                   <button
                     className={[
                       "px-6 py-3 text-sm text-white rounded-lg hover:bg-white hover:text-black duration-700",

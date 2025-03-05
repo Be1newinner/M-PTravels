@@ -1,0 +1,91 @@
+[
+  {
+    "imageUrls": [
+      "https://example.com/cab1.jpg",
+      "https://example.com/cab1_2.jpg"
+    ],
+    "defaultImageIndex": 0,
+    "title": "Toyota Innova",
+    "description": "Spacious and comfortable, best for family trips.",
+    "model": "Innova Crysta",
+    "capacity": 7
+  },
+  {
+    "imageUrls": ["https://example.com/cab2.jpg"],
+    "defaultImageIndex": 0,
+    "title": "Maruti Swift Dzire",
+    "description": "Economical and comfortable sedan for city travel.",
+    "model": "Swift Dzire VXI",
+    "capacity": 4
+  },
+  {
+    "imageUrls": [
+      "https://example.com/cab3.jpg",
+      "https://example.com/cab3_2.jpg"
+    ],
+    "defaultImageIndex": 1,
+    "title": "Hyundai Verna",
+    "description": "Premium sedan with great mileage and comfort.",
+    "model": "Verna SX",
+    "capacity": 5
+  },
+  {
+    "imageUrls": ["https://example.com/cab4.jpg"],
+    "defaultImageIndex": 0,
+    "title": "Mahindra XUV500",
+    "description": "Luxury SUV with spacious seating and powerful engine.",
+    "model": "XUV500 W11",
+    "capacity": 7
+  },
+  {
+    "imageUrls": [
+      "https://example.com/cab5.jpg",
+      "https://example.com/cab5_2.jpg"
+    ],
+    "defaultImageIndex": 0,
+    "title": "Honda City",
+    "description": "Executive sedan with advanced safety features.",
+    "model": "City ZX",
+    "capacity": 5
+  },
+  {
+    "imageUrls": ["https://example.com/cab6.jpg"],
+    "defaultImageIndex": 0,
+    "title": "Tata Harrier",
+    "description": "SUV with a strong build and premium features.",
+    "model": "Harrier XZ",
+    "capacity": 5
+  },
+  {
+    "imageUrls": ["https://example.com/cab7.jpg"],
+    "defaultImageIndex": 0,
+    "title": "Ford Endeavour",
+    "description": "Rugged SUV for off-road and long-distance travel.",
+    "model": "Endeavour Titanium",
+    "capacity": 7
+  },
+  {
+    "imageUrls": ["https://example.com/cab8.jpg"],
+    "defaultImageIndex": 0,
+    "title": "Toyota Fortuner",
+    "description": "Luxury SUV with unmatched road presence.",
+    "model": "Fortuner 4x4",
+    "capacity": 7
+  },
+  {
+    "imageUrls": ["https://example.com/cab9.jpg"],
+    "defaultImageIndex": 0,
+    "title": "Renault Triber",
+    "description": "Budget-friendly MPV for group travel.",
+    "model": "Triber RXZ",
+    "capacity": 7
+  },
+  {
+    "imageUrls": ["https://example.com/cab10.jpg"],
+    "defaultImageIndex": 0,
+    "title": "Hyundai Creta",
+    "description": "Feature-packed SUV for comfortable rides.",
+    "model": "Creta SX",
+    "capacity": 5
+  }
+]

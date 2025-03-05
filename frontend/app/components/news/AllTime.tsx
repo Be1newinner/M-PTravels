@@ -2,6 +2,7 @@ import { CiUser } from "react-icons/ci";
 import { LuCalendarDays } from "react-icons/lu";
 import { Link } from "react-router";
 import { Colors } from "~/constants/colors";
+import { PAGES } from "~/constants/pages";
 
 export default function AllTime() {
   const listData = [
@@ -137,7 +138,7 @@ export default function AllTime() {
                 </div>
               </div>
               <Link
-                to="/news_Listing"
+                to={PAGES.NEWS}
                 className="text-xl hover:text-blue-500 duration-500 font-medium pr-20 py-3"
               >
                 {item.roamingText}

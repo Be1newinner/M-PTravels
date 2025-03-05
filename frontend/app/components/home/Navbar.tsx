@@ -6,6 +6,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import MenuList from "app/constants/MenusList.json";
 import Informations from "app/constants/informations.json";
 import { Colors } from "app/constants/colors";
+import { PAGES } from "~/constants/pages";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +19,7 @@ export default function Navbar() {
   return (
     <div className="bg-[#ECECF2]">
       <div className="container h-full flex items-center justify-between py-2 max-md:py-2 max-xl:py-4 relative">
-        <Link to="/" className="w-24 aspect-square">
+        <Link to={PAGES.HOME} className="w-24 aspect-square">
           <img src="/logo.webp" alt="logo" />
         </Link>
 
@@ -62,11 +63,10 @@ export default function Navbar() {
               <div key={item.id} className="relative">
                 <Link
                   to={item.path}
-                  className={`underline-offset-4  ${
-                    location.pathname === item.path
+                  className={`underline-offset-4  ${location.pathname === item.path
                       ? `underline text-xl ${Colors.textPrimary}`
                       : "text-black hover:underline"
-                  } py-4`}
+                    } py-4`}
                 >
                   {item.pageName}
                 </Link>

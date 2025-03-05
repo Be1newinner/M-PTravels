@@ -64,15 +64,13 @@ router.post("/", verifyJWT, upload.single("image"), createPackage);
  *   get:
  *     summary: Get all packages
  *     tags: [Packages]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Packages fetched successfully
  *       404:
  *         description: No packages found
  */
-router.get("/", verifyJWT, getPackages);
+router.get("/", getPackages);
 
 /**
  * @swagger
@@ -80,8 +78,6 @@ router.get("/", verifyJWT, getPackages);
  *   get:
  *     summary: Get a package by ID
  *     tags: [Packages]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -95,7 +91,7 @@ router.get("/", verifyJWT, getPackages);
  *       404:
  *         description: Package not found
  */
-router.get("/:id", verifyJWT, getPackage);
+router.get("/:id", getPackage);
 
 /**
  * @swagger

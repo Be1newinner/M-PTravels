@@ -56,7 +56,12 @@ export const getPackages = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const existingPackages = await Package.find({});
+    const { page, limit } = req.query;
+    const actulaLimit = Math.min(Number(limit), 10) || 0;
+
+    const existingPackages = await Package.find({})
+      .skip(actulaLimit * (Number(page) - 1))
+      .limit(actulaLimit);
 
     if (existingPackages.length === 0)
       return next(new AppError("No packages found", 404));

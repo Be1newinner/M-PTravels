@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import Information from "app/constants/informations.json";
 import { Colors } from "~/constants/colors";
+import { PAGES } from "~/constants/pages";
 
 export default function HomeHeroSection() {
   return (
@@ -18,7 +19,7 @@ export default function HomeHeroSection() {
             </h1>
           </div>
           <p className="my-4 text-gray-500">{Information.tag_line}</p>
-          <Link to="/trip_booking">
+          <Link to={PAGES.TOUR_PACKAGES}>
             <button className="px-8 py-2">Book Now</button>
           </Link>
         </div>

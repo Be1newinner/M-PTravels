@@ -6,6 +6,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { Link } from "react-router";
 import Informations from "app/constants/informations.json";
 import { Colors } from "~/constants/colors";
+import { PAGES } from "~/constants/pages";
 
 export default function Footer() {
   const socialMediaLinks = [
@@ -14,6 +15,7 @@ export default function Footer() {
     { name: "LinkedIn", icon: FaLinkedinIn, url: "https://linkedin.com" },
     { name: "Twitter", icon: FaXTwitter, url: "https://twitter.com" },
   ];
+
 
   return (
     <footer className="flex justify-between max-md:justify-between max-lg:justify-normal max-md:gap-0 max-lg:gap-10 bg-white px-20 py-10 max-xl:flex-wrap max-sm:px-4 max-xl:px-8 ">
@@ -36,16 +38,16 @@ export default function Footer() {
         <p className="text-2xl font-medium max-xl:mt-4">Booking</p>
         <ul className="text-sm">
           <li className="pt-4 py-4">
-            <Link to="/trip_booking">Book Trip</Link>
+            <Link to={PAGES.TOUR_PACKAGES}>Book Trip</Link >
           </li>
           <li>
-            <Link to="/tour_package">Travel Services</Link>
+            <Link to={PAGES.TOUR_PACKAGES}>Travel Services</Link>
           </li>
           <li className="py-4">
             <Link to="#">Transportation</Link>
           </li>
           <li>
-            <Link to="/tour_package">Planning Your Trip</Link>
+            <Link to={PAGES.TOUR_PACKAGES}>Planning Your Trip</Link>
           </li>
         </ul>
       </div>
@@ -53,16 +55,16 @@ export default function Footer() {
         <p className="text-2xl font-medium max-xl:mt-4">Useful Links</p>
         <ul className="text-sm">
           <li className="pt-4 py-4">
-            <Link to="/">Home</Link>
+            <Link to={PAGES.HOME}>Home</Link>
           </li>
           <li>
-            <Link to="/news">Blogs</Link>
+            <Link to={PAGES.NEWS}>Blogs</Link>
           </li>
           <li className="py-4">
-            <Link to="/about">About</Link>
+            <Link to={PAGES.ABOUT}>About</Link>
           </li>
           <li>
-            <Link to="/contact">Contact Us</Link>
+            <Link to={PAGES.CONTACT}>Contact Us</Link>
           </li>
         </ul>
       </div>
@@ -70,10 +72,10 @@ export default function Footer() {
         <p className="text-2xl font-medium max-xl:mt-4">Booking</p>
         <ul className="text-sm">
           <li className="pt-4 py-4">
-            <Link to="/trip_booking">Check-in</Link>
+            <Link to={PAGES.TOUR_PACKAGES}>Check-in</Link>
           </li>
           <li>
-            <Link to="/tour_package">Manage Your Booking</Link>
+            <Link to={PAGES.TOUR_PACKAGES}>Manage Your Booking</Link>
           </li>
           <li className="py-4">
             <Link to="#">Chaurfeur Drive</Link>
@@ -85,7 +87,7 @@ export default function Footer() {
       </div>
       <div className="w-1/4 max-md:w-full max-xl:mt-4 ">
         <Link
-          to="/privacyPage"
+          to={PAGES.PRIVACY}
           className="text-2xl font-medium max-sm:mt-4 hover:text-blue-600"
         >
           Privacy Policy

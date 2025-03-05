@@ -112,7 +112,7 @@ export const getBlog = async (
     SendResponse(res, {
       status_code: 200,
       message: "Blog fetched successfully",
-      data: blog,
+      data: blog || [],
     });
   } catch (error: unknown) {
     console.error("Error while getting blog", error);

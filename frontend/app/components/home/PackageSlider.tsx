@@ -1,12 +1,74 @@
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useRef } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router";
+import type SliderType from "react-slick";
 import { Colors } from "~/constants/colors";
+
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query'
+import { fetchPackages } from "~/services/packages";
+import imageUrlBuilder from "~/utils/imageUrlBuilder";
+import { PAGES } from "~/constants/pages";
+
+const queryClient = new QueryClient()
 
 const Slider = lazy(() => import("react-slick"));
 
-export default function PackageSlider() {
+export default function PackageSlider({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TanStackWrapper />
+    </QueryClientProvider>
+  )
+}
+
+export function TanStackWrapper() {
+  let sliderRef = useRef<SliderType>(null);
+
+  // const [packagesList, setPackagesList] = useState([
+  //   {
+  //     id: "1",
+  //     img: "visit-agra.jpg",
+  //     title: "Delhi to Agra Trip",
+  //     price: "25000",
+  //     slug: "delhi-to-agra-package",
+  //   },
+  //   {
+  //     id: "2",
+  //     img: "visit-agra.jpg",
+  //     title: "Delhi to Agra Trip",
+  //     price: "25000",
+  //     slug: "delhi-to-agra-package",
+  //   },
+  //   {
+  //     id: "3",
+  //     img: "visit-agra.jpg",
+  //     title: "Delhi to Agra Trip",
+  //     price: "25000",
+  //     slug: "delhi-to-agra",
+  //   },
+  //   {
+  //     id: "4",
+  //     img: "visit-agra.jpg",
+  //     title: "Delhi to Agra Trip",
+  //     price: "25000",
+  //     slug: "delhi-to-agra",
+  //   },
+  // ]);
+
+  const { isPending, error, data: packagesList = [] } = useQuery({
+    queryKey: ['packagesData'],
+    queryFn: () => fetchPackages(),
+  })
+
+  // if (isPending) return 'Loading...'
+
+  // if (error) return 'An error has occurred: ' + error.message
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -37,37 +99,6 @@ export default function PackageSlider() {
     ],
   };
 
-  const packagesData = [
-    {
-      id: "1",
-      img: "visit-agra.jpg",
-      title: "Delhi to Agra Trip",
-      price: "25000",
-      slug: "delhi-to-agra-package",
-    },
-    {
-      id: "2",
-      img: "visit-agra.jpg",
-      title: "Delhi to Agra Trip",
-      price: "25000",
-      slug: "delhi-to-agra-package",
-    },
-    {
-      id: "3",
-      img: "visit-agra.jpg",
-      title: "Delhi to Agra Trip",
-      price: "25000",
-      slug: "delhi-to-agra",
-    },
-    {
-      id: "4",
-      img: "visit-agra.jpg",
-      title: "Delhi to Agra Trip",
-      price: "25000",
-      slug: "delhi-to-agra",
-    },
-  ];
-
   return (
     <div className="w-full bg-gray-100 py-12">
       <div className="container flex justify-between text-3xl font-bold pb-8">
@@ -75,15 +106,17 @@ export default function PackageSlider() {
         <div className="flex gap-4">
           <FaChevronLeft
             className={[
-              "rounded-lg h-10 w-10 p-2 text-white",
+              "rounded-lg h-10 w-10 p-2 text-white cursor-pointer",
               Colors.primary,
             ].join(" ")}
+            onClick={() => sliderRef?.current?.slickPrev()}
           />
           <FaChevronRight
             className={[
-              "rounded-lg h-10 w-10 p-2 text-white",
+              "rounded-lg h-10 w-10 p-2 text-white cursor-pointer",
               Colors.primary,
             ].join(" ")}
+            onClick={() => sliderRef?.current?.slickNext()}
           />
         </div>
       </div>
@@ -92,14 +125,19 @@ export default function PackageSlider() {
 
       <div className="container w-11/12 mx-auto max-sm:w-10/12 scale-[102%]">
         <Suspense fallback={<div>Loading Slider...</div>}>
-          <Slider {...settings}>
-            {packagesData?.map((item) => (
-              <div key={item.id} className="px-4 max-md:px-0">
+          <Slider {...settings} arrows={false}
+            ref={slider => {
+              if (slider) {
+                sliderRef.current = slider;
+              }
+            }}>
+            {packagesList?.map((item) => (
+              <div key={item._id} className="px-4 max-md:px-0">
                 <div className="bg-gray-200 rounded-lg ">
                   <div className="flex flex-col p-4 relative overflow-hidden">
                     <div className="overflow-hidden rounded-lg aspect-video">
                       <img
-                        src={item.img}
+                        src={imageUrlBuilder(item.image_url)}
                         alt={item.title}
                         className="w-full hover:scale-105 duration-300 pb-6"
                       />
@@ -108,7 +146,7 @@ export default function PackageSlider() {
                     <div className="flex justify-between items-center">
                       <p className="font-bold">₹ {item.price} /-</p>
                       <Link
-                        to={"/packages/" + item.slug}
+                        to={PAGES.TOUR_PACKAGES + item.slug}
                         className={"button py-2 px-4"}
                       >
                         Booking Now

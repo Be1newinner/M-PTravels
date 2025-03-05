@@ -1,1 +1,1 @@
-export const DB_NAME = "cab-booking";
+export const DB_NAME = "mp-base";
