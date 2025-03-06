@@ -11,14 +11,14 @@ import {
 } from "../reducers/authReducer";
 import { loginAPI } from "../../service/login";
 
-function* loginSaga(action: any):any {
+function* loginSaga(action: any): any {
   try {
     const response: any = yield call(loginAPI, action.payload);
-    const user = response.data;
-    const token = user.data.token;
-
-    yield put(authLoginSuccess({ token, ...user.data })); // Ensure the token is set in your state
+    // const token = user.data.token;
+    console.log("USER => ", response);
+    yield put(authLoginSuccess({ ...response })); // Ensure the token is set in your state
   } catch (error) {
+    console.log("AUTH SAGA ERROR", error);
     yield put(authLoginFailed(error));
   }
 }

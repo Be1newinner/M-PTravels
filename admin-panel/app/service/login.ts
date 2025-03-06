@@ -1,4 +1,4 @@
-import { get, type Custom_API_Response_Type } from "./apiInstance";
+import { get, post, type Custom_API_Response_Type } from "./apiInstance";
 
 export type loginType = {
   description: string;
@@ -10,8 +10,11 @@ export type loginType = {
   slug: string;
 };
 
-export async function loginAPI() {
-  const response = await get<Custom_API_Response_Type<loginType[]>>("package");
+export async function loginAPI(payload: { email: string; password: string }) {
+  const response = await post<Custom_API_Response_Type<loginType[]>>(
+    "user/login",
+    payload
+  );
   const { data, code } = await response;
   if (code != 200) {
     throw new Error(data?.messages || "Unknown Error!");

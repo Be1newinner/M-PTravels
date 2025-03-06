@@ -42,13 +42,13 @@ export const createUser = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { email, password, fullname } = req.body;
+  const { email, password, name } = req.body;
 
   try {
     if (!email || !password)
       return next(new AppError("Email and password are required", 400));
 
-    const user = await User.create({ email, fullname, password });
+    const user = await User.create({ email, name, password });
 
     console.log(await user);
 
@@ -56,7 +56,7 @@ export const createUser = async (
       success: true,
       statusCode: 200,
       message: "User logged in successfully",
-      data: await user,
+      data: user,
     });
   } catch (error: unknown) {
     const message =
@@ -91,9 +91,11 @@ export const loginUser = async (
 
     const { accessToken, refreshToken } = tokenResponse;
 
-    const loggedInUser = await User.findById(user._id).select(
-      "-password -refreshToken -createdAt -updatedAt -__v -resetPasswordToken -resetPasswordTokenExpiry"
-    );
+    const loggedInUser = await User.findById(user._id)
+      .select(
+        "-password -refreshToken -createdAt -updatedAt -__v -resetPasswordToken -resetPasswordTokenExpiry"
+      )
+      .lean();
 
     const cookieOptions = {
       httpOnly: true,
@@ -115,7 +117,7 @@ export const loginUser = async (
         statusCode: 200,
         message: "User logged in successfully",
         data: {
-          user: loggedInUser,
+          ...loggedInUser,
           accessToken,
           refreshToken,
         },
