@@ -37,6 +37,34 @@ const generateAccessAndRefreshToken = async (
   }
 };
 
+export const createUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { email, password, fullname } = req.body;
+
+  try {
+    if (!email || !password)
+      return next(new AppError("Email and password are required", 400));
+
+    const user = await User.create({ email, fullname, password });
+
+    console.log(await user);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "User logged in successfully",
+      data: await user,
+    });
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
+    return next(new AppError(message, 500));
+  }
+};
+
 export const loginUser = async (
   req: Request,
   res: Response,

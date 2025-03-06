@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   changeCurrentPassword,
+  createUser,
   forgotPassword,
   getUser,
   loginUser,
@@ -49,6 +50,9 @@ const router: Router = Router();
  *         description: Invalid password
  */
 router.post("/login", loginUser);
+
+router.post("/create", createUser);
+
 
 /**
  * @swagger
