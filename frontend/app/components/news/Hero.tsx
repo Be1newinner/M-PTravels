@@ -9,7 +9,7 @@ export default function Hero(){
             className="h-72 max-sm:h-20 max-md:h-32 max-lg:h-48 max-sm:mt-6 p-8 max-sm:p-1 max-md:p-3"
           />
           <h1 className="text-center text-5xl max-sm:text-2xl font-bold w-1/3">
-            News Listing
+            Curated Trip Blogs
           </h1>
           <img
             src="/images/location.png"
