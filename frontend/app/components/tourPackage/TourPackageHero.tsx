@@ -1,4 +1,4 @@
-export default function Page1() {
+export default function TourPackageHero() {
   return (
     <div>
       <div className="px-10 max-sm:px-2 xl:h-[300px] w-full max-lg:py-4 bg-slate-50">

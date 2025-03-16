@@ -6,17 +6,11 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { ImSpoonKnife } from "react-icons/im";
-import { LuTicket } from "react-icons/lu";
-import { LuHotel } from "react-icons/lu";
+import { LuTicket, LuHotel } from "react-icons/lu";
 import { Colors } from "~/constants/colors";
 import { PAGES } from "~/constants/pages";
 
 export default function SideBar() {
-  // const Visiting = [
-  //   {
-  //     photo:""
-  //   }
-  // ]
 
   return (
     <div className="bg-slate-100 ">
