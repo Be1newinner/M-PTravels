@@ -62,7 +62,7 @@ const router: Router = Router();
  *       500:
  *         description: Internal Server Error
  */
-router.post("/", verifyJWT, createLead);
+router.post("/", createLead);
 
 /**
  * @swagger

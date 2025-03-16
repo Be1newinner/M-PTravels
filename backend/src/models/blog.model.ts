@@ -5,6 +5,7 @@ export interface IBlog {
   blog: string;
   image: string;
   slug: string;
+  desc: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -29,6 +30,11 @@ export const blogSchema = new Schema<IBlog>(
     slug: {
       type: String,
       required: [true, "Slug is required"],
+      trim: true,
+    },
+    desc: {
+      type: String,
+      required: [true, "Short Description is required"],
       trim: true,
     },
   },

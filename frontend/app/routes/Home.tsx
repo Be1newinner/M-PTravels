@@ -3,7 +3,7 @@ import HomeHeroSection from "~/components/home/HomeHeroSection";
 import BookVacation from "~/components/home/BookVacation";
 import PackageSlider from "~/components/home/PackageSlider";
 import HomeShowCase from "~/components/home/HomeShowCase";
-import TravelDestinations from "~/components/home/TravelDestinations";
+// import TravelDestinations from "~/components/home/TravelDestinations";
 import ContactUs from "~/components/home/ContactUs";
 import Testimonials from "~/components/home/Testimonials";
 import LatestNews from "~/components/home/LatestNews";
@@ -17,7 +17,7 @@ export default function HomePage() {
       <BookVacation />
       <PackageSlider />
       <HomeShowCase />
-      <TravelDestinations />
+      {/* <TravelDestinations /> */}
       <ContactUs />
       <Testimonials />
       <LatestNews />

@@ -18,7 +18,7 @@ const queryClient = new QueryClient()
 
 const Slider = lazy(() => import("react-slick"));
 
-export default function PackageSlider({ children }: { children: React.ReactNode }) {
+export default function PackageSlider() {
   return (
     <QueryClientProvider client={queryClient}>
       <TanStackWrapper />
@@ -29,45 +29,10 @@ export default function PackageSlider({ children }: { children: React.ReactNode 
 export function TanStackWrapper() {
   let sliderRef = useRef<SliderType>(null);
 
-  // const [packagesList, setPackagesList] = useState([
-  //   {
-  //     id: "1",
-  //     img: "visit-agra.jpg",
-  //     title: "Delhi to Agra Trip",
-  //     price: "25000",
-  //     slug: "delhi-to-agra-package",
-  //   },
-  //   {
-  //     id: "2",
-  //     img: "visit-agra.jpg",
-  //     title: "Delhi to Agra Trip",
-  //     price: "25000",
-  //     slug: "delhi-to-agra-package",
-  //   },
-  //   {
-  //     id: "3",
-  //     img: "visit-agra.jpg",
-  //     title: "Delhi to Agra Trip",
-  //     price: "25000",
-  //     slug: "delhi-to-agra",
-  //   },
-  //   {
-  //     id: "4",
-  //     img: "visit-agra.jpg",
-  //     title: "Delhi to Agra Trip",
-  //     price: "25000",
-  //     slug: "delhi-to-agra",
-  //   },
-  // ]);
-
   const { isPending, error, data: packagesList = [] } = useQuery({
     queryKey: ['packagesData'],
-    queryFn: () => fetchPackages(),
+    queryFn: () => fetchPackages({ limit: 4 }),
   })
-
-  // if (isPending) return 'Loading...'
-
-  // if (error) return 'An error has occurred: ' + error.message
 
   const settings = {
     infinite: true,

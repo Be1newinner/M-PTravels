@@ -16,6 +16,8 @@ export const createLead = async (
     dropAddress,
     pickupDate,
     dropDate,
+    message,
+    source,
   } = req.body;
 
   try {
@@ -27,6 +29,8 @@ export const createLead = async (
       dropAddress,
       pickupDate,
       dropDate,
+      message,
+      source,
     });
 
     SendResponse(res, {

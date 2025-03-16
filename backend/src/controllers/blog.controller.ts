@@ -69,6 +69,7 @@ export const getBlogs = async (
                 image: 1,
                 updatedAt: 1,
                 slug: 1,
+                desc: 1,
               },
             },
           ],

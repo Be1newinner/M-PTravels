@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 export interface ILead {
   _id?: Schema.Types.ObjectId;
   name: string;
-  email: string;
+  email?: string;
   phone: string;
   pickupAddress: string;
   dropAddress: string;
@@ -11,6 +11,8 @@ export interface ILead {
   dropDate: Date;
   createdAt?: Date;
   updatedAt?: Date;
+  message?: string;
+  source?: string;
 }
 
 const leadSchema = new Schema<ILead>(
@@ -25,11 +27,11 @@ const leadSchema = new Schema<ILead>(
       trim: true,
       lowercase: true,
       validate: {
-        validator: function (v: string) {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-        },
+        validator: (v: string) =>
+          v ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) : true,
         message: (props) => `${props.value} is not a valid email!`,
       },
+      required: false,
     },
     phone: {
       type: String,
@@ -54,6 +56,8 @@ const leadSchema = new Schema<ILead>(
       type: Date,
       required: [true, "Drop date is required"],
     },
+    message: String,
+    source: String,
   },
   { timestamps: true, versionKey: false }
 );

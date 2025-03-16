@@ -62,6 +62,7 @@ export const BACKEND_SERVER_DOMAIN = "http://localhost:5001/";
 export type Custom_API_Response_Type<T> = {
   application_code: number;
   data: T;
-  messages: string;
+  message: string;
   status_code: number;
+  meta: any;
 };
