@@ -10,14 +10,14 @@ export type packagesType = {
   slug: string;
 };
 
-export async function fetchPackages({ limit = 4 }) {
+export async function fetchPackages({ limit = 4, page = 1 }) {
   const response = await get<Custom_API_Response_Type<packagesType[]>>(
-    `package?limit=${limit}`
+    `package?limit=${limit}&page=${page}`
   );
   const { data, code } = await response;
   if (code != 200) {
     throw new Error(data?.message || "Unknown Error!");
   }
-  console.log(data?.data);
-  return data?.data || [];
+ // console.log(data?.data);
+ return { data: data?.data, meta: data?.meta };
 }
