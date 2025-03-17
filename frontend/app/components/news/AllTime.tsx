@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const queryClient = new QueryClient();
 
-export default function AllTime() {
+export default function AllNewsWrapper() {
   return (
     <QueryClientProvider client={queryClient}>
       <AllNews />
