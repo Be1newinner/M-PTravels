@@ -4,6 +4,7 @@ import { bucket } from "../config/firebaseInit.ts";
 import fs from "fs/promises";
 import AppError from "../utils/AppError.ts";
 import { SendResponse } from "../utils/JsonResponse.ts";
+import { parseQueryInt } from "../utils/parseQueryInt.ts";
 
 export const createPackage = async (
   req: Request,
@@ -16,14 +17,14 @@ export const createPackage = async (
     if (!title || !description || !price || !price_unit)
       return next(new AppError("All fields are required", 400));
 
-    let image_url = "";
+    let image = "";
 
     if (req.file) {
       await bucket.upload(req.file.path, {
         destination: `cab-booking/packages/${req.file.filename}`,
       });
 
-      image_url = `https://firebasestorage.googleapis.com/v0/b/wingfi-9b5b7.appspot.com/o/${encodeURIComponent(`cab-booking/packages/${req.file.filename}`)}?alt=media`;
+      image = `https://firebasestorage.googleapis.com/v0/b/wingfi-9b5b7.appspot.com/o/${encodeURIComponent(`cab-booking/packages/${req.file.filename}`)}?alt=media`;
 
       await fs.rm(req.file.path);
     }
@@ -33,7 +34,7 @@ export const createPackage = async (
       description,
       price,
       price_unit,
-      image_url,
+      image,
     });
 
     SendResponse(res, {
@@ -57,19 +58,43 @@ export const getPackages = async (
 ): Promise<void> => {
   try {
     const { page, limit } = req.query;
-    const actulaLimit = Math.min(Number(limit), 10) || 0;
+    const pageNum = parseQueryInt(page, 1);
+    const limitNum = parseQueryInt(limit, 9);
 
-    const existingPackages = await Package.find({})
-      .skip(actulaLimit * (Number(page) - 1))
-      .limit(actulaLimit);
+    const PackagesResponse = await Package.aggregate([
+      {
+        $facet: {
+          metadata: [{ $count: "total" }],
+          data: [
+            { $sort: { updatedAt: -1 } },
+            { $skip: (pageNum - 1) * limitNum },
+            { $limit: limitNum },
+            {
+              $project: {
+                title: 1,
+                image: 1,
+                slug: 1,
+                description: 1,
+              },
+            },
+          ],
+        },
+      },
+    ]);
 
-    if (existingPackages.length === 0)
-      return next(new AppError("No packages found", 404));
+    const Packages = PackagesResponse[0]?.data || [];
+    const totalPackages = PackagesResponse[0]?.metadata[0]?.total || 0;
 
     SendResponse(res, {
-      message: "Packages fetched successfully",
-      data: existingPackages,
       status_code: 200,
+      message: "Packages fetched successfully",
+      data: Packages,
+      meta: {
+        length: Packages.length,
+        total: totalPackages,
+        page: pageNum,
+        limit: limitNum,
+      },
     });
   } catch (error: unknown) {
     console.error("Error while getting packages", error);
@@ -122,9 +147,9 @@ export const updatePackage = async (
     if (!existingPackage) return next(new AppError("Package not found", 404));
 
     if (req.file) {
-      if (existingPackage.image_url) {
+      if (existingPackage.image) {
         const fileName =
-          existingPackage?.image_url
+          existingPackage?.image
             ?.split("/")
             .pop()
             ?.split("?")[0]
@@ -137,7 +162,7 @@ export const updatePackage = async (
         destination: `cab-booking/packages/${req.file.filename}`,
       });
 
-      existingPackage.image_url = `https://firebasestorage.googleapis.com/v0/b/wingfi-9b5b7.appspot.com/o/${encodeURIComponent(`cab-booking/packages/${req.file.filename}`)}?alt=media`;
+      existingPackage.image = `https://firebasestorage.googleapis.com/v0/b/wingfi-9b5b7.appspot.com/o/${encodeURIComponent(`cab-booking/packages/${req.file.filename}`)}?alt=media`;
 
       await fs.rm(req.file.path);
     }
@@ -175,9 +200,9 @@ export const deletePackage = async (
 
     if (!existingPackage) return next(new AppError("Package not found", 404));
 
-    if (existingPackage.image_url && existingPackage.image_url !== "") {
+    if (existingPackage.image && existingPackage.image !== "") {
       let fileName =
-        existingPackage?.image_url
+        existingPackage?.image
           ?.split("/")
           .pop()
           ?.split("?")[0]

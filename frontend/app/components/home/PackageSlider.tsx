@@ -29,10 +29,14 @@ export default function PackageSlider() {
 export function TanStackWrapper() {
   let sliderRef = useRef<SliderType>(null);
 
-  const { isPending, error, data: packagesList = [] } = useQuery({
+  const { isPending, error, data } = useQuery({
     queryKey: ['packagesData'],
     queryFn: () => fetchPackages({ limit: 4 }),
   })
+
+  const packagesList = data?.data;
+
+  // console.log({ data })
 
   const settings = {
     infinite: true,

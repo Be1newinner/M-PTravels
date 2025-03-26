@@ -19,6 +19,8 @@ export function TourPackageData() {
         refetch();
     };
 
+    // console.log({ PackagesData: data })
+
     if (isPending) return "Loading...";
     if (error) return "An error has occurred: " + error.message;
 
@@ -28,7 +30,7 @@ export function TourPackageData() {
                 <PackageTagBar />
                 <PackagesSearchBar />
                 <div className="grid grid-cols-3 gap-4 my-6">
-                    {Array.from({ length: 9 }).map(e => <PackagesCard />)}
+                    {data.data?.map(item => <PackagesCard key={item._id} />)}
                 </div>
 
                 <Pagination totalPages={Math.ceil(data?.meta?.total / data?.meta?.limit || 1)}
