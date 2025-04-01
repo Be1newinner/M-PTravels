@@ -97,21 +97,22 @@ export const loginUser = async (
       )
       .lean();
 
-    const cookieOptions = {
+    const cookieOptions: {
+      httpOnly: boolean;
+      secure: boolean;
+      sameSite: "none" | "lax" | "strict";
+    } = {
       httpOnly: true,
-      secure: ENV_CONFIGS.NODE_ENV === "production",
+      secure: true,
+      sameSite: "strict",
     };
 
     res
       .status(200)
-      .cookie("accessToken", accessToken, {
-        ...cookieOptions,
-        maxAge: 24 * 60 * 60 * 1000,
-      }) // 1 day
       .cookie("refreshToken", refreshToken, {
         ...cookieOptions,
         maxAge: 20 * 24 * 60 * 60 * 1000,
-      }) // 20 days
+      })
       .json({
         success: true,
         statusCode: 200,
@@ -119,7 +120,6 @@ export const loginUser = async (
         data: {
           ...loggedInUser,
           accessToken,
-          refreshToken,
         },
       });
   } catch (error: unknown) {
@@ -152,15 +152,12 @@ export const logoutUser = async (
       secure: ENV_CONFIGS.NODE_ENV === "production",
     };
 
-    res
-      .status(200)
-      .clearCookie("accessToken", cookieOptions)
-      .clearCookie("refreshToken", cookieOptions)
-      .json({
-        success: true,
-        statusCode: 200,
-        message: "User logged out successfully",
-      });
+    res.status(200).clearCookie("refreshToken", cookieOptions).json({
+      success: true,
+      statusCode: 200,
+      message: "User logged out successfully",
+      data: null,
+    });
   } catch (error: unknown) {
     console.error("Error logging out user", error);
     const message =

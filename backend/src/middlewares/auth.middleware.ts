@@ -13,10 +13,7 @@ export const verifyJWT = async (
   _: Response,
   next: NextFunction
 ) => {
-  const token =
-    req.header("Authorization")?.replace("Bearer ", "") ||
-    req.cookies?.accessToken;
-
+  const token = req.header("Authorization")?.replace("Bearer ", "");
   try {
     if (!token) return next(new AppError("Token not found", 401));
 
