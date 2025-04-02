@@ -14,7 +14,7 @@ const router: Router = Router();
 /**
  * @swagger
  * tags:
- *   name: Packages
+ *   name: Package
  *   description: API endpoints for managing packages
  */
 

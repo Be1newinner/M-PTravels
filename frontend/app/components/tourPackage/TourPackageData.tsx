@@ -29,8 +29,11 @@ export function TourPackageData() {
             <div className="container">
                 <PackageTagBar />
                 <PackagesSearchBar />
-                <div className="grid grid-cols-3 gap-4 my-6">
-                    {data.data?.map(item => <PackagesCard key={item._id} />)}
+                <div className="grid grid-cols-2 gap-6 my-6">
+                    {data.data?.map(item => {
+                        // console.log({ item })
+                        return (<PackagesCard key={item._id} image={item.image_url} title={item.title}/>)
+                    })}
                 </div>
 
                 <Pagination totalPages={Math.ceil(data?.meta?.total / data?.meta?.limit || 1)}

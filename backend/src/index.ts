@@ -15,7 +15,7 @@ import cabRoutes from "./routes/cab.routes.ts";
 import packageRoutes from "./routes/package.routes.ts";
 
 const app = express();
-const PORT = ENV_CONFIGS.PORT || 5000; // Default to 5000 if ENV is missing
+const PORT = ENV_CONFIGS.PORT || 5000;
 
 // Middleware
 app.use(express.json());
@@ -24,28 +24,37 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "http://localhost:3000", // Change to your frontend URL
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://firefly-top-jackal.ngrok-free.app",
+    ],
     credentials: true,
   })
 );
+
+// app.use((req, res, next)=>{
+//   console.log("URL => ", req.url);
+//   next()
+// })
 
 // Setup Swagger (Move it before routes)
 setupSwagger(app);
 
 // Define Routes
-app.use("/user", userRoutes);
-app.use("/blog", blogRoutes);
-app.use("/lead", leadRoutes);
-app.use("/cab", cabRoutes);
-app.use("/package", packageRoutes);
+app.use("/users", userRoutes);
+app.use("/blogs", blogRoutes);
+app.use("/leads", leadRoutes);
+app.use("/cabs", cabRoutes);
+app.use("/packages", packageRoutes);
 
 // Root Route
 app.get("/", (_, res) => {
   res.status(200).json({
     success: true,
-    message: "Welcome to Shipsar Developers APIs",
+    message: "Welcome to Shipsar Developers's MP TRavels APIs",
     meta: {
-      organisation: "",
+      organisation: "M and P Travels",
     },
   });
 });

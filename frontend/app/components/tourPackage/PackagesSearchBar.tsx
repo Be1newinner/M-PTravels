@@ -3,7 +3,7 @@ import { Colors } from "~/constants/colors";
 
 export function PackagesSearchBar() {
     return (
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center justify-end">
         <div className="border px-5 rounded-lg bg-slate-200 py-2 border-black" >
           <label className="text-sm font-medium text-gray-500">
             Destination or package

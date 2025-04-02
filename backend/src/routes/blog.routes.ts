@@ -21,7 +21,7 @@ const router: Router = Router();
 
 /**
  * @swagger
- * /blog:
+ * /blogs:
  *   post:
  *     summary: Create a new blog
  *     tags: [Blogs]
@@ -54,7 +54,7 @@ router.post("/", upload.single("image"), createBlog);
 
 /**
  * @swagger
- * /F:
+ * /blogs:
  *   get:
  *     summary: Get all blogs
  *     tags: [Blogs]
@@ -66,7 +66,7 @@ router.route("/").get(getBlogs);
 
 /**
  * @swagger
- * /blog/search:
+ * /blogs/search:
  *   get:
  *     summary: Search blogs by title
  *     tags: [Blogs]
@@ -87,7 +87,7 @@ router.get("/search", searchBlogs);
 
 /**
  * @swagger
- * /blog/{id}:
+ * /blogs/{id}:
  *   get:
  *     summary: Get a single blog by ID
  *     tags: [Blogs]
@@ -108,7 +108,7 @@ router.route("/:slug").get(getBlog);
 
 /**
  * @swagger
- * /blog/{id}:
+ * /blogs/{id}:
  *   delete:
  *     summary: Delete a blog by ID
  *     tags: [Blogs]
@@ -133,7 +133,7 @@ router.route("/:id").delete(verifyJWT, deleteBlog);
 
 /**
  * @swagger
- * /blog/{id}:
+ * /blogs/{id}:
  *   patch:
  *     summary: Update a blog by ID
  *     tags: [Blogs]

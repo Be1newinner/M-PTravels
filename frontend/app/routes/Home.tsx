@@ -6,7 +6,7 @@ import HomeShowCase from "~/components/home/HomeShowCase";
 // import TravelDestinations from "~/components/home/TravelDestinations";
 import ContactUs from "~/components/home/ContactUs";
 import Testimonials from "~/components/home/Testimonials";
-import LatestNews from "~/components/home/LatestNews";
+// import LatestNews from "~/components/home/LatestNews";
 import Footer from "~/components/home/Footer";
 
 export default function HomePage() {
@@ -20,7 +20,7 @@ export default function HomePage() {
       {/* <TravelDestinations /> */}
       <ContactUs />
       <Testimonials />
-      <LatestNews />
+      {/* <LatestNews /> */}
       <Footer />
     </div>
   );

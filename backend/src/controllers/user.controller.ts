@@ -71,7 +71,7 @@ export const loginUser = async (
   next: NextFunction
 ): Promise<void> => {
   const { email, password } = req.body;
-
+  console.log("HOST => ",req.get("host"));
   try {
     if (!email || !password)
       return next(new AppError("Email and password are required", 400));

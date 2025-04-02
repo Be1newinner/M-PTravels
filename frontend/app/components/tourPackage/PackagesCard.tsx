@@ -2,11 +2,16 @@ import { CiLocationOn } from "react-icons/ci";
 import { Link } from "react-router";
 import { PAGES } from "~/constants/pages";
 
-export function PackagesCard({ image, title }) {
+type packagesCardType = {
+  image: string;
+  title: string
+}
+
+export function PackagesCard({ image, title }: packagesCardType) {
   return (
-    <div className="shadow-lg p-4 rounded-xl bg-white">
-      <div className="flex max-md:flex-wrap gap-4 relative">
-        <div className="rounded-lg bg-red-500 overflow-hidden h-48 w-48">
+    <div className="shadow-lg p-6 rounded-xl bg-white">
+      <div className="flex max-md:flex-wrap gap-6 relative">
+        <div className="rounded-lg bg-red-500 overflow-hidden h-52 w-52">
           <img
             src={image}
             alt={image}

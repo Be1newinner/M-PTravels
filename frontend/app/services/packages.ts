@@ -12,7 +12,7 @@ export type packagesType = {
 
 export async function fetchPackages({ limit = 4, page = 1 }) {
   const response = await get<Custom_API_Response_Type<packagesType[]>>(
-    `package?limit=${limit}&page=${page}`
+    `packages?limit=${limit}&page=${page}`
   );
   const { data, code } = await response;
   if (code != 200) {
