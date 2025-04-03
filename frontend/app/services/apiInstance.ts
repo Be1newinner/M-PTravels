@@ -1,7 +1,7 @@
 import axios from "axios";
 import { type AxiosResponse } from "axios";
 
-const domain = "https://api.shipsar.in/mp-travels"
+const domain = "https://api.shipsar.in/mp-travels/"
 
 type ApiResponse<T> = {
   status: "success" | "failed";
