@@ -1,7 +1,8 @@
 import axios from "axios"
 import { getCookie } from "../utils/cookies"
 
-const API_BASE_URL = "https://firefly-top-jackal.ngrok-free.app"
+// const API_BASE_URL = "https://firefly-top-jackal.ngrok-free.app"
+const API_BASE_URL = "http://localhost:5001"
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,

@@ -3,11 +3,11 @@
 import { useState, useEffect, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Input, InputPassword } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2 } from "lucide-react"
+import { Eye, Loader2 } from "lucide-react"
 import { useLogin } from "@/lib/api/auth-api"
 import { getCookie } from "@/lib/utils/cookies"
 
@@ -83,7 +83,7 @@ export default function LoginPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
+              <InputPassword Icon={Eye}
                 id="password"
                 type="password"
                 placeholder="••••••"
@@ -91,6 +91,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+
             </div>
             <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? (

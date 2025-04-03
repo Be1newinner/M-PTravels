@@ -28,6 +28,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:5173",
       "https://firefly-top-jackal.ngrok-free.app",
+      "https://mptravels.vercel.app/"
     ],
     credentials: true,
   })
