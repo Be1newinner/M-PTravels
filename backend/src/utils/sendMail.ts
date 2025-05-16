@@ -1,6 +1,6 @@
 import nodemailer, { SendMailOptions } from "nodemailer";
-import { isEmailValid } from "./helper.ts";
-import { ENV_CONFIGS } from "../config/envs.config.ts";
+import { isEmailValid } from "./helper";
+import { ENV_CONFIGS } from "../config/envs.config";
 
 export interface MailOptions {
   to: string | string[];

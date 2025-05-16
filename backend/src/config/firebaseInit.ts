@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Storage } from '@google-cloud/storage';
-import { ENV_CONFIGS } from './envs.config.ts';
+import { ENV_CONFIGS } from './envs.config';
 
 const privateKey = (ENV_CONFIGS.FIREBASE_PRIVATE_KEY as string).replace(/\\n/g, '\n');
 

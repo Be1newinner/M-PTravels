@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { verifyJWT } from "../middlewares/auth.middleware.ts";
+import { verifyJWT } from "../middlewares/auth.middleware";
 import {
   createPackage,
   deletePackage,
   getPackage,
   getPackages,
   updatePackage,
-} from "../controllers/package.controller.ts";
-import { upload } from "../middlewares/multer.middleware.ts";
+} from "../controllers/package.controller";
+import { upload } from "../middlewares/multer.middleware";
 
 const router: Router = Router();
 

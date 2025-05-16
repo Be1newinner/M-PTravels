@@ -8,8 +8,8 @@ import {
   logoutUser,
   refreshAccessToken,
   resetPassword,
-} from "../controllers/user.controller.ts";
-import { verifyJWT } from "../middlewares/auth.middleware.ts";
+} from "../controllers/user.controller";
+import { verifyJWT } from "../middlewares/auth.middleware";
 
 const router: Router = Router();
 

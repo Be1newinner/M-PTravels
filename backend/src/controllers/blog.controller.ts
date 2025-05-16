@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import Blog from "../models/blog.model.ts";
-import { bucket } from "../config/firebaseInit.ts";
+import Blog from "../models/blog.model";
+import { bucket } from "../config/firebaseInit";
 import fs from "fs/promises";
-import { SendResponse } from "../utils/JsonResponse.ts";
-import AppError from "../utils/AppError.ts";
-import { parseQueryInt } from "../utils/parseQueryInt.ts";
+import { SendResponse } from "../utils/JsonResponse";
+import AppError from "../utils/AppError";
+import { parseQueryInt } from "../utils/parseQueryInt";
 
 export const createBlog = async (
   req: Request,

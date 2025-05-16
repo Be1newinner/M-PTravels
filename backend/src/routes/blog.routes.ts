@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyJWT } from "../middlewares/auth.middleware.ts";
+import { verifyJWT } from "../middlewares/auth.middleware";
 import {
   createBlog,
   deleteBlog,
@@ -7,8 +7,8 @@ import {
   getBlogs,
   searchBlogs,
   updateBlog,
-} from "../controllers/blog.controller.ts";
-import { upload } from "../middlewares/multer.middleware.ts";
+} from "../controllers/blog.controller";
+import { upload } from "../middlewares/multer.middleware";
 
 const router: Router = Router();
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyJWT } from "../middlewares/auth.middleware.ts";
+import { verifyJWT } from "../middlewares/auth.middleware";
 import {
   createLead,
   deleteLead,
@@ -7,7 +7,7 @@ import {
   getLead,
   searchLead,
   updateLead,
-} from "../controllers/lead.controller.ts";
+} from "../controllers/lead.controller";
 
 const router: Router = Router();
 

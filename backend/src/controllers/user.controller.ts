@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../models/user.model.ts";
+import User from "../models/user.model";
 import { Types } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { sendMail } from "../utils/sendMail.ts";
-import { CustomRequest } from "../middlewares/auth.middleware.ts";
-import AppError from "../utils/AppError.ts";
-import { SendResponse } from "../utils/JsonResponse.ts";
-import { ENV_CONFIGS } from "../config/envs.config.ts";
+import { sendMail } from "../utils/sendMail";
+import { CustomRequest } from "../middlewares/auth.middleware";
+import AppError from "../utils/AppError";
+import { SendResponse } from "../utils/JsonResponse";
+import { ENV_CONFIGS } from "../config/envs.config";
 
 interface TokenResponse {
   accessToken: string;

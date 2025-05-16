@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import Lead from "../models/lead.model.ts";
-import AppError from "../utils/AppError.ts";
-import { SendResponse } from "../utils/JsonResponse.ts";
+import Lead from "../models/lead.model";
+import AppError from "../utils/AppError";
+import { SendResponse } from "../utils/JsonResponse";
 
 export const createLead = async (
   req: Request,

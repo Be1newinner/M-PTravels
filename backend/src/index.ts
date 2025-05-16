@@ -2,26 +2,24 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-import connectToDB from "./config/db.ts";
-import { setupSwagger } from "./config/swagger.ts";
-import { ENV_CONFIGS } from "./config/envs.config.ts";
-import { errorHandler } from "./middlewares/error.middleware.ts";
+import connectToDB from "./config/db";
+import { setupSwagger } from "./config/swagger";
+import { ENV_CONFIGS } from "./config/envs.config";
+import { errorHandler } from "./middlewares/error.middleware";
 
 // Import Routes
-import userRoutes from "./routes/user.routes.ts";
-import blogRoutes from "./routes/blog.routes.ts";
-import leadRoutes from "./routes/lead.routes.ts";
-import cabRoutes from "./routes/cab.routes.ts";
-import packageRoutes from "./routes/package.routes.ts";
+import userRoutes from "./routes/user.routes";
+import blogRoutes from "./routes/blog.routes";
+import leadRoutes from "./routes/lead.routes";
+import cabRoutes from "./routes/cab.routes";
+import packageRoutes from "./routes/package.routes";
+import helmet from "helmet";
 
 const app = express();
 const PORT = ENV_CONFIGS.PORT || 5000;
 
 // Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(morgan("dev"));
+app.use(helmet())
 app.use(
   cors({
     origin: [
@@ -35,6 +33,10 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(morgan("dev"));
 
 // app.use((req, res, next)=>{
 //   console.log("URL => ", req.url);

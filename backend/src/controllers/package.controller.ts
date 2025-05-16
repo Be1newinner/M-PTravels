@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import Package from "../models/package.model.ts";
-import { bucket } from "../config/firebaseInit.ts";
+import Package from "../models/package.model";
+import { bucket } from "../config/firebaseInit";
 import fs from "fs/promises";
-import AppError from "../utils/AppError.ts";
-import { SendResponse } from "../utils/JsonResponse.ts";
-import { parseQueryInt } from "../utils/parseQueryInt.ts";
+import AppError from "../utils/AppError";
+import { SendResponse } from "../utils/JsonResponse";
+import { parseQueryInt } from "../utils/parseQueryInt";
 
 export const createPackage = async (
   req: Request,

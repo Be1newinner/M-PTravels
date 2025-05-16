@@ -1,8 +1,8 @@
 import { Schema, Types, model } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { ENV_CONFIGS } from "../config/envs.config.ts";
-import { StringValue } from "../types.ts";
+import { ENV_CONFIGS } from "../config/envs.config";
+import { StringValue } from "../types";
 
 export interface IUser {
   _id?: Types.ObjectId;

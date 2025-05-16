@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { StringValue } from "../types.ts";
+import { StringValue } from "../types";
 dotenv.config();
 
 const DEFAULT_ENV_VALUES: Record<string, string> = {

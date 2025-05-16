@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/user.model.ts";
-import AppError from "../utils/AppError.ts";
-import { ENV_CONFIGS } from "../config/envs.config.ts";
+import User from "../models/user.model";
+import AppError from "../utils/AppError";
+import { ENV_CONFIGS } from "../config/envs.config";
 
 export interface CustomRequest extends Request {
   user?: InstanceType<typeof User>;

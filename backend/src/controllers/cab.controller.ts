@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import Cab from "../models/cab.model.ts";
+import Cab from "../models/cab.model";
 import fs from "fs/promises";
-import { bucket } from "../config/firebaseInit.ts";
-import AppError from "../utils/AppError.ts";
-import { SendResponse } from "../utils/JsonResponse.ts";
+import { bucket } from "../config/firebaseInit";
+import AppError from "../utils/AppError";
+import { SendResponse } from "../utils/JsonResponse";
 
 export const createCab = async (
   req: Request,

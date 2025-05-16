@@ -1,8 +1,8 @@
-import Blog from "./blog.model.ts";
-import Cab from "./cab.model.ts";
-import Lead from "./lead.model.ts";
-import Package from "./package.model.ts";
-import User from "./user.model.ts";
+import Blog from "./blog.model";
+import Cab from "./cab.model";
+import Lead from "./lead.model";
+import Package from "./package.model";
+import User from "./user.model";
 
 const AllMongooseModels = { Blog, Cab, Lead, Package, User };
 
