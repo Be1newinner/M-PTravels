@@ -2,20 +2,19 @@
 
 import type React from "react"
 
-import { useState, type FormEvent } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { Upload, ArrowLeft, Loader2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import DashboardLayout from "../../dashboard-layout"
 import { useCreateBlog } from "@/lib/api/blogs-api"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import SimpleMarkdownEditor from "@/components/simple-markdown-editor"
 
 export default function NewBlogPage() {
   const router = useRouter()
@@ -23,27 +22,28 @@ export default function NewBlogPage() {
   const [content, setContent] = useState("")
   const [image, setImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const { mutate: createBlog, isPending } = useCreateBlog()
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+  const validateForm = () => {
+    const errors: Record<string, string> = {}
 
-    // Basic validation
     if (!title || title.length < 2) {
-      toast({
-        title: "Validation Error",
-        description: "Title must be at least 2 characters",
-        variant: "destructive",
-      })
-      return
+      errors.title = "Title must be at least 2 characters"
     }
 
     if (!content || content.length < 10) {
-      toast({
-        title: "Validation Error",
-        description: "Content must be at least 10 characters",
-        variant: "destructive",
-      })
+      errors.content = "Content must be at least 10 characters"
+    }
+
+    setFormErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!validateForm()) {
       return
     }
 
@@ -125,35 +125,28 @@ export default function NewBlogPage() {
                       id="title"
                       placeholder="Enter blog title"
                       value={title}
-                      onChange={(e) => setTitle(e.target.value)}
+                      onChange={(e) => {
+                        setTitle(e.target.value)
+                        if (formErrors.title) {
+                          setFormErrors((prev) => ({ ...prev, title: "" }))
+                        }
+                      }}
                     />
+                    {formErrors.title && <p className="text-sm text-destructive">{formErrors.title}</p>}
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="content">Content</Label>
-                    <Tabs defaultValue="write" className="w-full">
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="write">Write</TabsTrigger>
-                        <TabsTrigger value="preview">Preview</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="write" className="mt-0">
-                        <Textarea
-                          id="content"
-                          placeholder="Write your blog content here using Markdown..."
-                          className="min-h-[500px] font-mono resize-none border-t-0 rounded-t-none"
-                          value={content}
-                          onChange={(e) => setContent(e.target.value)}
-                        />
-                      </TabsContent>
-                      <TabsContent value="preview" className="mt-0">
-                        <div className="min-h-[500px] p-4 border border-t-0 rounded-b-md prose prose-sm max-w-none overflow-auto">
-                          <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, "<br />") }} />
-                        </div>
-                      </TabsContent>
-                    </Tabs>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Use Markdown to format your content. You can use headings, lists, links, and more.
-                    </p>
+                    <SimpleMarkdownEditor
+                      initialContent={content}
+                      onChange={(value) => {
+                        setContent(value)
+                        if (formErrors.content) {
+                          setFormErrors((prev) => ({ ...prev, content: "" }))
+                        }
+                      }}
+                    />
+                    {formErrors.content && <p className="text-sm text-destructive">{formErrors.content}</p>}
                   </div>
                 </form>
               </CardContent>
@@ -213,4 +206,3 @@ export default function NewBlogPage() {
     </DashboardLayout>
   )
 }
-

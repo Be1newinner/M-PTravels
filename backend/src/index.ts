@@ -30,6 +30,7 @@ app.use(
       "https://firefly-top-jackal.ngrok-free.app",
       "https://mptravels.vercel.app",
       "https://mnp-admin.vercel.app",
+      /^https:\/\/.*\.lite\.vusercontent\.net$/,
     ],
     credentials: true,
   })

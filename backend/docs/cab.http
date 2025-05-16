@@ -1,0 +1,70 @@
+@baseUrl = http://localhost:5000/api/v1
+@token = your_jwt_token_here
+
+### Create a Cab
+POST {{baseUrl}}/cabs
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Luxury Sedan
+--boundary
+Content-Disposition: form-data; name="description"
+
+Comfortable luxury ride
+--boundary
+Content-Disposition: form-data; name="model"
+
+Toyota Camry 2023
+--boundary
+Content-Disposition: form-data; name="capacity"
+
+4
+--boundary
+Content-Disposition: form-data; name="images"; filename="car1.jpg"
+Content-Type: image/jpeg
+
+< ./images/car1.jpg
+--boundary--
+
+### Get All Cabs
+GET {{baseUrl}}/cabs
+Authorization: Bearer {{token}}
+
+### Get Single Cab by ID
+GET {{baseUrl}}/cabs/6639b1673a1b8418f5b1a9f2
+Authorization: Bearer {{token}}
+
+### Update Cab
+PATCH {{baseUrl}}/cabs/6639b1673a1b8418f5b1a9f2
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Updated Cab Title
+--boundary
+Content-Disposition: form-data; name="description"
+
+Updated description for cab
+--boundary
+Content-Disposition: form-data; name="model"
+
+Updated Model 2025
+--boundary
+Content-Disposition: form-data; name="capacity"
+
+6
+--boundary
+Content-Disposition: form-data; name="images"; filename="car2.jpg"
+Content-Type: image/jpeg
+
+< ./images/car2.jpg
+--boundary--
+
+### Delete Cab
+DELETE {{baseUrl}}/cabs/6639b1673a1b8418f5b1a9f2
+Authorization: Bearer {{token}}

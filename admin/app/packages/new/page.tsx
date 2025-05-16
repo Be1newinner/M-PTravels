@@ -4,12 +4,9 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
@@ -20,44 +17,69 @@ import Link from "next/link"
 import DashboardLayout from "../../dashboard-layout"
 import { useCreatePackage } from "@/lib/api/packages-api"
 
-const formSchema = z.object({
-  title: z.string().min(2, { message: "Title must be at least 2 characters" }),
-  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
-  price: z.coerce.number().min(1, { message: "Price must be at least 1" }),
-  price_unit: z.string().default("INR"),
-})
-
 export default function NewPackagePage() {
   const router = useRouter()
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    price: "",
+    price_unit: "INR",
+  })
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [image, setImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const { mutate: createPackage, isPending } = useCreatePackage()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      price: 0,
-      price_unit: "INR",
-    },
-  })
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData()
+    // Clear error when user types
+    if (formErrors[name]) {
+      setFormErrors((prev) => ({ ...prev, [name]: "" }))
+    }
+  }
+
+  const validateForm = () => {
+    const errors: Record<string, string> = {}
+
+    if (!formData.title || formData.title.length < 2) {
+      errors.title = "Title must be at least 2 characters"
+    }
+
+    if (!formData.description || formData.description.length < 10) {
+      errors.description = "Description must be at least 10 characters"
+    }
+
+    if (!formData.price || Number(formData.price) <= 0) {
+      errors.price = "Price must be greater than 0"
+    }
+
+    setFormErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!validateForm()) {
+      return
+    }
+
+    const formDataToSend = new FormData()
 
     // Append form values to FormData
-    Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value.toString())
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataToSend.append(key, value.toString())
     })
 
     // Append image if available
     if (image) {
-      formData.append("image", image)
+      formDataToSend.append("image", image)
     }
 
-    createPackage(formData, {
-      onSuccess: (data) => {
+    createPackage(formDataToSend, {
+      onSuccess: () => {
         toast({
           title: "Package created",
           description: "Your package has been successfully created.",
@@ -98,7 +120,7 @@ export default function NewPackagePage() {
             </Button>
             <h1 className="text-3xl font-bold tracking-tight">Create New Package</h1>
           </div>
-          <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
+          <Button onClick={handleSubmit} disabled={isPending}>
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -116,111 +138,103 @@ export default function NewPackagePage() {
             <CardDescription>Enter the details of your new package</CardDescription>
           </CardHeader>
           <CardContent>
-            <Form {...form}>
-              <form className="space-y-6">
-                <FormField
-                  control={form.control}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="title">Title</Label>
+                <Input
+                  id="title"
                   name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter package title" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  placeholder="Enter package title"
+                  value={formData.title}
+                  onChange={handleInputChange}
                 />
+                {formErrors.title && <p className="text-sm text-destructive">{formErrors.title}</p>}
+              </div>
 
-                <FormField
-                  control={form.control}
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
                   name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Enter package description" className="min-h-[150px]" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  placeholder="Enter package description"
+                  className="min-h-[150px]"
+                  value={formData.description}
+                  onChange={handleInputChange}
                 />
+                {formErrors.description && <p className="text-sm text-destructive">{formErrors.description}</p>}
+              </div>
 
-                <div className="grid gap-6 md:grid-cols-2">
-                  <FormField
-                    control={form.control}
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="price">Price</Label>
+                  <Input
+                    id="price"
                     name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Price</FormLabel>
-                        <FormControl>
-                          <Input type="number" min={1} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    type="number"
+                    min={1}
+                    placeholder="Enter price"
+                    value={formData.price}
+                    onChange={handleInputChange}
                   />
+                  {formErrors.price && <p className="text-sm text-destructive">{formErrors.price}</p>}
+                </div>
 
-                  <FormField
-                    control={form.control}
+                <div className="space-y-2">
+                  <Label htmlFor="price_unit">Price Unit</Label>
+                  <Input
+                    id="price_unit"
                     name="price_unit"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Price Unit</FormLabel>
-                        <FormControl>
-                          <Input placeholder="INR" {...field} />
-                        </FormControl>
-                        <FormDescription>Currency or unit for the price (e.g., INR, USD)</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    placeholder="INR"
+                    value={formData.price_unit}
+                    onChange={handleInputChange}
                   />
+                  <p className="text-xs text-muted-foreground">Currency or unit for the price (e.g., INR, USD)</p>
                 </div>
+              </div>
 
-                <Separator />
+              <Separator />
 
-                <div>
-                  <FormLabel>Package Image</FormLabel>
-                  <div className="mt-2 flex flex-col items-center">
-                    {previewUrl ? (
-                      <div className="relative mb-6 w-full max-w-md">
-                        <Image
-                          src={previewUrl || "/placeholder.svg"}
-                          alt="Package preview"
-                          width={500}
-                          height={300}
-                          className="rounded-md border object-cover w-full h-64"
-                        />
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="absolute top-2 right-2"
-                          onClick={() => {
-                            setImage(null)
-                            setPreviewUrl(null)
-                          }}
-                        >
-                          Remove
-                        </Button>
+              <div>
+                <Label htmlFor="image">Package Image</Label>
+                <div className="mt-2 flex flex-col items-center">
+                  {previewUrl ? (
+                    <div className="relative mb-6 w-full max-w-md">
+                      <Image
+                        src={previewUrl || "/placeholder.svg"}
+                        alt="Package preview"
+                        width={500}
+                        height={300}
+                        className="rounded-md border object-cover w-full h-64"
+                      />
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-2 right-2"
+                        onClick={() => {
+                          setImage(null)
+                          setPreviewUrl(null)
+                        }}
+                        type="button"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  ) : (
+                    <label className="flex flex-col items-center justify-center w-full max-w-md h-64 rounded-md border border-dashed cursor-pointer hover:bg-muted/50 transition-colors">
+                      <div className="flex flex-col items-center justify-center p-4 text-center">
+                        <Upload className="h-10 w-10 text-muted-foreground mb-2" />
+                        <p className="text-sm font-medium">Click to upload image</p>
+                        <p className="text-xs text-muted-foreground mt-1">PNG, JPG or JPEG (max 5MB)</p>
                       </div>
-                    ) : (
-                      <label className="flex flex-col items-center justify-center w-full max-w-md h-64 rounded-md border border-dashed cursor-pointer hover:bg-muted/50 transition-colors">
-                        <div className="flex flex-col items-center justify-center p-4 text-center">
-                          <Upload className="h-10 w-10 text-muted-foreground mb-2" />
-                          <p className="text-sm font-medium">Click to upload image</p>
-                          <p className="text-xs text-muted-foreground mt-1">PNG, JPG or JPEG (max 5MB)</p>
-                        </div>
-                        <Input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                      </label>
-                    )}
-                  </div>
+                      <Input id="image" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                    </label>
+                  )}
                 </div>
-              </form>
-            </Form>
+              </div>
+            </form>
           </CardContent>
         </Card>
       </div>
     </DashboardLayout>
   )
 }
-

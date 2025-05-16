@@ -43,4 +43,3 @@ const MarkdownEditor = forwardRef<HTMLTextAreaElement, MarkdownEditorProps>(
 MarkdownEditor.displayName = "MarkdownEditor"
 
 export default MarkdownEditor
-

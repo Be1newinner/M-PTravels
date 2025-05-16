@@ -40,14 +40,15 @@ export default function PackagesPage() {
   const { data, isLoading, isError, refetch } = usePackages(currentPage, itemsPerPage)
   const { mutate: deletePackage, isPending: isDeleting } = useDeletePackage()
 
-  // Filter packages based on search term
-  const filteredPackages =
-    data?.data.filter((pkg) => {
-      return (
-        pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (pkg.description && pkg.description.toLowerCase().includes(searchTerm.toLowerCase()))
-      )
-    }) || []
+  // Filter packages based on search term with proper null checks
+  const filteredPackages = data?.data
+    ? data.data.filter((pkg) => {
+        return (
+          pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (pkg.description && pkg.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
+      })
+    : []
 
   const handleDeletePackage = (id: string) => {
     setPackageToDelete(id)
@@ -76,7 +77,7 @@ export default function PackagesPage() {
     }
   }
 
-  const totalPages = data?.meta.total ? Math.ceil(data.meta.total / itemsPerPage) : 0
+  const totalPages = data?.meta?.total ? Math.ceil(data.meta.total / itemsPerPage) : 0
 
   if (isLoading) {
     return (
@@ -229,7 +230,7 @@ export default function PackagesPage() {
           </div>
         )}
 
-        {totalPages > 1 && (
+        {totalPages > 0 && (
           <div className="flex items-center justify-center mt-6">
             <Pagination>
               <PaginationContent>
@@ -287,4 +288,3 @@ export default function PackagesPage() {
     </DashboardLayout>
   )
 }
-

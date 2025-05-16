@@ -7,7 +7,7 @@ import { Input, InputPassword } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Eye, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { useLogin } from "@/lib/api/auth-api"
 import { getCookie } from "@/lib/utils/cookies"
 
@@ -24,7 +24,6 @@ export default function LoginPage() {
     if (token) {
       router.push("/dashboard")
     }
-    // No else block needed here
   }, [router])
 
   // Handle form submission without react-hook-form
@@ -83,15 +82,13 @@ export default function LoginPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <InputPassword Icon={Eye}
+              <InputPassword
                 id="password"
-                type="password"
                 placeholder="••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
             </div>
             <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? (
@@ -112,4 +109,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

@@ -2,16 +2,12 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -26,75 +22,123 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { toast } from "@/components/ui/use-toast"
-import { Upload, X, Loader2 } from "lucide-react"
+import { Upload, X, Loader2, AlertTriangle } from "lucide-react"
 import Image from "next/image"
 import DashboardLayout from "../../dashboard-layout"
-
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Bus name must be at least 2 characters" }),
-  model: z.string().min(2, { message: "Model must be at least 2 characters" }),
-  registrationNumber: z.string().min(5, { message: "Registration number is required" }),
-  seatingCapacity: z.coerce.number().min(1, { message: "Seating capacity must be at least 1" }),
-  color: z.string().min(2, { message: "Color is required" }),
-  fuelType: z.string().min(1, { message: "Fuel type is required" }),
-  manufacturingYear: z.coerce
-    .number()
-    .min(1900, { message: "Manufacturing year must be valid" })
-    .max(new Date().getFullYear(), { message: "Manufacturing year cannot be in the future" }),
-  description: z.string().optional(),
-  amenities: z.string().optional(),
-})
-
-// Mock data for initial form values
-const mockBusData = {
-  name: "Luxury Travel Bus",
-  model: "Volvo 9400",
-  registrationNumber: "MH 01 AB 1234",
-  seatingCapacity: 45,
-  color: "White",
-  fuelType: "Diesel",
-  manufacturingYear: 2020,
-  description: "Luxury bus with all modern amenities for comfortable travel.",
-  amenities: "AC, WiFi, USB Charging, Reclining Seats, Entertainment System, Toilet",
-  images: [
-    "/placeholder.svg?height=300&width=500",
-    "/placeholder.svg?height=300&width=500",
-    "/placeholder.svg?height=300&width=500",
-  ],
-}
+import { useCab, useUpdateCab } from "@/lib/api/cabs-api"
 
 export default function EditBusPage() {
-  const [images, setImages] = useState<string[]>(mockBusData.images)
+  // Form state
+  const [formData, setFormData] = useState({
+    title: "",
+    model: "",
+    description: "",
+    capacity: "0",
+  })
+  const [images, setImages] = useState<string[]>([])
+  const [newImages, setNewImages] = useState<File[]>([])
   const [isUploading, setIsUploading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: mockBusData.name,
-      model: mockBusData.model,
-      registrationNumber: mockBusData.registrationNumber,
-      seatingCapacity: mockBusData.seatingCapacity,
-      color: mockBusData.color,
-      fuelType: mockBusData.fuelType,
-      manufacturingYear: mockBusData.manufacturingYear,
-      description: mockBusData.description,
-      amenities: mockBusData.amenities,
-    },
-  })
+  // Get cab data - using a default ID for now, in a real app you might get this from URL params
+  const cabId = "default-cab-id" // This would come from route params in a real app
+  const { data, isLoading, isError, refetch } = useCab(cabId)
+  const { mutate: updateCab, isPending } = useUpdateCab(cabId)
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  useEffect(() => {
+    if (data?.data) {
+      setFormData({
+        title: data.data.title || "",
+        model: data.data.model || "",
+        description: data.data.description || "",
+        capacity: String(data.data.capacity || 0),
+      })
+
+      if (data.data.images && data.data.images.length > 0) {
+        setImages(data.data.images)
+      }
+    }
+  }, [data])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+
+    // Clear error when user types
+    if (formErrors[name]) {
+      setFormErrors((prev) => ({ ...prev, [name]: "" }))
+    }
+  }
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }))
+
+    // Clear error when user selects
+    if (formErrors[name]) {
+      setFormErrors((prev) => ({ ...prev, [name]: "" }))
+    }
+  }
+
+  const validateForm = () => {
+    const errors: Record<string, string> = {}
+
+    if (!formData.title || formData.title.length < 2) {
+      errors.title = "Title must be at least 2 characters"
+    }
+
+    if (!formData.model || formData.model.length < 2) {
+      errors.model = "Model must be at least 2 characters"
+    }
+
+    if (!formData.capacity || Number.parseInt(formData.capacity) < 1) {
+      errors.capacity = "Capacity must be at least 1"
+    }
+
+    setFormErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!validateForm()) {
+      return
+    }
+
     setIsSaving(true)
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values)
-      setIsSaving(false)
-      toast({
-        title: "Bus details updated",
-        description: "Your bus details have been successfully updated.",
-      })
-    }, 1000)
+    const formDataToSend = new FormData()
+    formDataToSend.append("title", formData.title)
+    formDataToSend.append("model", formData.model)
+    formDataToSend.append("description", formData.description || "")
+    formDataToSend.append("capacity", formData.capacity)
+
+    // Append new images
+    newImages.forEach((file) => {
+      formDataToSend.append("images", file)
+    })
+
+    updateCab(formDataToSend, {
+      onSuccess: () => {
+        toast({
+          title: "Bus details updated",
+          description: "Your bus details have been successfully updated.",
+        })
+        setIsSaving(false)
+        setNewImages([])
+        refetch()
+      },
+      onError: (error) => {
+        toast({
+          title: "Error",
+          description: "Failed to update bus details. Please try again.",
+          variant: "destructive",
+        })
+        console.error(error)
+        setIsSaving(false)
+      },
+    })
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,28 +146,53 @@ export default function EditBusPage() {
 
     setIsUploading(true)
 
-    // Simulate upload delay
-    setTimeout(() => {
-      const newImages = Array.from(e.target.files || []).map((file) => {
-        // In a real app, you would upload the file to your server/cloud storage
-        // and get back a URL. Here we're just using a placeholder.
-        return URL.createObjectURL(file)
-      })
+    const files = Array.from(e.target.files)
+    setNewImages((prev) => [...prev, ...files])
 
-      setImages([...images, ...newImages])
-      setIsUploading(false)
+    // Create preview URLs
+    const newPreviewUrls = files.map((file) => URL.createObjectURL(file))
+    setImages((prev) => [...prev, ...newPreviewUrls])
 
-      toast({
-        title: "Images uploaded",
-        description: `${newImages.length} image(s) uploaded successfully.`,
-      })
-    }, 1500)
+    setIsUploading(false)
+
+    toast({
+      title: "Images added",
+      description: `${files.length} image(s) added successfully.`,
+    })
   }
 
   const removeImage = (index: number) => {
-    const newImages = [...images]
-    newImages.splice(index, 1)
-    setImages(newImages)
+    // If it's a new image, remove from newImages array
+    if (index >= (data?.data?.images?.length || 0)) {
+      const newImagesIndex = index - (data?.data?.images?.length || 0)
+      setNewImages((prev) => prev.filter((_, i) => i !== newImagesIndex))
+    }
+
+    // Remove from preview array
+    setImages((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </DashboardLayout>
+    )
+  }
+
+  if (isError) {
+    return (
+      <DashboardLayout>
+        <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)]">
+          <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
+          <h2 className="text-xl font-bold mb-2">Error loading bus details</h2>
+          <p className="text-muted-foreground mb-4">There was a problem loading the bus details.</p>
+          <Button onClick={() => refetch()}>Try Again</Button>
+        </div>
+      </DashboardLayout>
+    )
   }
 
   return (
@@ -147,8 +216,16 @@ export default function EditBusPage() {
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => {
-                      form.reset()
-                      setImages(mockBusData.images)
+                      if (data?.data) {
+                        setFormData({
+                          title: data.data.title || "",
+                          model: data.data.model || "",
+                          description: data.data.description || "",
+                          capacity: String(data.data.capacity || 0),
+                        })
+                        setImages(data.data.images || [])
+                        setNewImages([])
+                      }
                       toast({
                         title: "Changes reset",
                         description: "All changes have been reset to the original values.",
@@ -160,8 +237,8 @@ export default function EditBusPage() {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-            <Button onClick={form.handleSubmit(onSubmit)} disabled={isSaving}>
-              {isSaving ? (
+            <Button onClick={handleSubmit} disabled={isSaving || isPending}>
+              {isSaving || isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
@@ -186,167 +263,60 @@ export default function EditBusPage() {
                 <CardDescription>Update your bus details and specifications</CardDescription>
               </CardHeader>
               <CardContent>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Bus Name</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter bus name" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Bus Name</Label>
+                      <Input
+                        id="title"
+                        name="title"
+                        placeholder="Enter bus name"
+                        value={formData.title}
+                        onChange={handleInputChange}
                       />
+                      {formErrors.title && <p className="text-sm text-destructive">{formErrors.title}</p>}
+                    </div>
 
-                      <FormField
-                        control={form.control}
+                    <div className="space-y-2">
+                      <Label htmlFor="model">Model</Label>
+                      <Input
+                        id="model"
                         name="model"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Model</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter bus model" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        placeholder="Enter bus model"
+                        value={formData.model}
+                        onChange={handleInputChange}
                       />
-
-                      <FormField
-                        control={form.control}
-                        name="registrationNumber"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Registration Number</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter registration number" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="seatingCapacity"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Seating Capacity</FormLabel>
-                            <FormControl>
-                              <Input type="number" min={1} {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="color"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Color</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter bus color" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="fuelType"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Fuel Type</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select fuel type" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="Diesel">Diesel</SelectItem>
-                                <SelectItem value="Petrol">Petrol</SelectItem>
-                                <SelectItem value="CNG">CNG</SelectItem>
-                                <SelectItem value="Electric">Electric</SelectItem>
-                                <SelectItem value="Hybrid">Hybrid</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="manufacturingYear"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Manufacturing Year</FormLabel>
-                            <FormControl>
-                              <Input type="number" min={1900} max={new Date().getFullYear()} {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      {formErrors.model && <p className="text-sm text-destructive">{formErrors.model}</p>}
                     </div>
 
-                    <Separator />
+                    <div className="space-y-2">
+                      <Label htmlFor="capacity">Seating Capacity</Label>
+                      <Input
+                        id="capacity"
+                        name="capacity"
+                        type="number"
+                        min={1}
+                        value={formData.capacity}
+                        onChange={handleInputChange}
+                      />
+                      {formErrors.capacity && <p className="text-sm text-destructive">{formErrors.capacity}</p>}
+                    </div>
+                  </div>
 
-                    <FormField
-                      control={form.control}
+                  <Separator />
+
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
                       name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Enter bus description" className="min-h-[100px]" {...field} />
-                          </FormControl>
-                          <FormDescription>Provide a detailed description of your bus.</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                      placeholder="Enter bus description"
+                      className="min-h-[100px]"
+                      value={formData.description}
+                      onChange={handleInputChange}
                     />
-
-                    <FormField
-                      control={form.control}
-                      name="amenities"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Amenities</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Enter bus amenities" className="min-h-[100px]" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            List the amenities available in your bus, separated by commas.
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="flex justify-end">
-                      <Button type="submit" disabled={isSaving}>
-                        {isSaving ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Saving...
-                          </>
-                        ) : (
-                          "Save Changes"
-                        )}
-                      </Button>
-                    </div>
-                  </form>
-                </Form>
+                  </div>
+                </form>
               </CardContent>
             </Card>
           </TabsContent>
@@ -398,19 +368,6 @@ export default function EditBusPage() {
                       />
                     </label>
                   </div>
-
-                  <div className="flex justify-end">
-                    <Button
-                      onClick={() => {
-                        toast({
-                          title: "Images saved",
-                          description: "Your bus images have been successfully saved.",
-                        })
-                      }}
-                    >
-                      Save Images
-                    </Button>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -420,4 +377,3 @@ export default function EditBusPage() {
     </DashboardLayout>
   )
 }
-

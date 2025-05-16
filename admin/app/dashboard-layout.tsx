@@ -5,7 +5,19 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
-import { LayoutDashboard, Users, Bus, Package, FileText, LogOut, Menu, User, Plus } from "lucide-react"
+import {
+  LayoutDashboard,
+  Users,
+  Bus,
+  Package,
+  FileText,
+  LogOut,
+  Menu,
+  User,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -21,6 +33,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [isMounted, setIsMounted] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const { user, isAuthenticated } = useAuthStore()
   const logout = useLogout()
 
@@ -31,11 +44,23 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     if (!isAuthenticated && pathname !== "/login") {
       router.push("/login")
     }
+
+    // Load sidebar state from localStorage if available
+    const savedState = localStorage.getItem("sidebarCollapsed")
+    if (savedState) {
+      setSidebarCollapsed(savedState === "true")
+    }
   }, [pathname, router, isAuthenticated])
 
   const handleLogout = () => {
     logout()
     router.push("/login")
+  }
+
+  const toggleSidebar = () => {
+    const newState = !sidebarCollapsed
+    setSidebarCollapsed(newState)
+    localStorage.setItem("sidebarCollapsed", String(newState))
   }
 
   const navigation = [
@@ -52,10 +77,23 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar for desktop */}
-      <div className="hidden md:flex md:w-64 md:flex-col">
+      <div
+        className={cn(
+          "hidden md:flex md:flex-col transition-all duration-300 ease-in-out",
+          sidebarCollapsed ? "md:w-20" : "md:w-64",
+        )}
+      >
         <div className="flex flex-col flex-grow border-r border-border bg-card">
-          <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-border">
-            <h1 className="text-xl font-bold">Admin Panel</h1>
+          <div className="flex items-center h-16 flex-shrink-0 px-4 border-b border-border justify-between">
+            {!sidebarCollapsed && <h1 className="text-xl font-bold">Admin Panel</h1>}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleSidebar}
+              className={cn("ml-auto", sidebarCollapsed ? "mx-auto" : "")}
+            >
+              {sidebarCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+            </Button>
           </div>
           <div className="flex-grow flex flex-col pt-5 pb-4 overflow-y-auto">
             <nav className="mt-5 flex-1 px-2 space-y-1">
@@ -66,22 +104,24 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   className={cn(
                     pathname === item.href ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted",
                     "group flex items-center px-2 py-2 text-sm font-medium rounded-md",
+                    sidebarCollapsed ? "justify-center" : "",
                   )}
                 >
                   <item.icon
                     className={cn(
                       pathname === item.href ? "text-primary" : "text-muted-foreground",
-                      "mr-3 flex-shrink-0 h-5 w-5",
+                      "flex-shrink-0 h-5 w-5",
+                      sidebarCollapsed ? "" : "mr-3",
                     )}
                     aria-hidden="true"
                   />
-                  {item.name}
+                  {!sidebarCollapsed && item.name}
                 </Link>
               ))}
             </nav>
           </div>
           <div className="flex-shrink-0 flex border-t border-border p-4">
-            <div className="flex items-center w-full">
+            <div className={cn("flex items-center w-full", sidebarCollapsed ? "justify-center" : "")}>
               <div className="flex-shrink-0">
                 <Avatar>
                   <AvatarImage src="/placeholder.svg" alt="Admin" />
@@ -90,18 +130,20 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   </AvatarFallback>
                 </Avatar>
               </div>
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-medium">{user?.name || "Admin User"}</p>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs text-muted-foreground flex items-center mt-1 px-0"
-                  onClick={handleLogout}
-                >
-                  <LogOut className="mr-1 h-3 w-3" />
-                  Sign out
-                </Button>
-              </div>
+              {!sidebarCollapsed && (
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium">{user?.name || "Admin User"}</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs text-muted-foreground flex items-center mt-1 px-0"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-1 h-3 w-3" />
+                    Sign out
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -181,4 +223,3 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   )
 }
-
