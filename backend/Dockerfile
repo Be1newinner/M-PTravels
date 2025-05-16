@@ -1,54 +1,39 @@
-# 1️⃣ Base image for building (has Node + pnpm + ts)
-FROM node:20-alpine AS builder
+# ---------- Stage 1: Build ----------
+FROM node:18-alpine AS builder
 
-# Install pnpm
-RUN npm install -g pnpm
-
-# Create working dir
+# Set working directory
 WORKDIR /app
 
-# Copy only necessary files to leverage Docker caching
-COPY package.json pnpm-lock.yaml ./
-COPY tsconfig.build.json tsconfig.json ./
-COPY eslint.config.js ./eslint.config.js
-COPY nodemon.json ./nodemon.json
+# Install dependencies (only those needed for build)
+COPY package*.json ./
+RUN npm install
 
-# Install dependencies (no devDeps in prod)
-RUN pnpm install --frozen-lockfile
+# Copy entire project for build
+COPY . .
 
-# Copy source files
-COPY src ./src
-COPY public ./public
-COPY docs ./docs
-COPY loader.mjs ./
+# Build TypeScript
+RUN npm run build
 
-# Compile TypeScript to JavaScript
-RUN pnpm run build
+# ---------- Stage 2: Production ----------
+FROM node:18-alpine AS production
 
-# 2️⃣ Production image with only built code
-FROM node:20-alpine AS runner
-
-# Set secure permissions and non-root user (FAANG best practice)
-RUN addgroup -S app && adduser -S app -G app
-USER app
-
-# Create working directory
 WORKDIR /app
 
-# Copy compiled JS and node_modules only
-COPY --chown=app:app --from=builder /app/dist ./dist
-COPY --chown=app:app --from=builder /app/node_modules ./node_modules
-COPY --chown=app:app --from=builder /app/package.json ./package.json
-COPY --chown=app:app --from=builder /app/public ./public
-COPY --chown=app:app --from=builder /app/docs ./docs
-COPY --chown=app:app --from=builder /app/loader.mjs ./loader.mjs
+# Copy only the build and runtime files
+COPY --from=builder /app/package*.json ./
+RUN npm install --omit=dev
 
-# Define environment variables
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/docs ./docs
+
+# Copy any necessary config
+COPY --from=builder /app/src/config ./src/config
+
+# Don't run as root
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Set env and start app
 ENV NODE_ENV=production
-ENV PORT=8080
-
-# Expose port
-EXPOSE 8080
-
-# Start app
 CMD ["node", "dist/index.js"]

@@ -1,0 +1,9 @@
+node_modules
+dist
+*.log
+Dockerfile
+.dockerignore
+.eslintrc.js
+tsconfig.json
+__test__/
+src/testing/
