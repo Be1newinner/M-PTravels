@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 export function middleware(request: NextRequest) {
+  console.log("HELLO ");
   // Get the path of the request
   const path = request.nextUrl.pathname
 
@@ -20,6 +21,7 @@ export function middleware(request: NextRequest) {
   if (isPublicPath && token) {
     return NextResponse.redirect(new URL("/dashboard", request.url))
   }
+  
 
   // Continue with the request
   return NextResponse.next()
