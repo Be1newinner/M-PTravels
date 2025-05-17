@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+.bgImg {
+  background-image: url("/bg-sky.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.cloudImg {
+  background-image: url("/cloud-vector.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: color-burn;
+}
+
+#hero-section {
+  background-color: transparent;
+  position: relative;
+}
+
+#hero-section:after {
+  content: "";
+  position: absolute;
+  width: 55%;
+  border-radius: 20px;
+  height: 80%;
+  z-index: 29;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #b2e3f2;
+  border: solid 4px white;
+}
+.loginBg {
+  background-image: url("/login.jpg");
+  height: 100%;
+  width: 100%;
+}
+
+button,
+.button {
+  position: relative;
+  background: linear-gradient(to right, #60a5fa, #3b82f6);
+  color: white;
+  border-radius: 6px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+button::before,
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #2563eb, #60a5fa);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  mix-blend-mode: overlay;
+  border-radius: 6px;
+}
+
+button:hover,
+.button:hover {
+  color: black;
+
+  &::before {
+    opacity: 1;
+  }
+}
+
+.container {
+  max-width: 1280px;
+  width: calc(100% - 20px);
+  margin: auto auto;
+}

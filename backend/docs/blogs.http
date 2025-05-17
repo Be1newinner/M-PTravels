@@ -1,0 +1,61 @@
+@baseUrl = http://localhost:5001
+@token = YOUR_JWT_TOKEN_HERE
+@slug = test-slug
+@blogId = BLOG_OBJECT_ID
+
+###
+# Get all blogs with optional pagination
+GET {{baseUrl}}/blogs?page=1&limit=5
+Accept: application/json
+
+###
+# Search blogs by title
+GET {{baseUrl}}/blogs/search?query=blog
+Accept: application/json
+
+###
+# Get a single blog by slug
+GET {{baseUrl}}/blogs/{{slug}}
+Accept: application/json
+
+###
+# Create a new blog (with image)
+POST {{baseUrl}}/blogs
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+My Awesome Blog
+--boundary
+Content-Disposition: form-data; name="blog"
+
+This is the content of my awesome blog post!
+--boundary
+Content-Disposition: form-data; name="slug"
+
+awesome-blog-post
+--boundary
+Content-Disposition: form-data; name="image"; filename="example.jpg"
+Content-Type: image/jpeg
+
+< ./example.jpg
+--boundary--
+
+###
+# Update a blog (by ID)
+PATCH {{baseUrl}}/blogs/{{blogId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Blog Title",
+  "description": "Updated description content"
+}
+
+###
+# Delete a blog (by ID)
+DELETE {{baseUrl}}/blogs/{{blogId}}
+Authorization: Bearer {{token}}
+Accept: application/json

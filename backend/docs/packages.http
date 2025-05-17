@@ -1,0 +1,79 @@
+@baseUrl = http://localhost:5001
+@JWT_TOKEN = YOUR_JWT_TOKEN_HERE
+@slug = test-slug
+@PACKAGE_ID = BLOG_OBJECT_ID
+
+### Create a Package (Auth required)
+POST {{baseUrl}}/packages
+Authorization: Bearer {{JWT_TOKEN}}
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Luxury Tour Package
+--boundary
+Content-Disposition: form-data; name="description"
+
+A premium travel experience
+--boundary
+Content-Disposition: form-data; name="price"
+
+2500
+--boundary
+Content-Disposition: form-data; name="price_unit"
+
+per day
+--boundary
+Content-Disposition: form-data; name="image"; filename="image.jpg"
+Content-Type: image/jpeg
+
+< ./test-assets/image.jpg
+--boundary--
+
+###
+
+### Get All Packages
+GET {{baseUrl}}/packages
+
+###
+
+### Get Package by ID
+GET {{baseUrl}}/packages/{{PACKAGE_ID}}
+
+###
+
+### Update Package by ID (Auth required)
+PATCH {{baseUrl}}/packages/{{PACKAGE_ID}}
+Authorization: Bearer {{JWT_TOKEN}}
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Updated Tour Package
+--boundary
+Content-Disposition: form-data; name="description"
+
+Updated package description
+--boundary
+Content-Disposition: form-data; name="price"
+
+3000
+--boundary
+Content-Disposition: form-data; name="price_unit"
+
+per week
+--boundary
+Content-Disposition: form-data; name="image"; filename="updated-image.jpg"
+Content-Type: image/jpeg
+
+< ./test-assets/updated-image.jpg
+--boundary--
+
+###
+
+### Delete Package by ID (Auth required)
+DELETE {{baseUrl}}/packages/{{PACKAGE_ID}}
+Authorization: Bearer {{JWT_TOKEN}}
+
