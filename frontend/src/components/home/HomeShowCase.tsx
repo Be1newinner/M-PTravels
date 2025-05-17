@@ -12,8 +12,8 @@ export default function HomeShowCase() {
             <div className="flex justify-between max-md:flex-wrap max-sm:gap-6">
               <div className="w-2/6 max-md:w-full max-md:text-center">
                 <Image
-                  width={1920}
-                  height={1920}
+                  width={250}
+                  height={250}
                   src="/logo.webp"
                   alt="logo"
                   className="max-md:w-1/3 max-md:mx-auto "
@@ -45,22 +45,22 @@ export default function HomeShowCase() {
                 <div className="mt-4">
                   <div className="flex relative items-center justify-center md:justify-end gap-2 z-40">
                     <Image
-                      width={1920}
-                      height={1920}
+                      width={500}
+                      height={500}
                       src="/Temple.jpg"
                       alt="paris"
                       className="w-1/5 h-1/5 rounded-3xl border-4 border-white"
                     />
                     <Image
-                      width={1920}
-                      height={1920}
+                      width={500}
+                      height={500}
                       src="/corridor-.jpg"
                       alt="dubai"
                       className="w-2/6 rounded-3xl border-4 border-white"
                     />
                     <Image
-                      width={1920}
-                      height={1920}
+                      width={500}
+                      height={500}
                       src="/IndiaGate.jpg"
                       alt="italy"
                       className="w-1/5 h-1/5 rounded-3xl border-4 border-white"

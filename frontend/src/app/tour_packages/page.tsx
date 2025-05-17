@@ -1,13 +1,13 @@
 import Navbar from "@/components/home/Navbar";
 import TourPackageDataWrapper from "@/components/tourPackage/TourPackageDataWrapper";
-import TourPackageHero from "@/components/tourPackage/TourPackageHero";
 import Footer from "@/components/home/Footer";
+import HeaderHero from "@/components/HeaderHero";
 
 export default function TourPackage() {
   return (
     <div>
       <Navbar location="/tour_packages" />
-      <TourPackageHero />
+      <HeaderHero title="Tour Package" />
       <TourPackageDataWrapper />
       <Footer />
     </div>

@@ -22,25 +22,25 @@ export default function Testimonials() {
               <div className="flex justify-between">
                 <div className="flex ">
                   <Image
-                    width={1920}
-                    height={1920}
+                    width={200}
+                    height={200}
                     src="/user-3.png"
                     alt="user-3"
-                    className="z-20"
+                    className="z-20 w-16 h-16"
                   />
                   <Image
-                    width={1920}
-                    height={1920}
+                    width={200}
+                    height={200}
                     src="/user-1.png"
                     alt="user-1"
-                    className="-translate-x-6 z-10"
+                    className="-translate-x-6 z-10 w-16 h-16"
                   />
                   <Image
-                    width={1920}
-                    height={1920}
+                    width={200}
+                    height={200}
                     src="/user-2.png"
                     alt="user-2"
-                    className="-translate-x-12"
+                    className="-translate-x-12 w-16 h-16"
                   />
                 </div>
                 <div className="flex text-2xl gap-6 max-sm:hidden">

@@ -51,7 +51,7 @@ export default function ContactUs() {
             </div>
             <div className="flex gap-6 pt-4 items-center text-lg max-sm:flex-wrap ">
               <p className="">
-                Let{"&apos;"}s Connect Reach Out for More Information
+                Let's Connect Reach Out for More Information
               </p>
               <button
                 className={[
@@ -63,13 +63,13 @@ export default function ContactUs() {
               </button>
             </div>
           </div>
-          <div className="w-3/4 max-lg:w-full">
+          <div className="w-3/4 max-lg:w-full bg-red-500 overflow-hidden rounded-3xl">
             <Image
-              width={1920}
-              height={1920}
+              width={800}
+              height={800}
               src="/achievement-image.png"
               alt="achivement"
-              className="rounded-3xl"
+              className="h-full aspect-video scale-x-105 hover:scale-x-110 cursor-pointer"
             />
           </div>
         </div>

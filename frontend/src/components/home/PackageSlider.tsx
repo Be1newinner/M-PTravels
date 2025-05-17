@@ -41,7 +41,7 @@ export function TanStackWrapper() {
 
   const packagesList = data?.data;
 
-  // console.log({ data })
+  console.log(packagesList);
 
   const settings = {
     infinite: true,
@@ -97,7 +97,7 @@ export function TanStackWrapper() {
 
       {/* Slider part */}
 
-      <div className="container w-11/12 mx-auto max-sm:w-10/12 scale-[102%]">
+      <div className="container w-11/12 mx-auto max-sm:w-10/12 scale-[102%] ">
         <Suspense fallback={<div>Loading Slider...</div>}>
           <Slider
             {...settings}
@@ -112,13 +112,13 @@ export function TanStackWrapper() {
               <div key={item._id} className="px-4 max-md:px-0">
                 <div className="bg-gray-200 rounded-lg ">
                   <div className="flex flex-col p-4 relative overflow-hidden">
-                    <div className="overflow-hidden rounded-lg aspect-video">
-                      <Image  
-    width={1920}
-    height={1920}
+                    <div className="overflow-hidden rounded-lg aspect-video ">
+                      <Image
+                        width={400}
+                        height={400}
                         src={imageUrlBuilder(item.image_url)}
                         alt={item.title}
-                        className="w-full hover:scale-105 duration-300 pb-6"
+                        className="w-full hover:scale-105 duration-300 pb-6 "
                       />
                     </div>
                     <h1 className="font-bold mt-4">{item.title}</h1>
