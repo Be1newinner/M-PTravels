@@ -6,7 +6,7 @@ import Footer from "@/components/home/Footer";
 export default function TourPackage() {
   return (
     <div>
-      <Navbar location="/packages" />
+      <Navbar location="/tour_packages" />
       <TourPackageHero />
       <TourPackageDataWrapper />
       <Footer />
