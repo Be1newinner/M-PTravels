@@ -163,7 +163,7 @@ router.get("/me", verifyJWT, getUser);
  *       200:
  *         description: User logged out successfully
  */
-router.post("/logout", verifyJWT, logoutUser);
+router.post("/logout", logoutUser);
 
 /**
  * @swagger

@@ -18,12 +18,12 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const { mutate: login, isPending } = useLogin()
 
-  useEffect(() => {
-    const token = getCookie("accessToken")
-    if (token) {
-      router.push("/dashboard")
-    }
-  }, [router])
+  // useEffect(() => {
+  //   const token = getCookie("refreshToken")
+  //   if (token) {
+  //     router.push("/dashboard")
+  //   }
+  // }, [router])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -43,6 +43,7 @@ export default function LoginPage() {
       { email, password },
       {
         onSuccess: () => {
+          console.log("Login successful")
           router.push("/dashboard")
         },
         onError: (error: any) => {

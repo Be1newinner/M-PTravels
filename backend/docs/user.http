@@ -1,5 +1,6 @@
-@baseUrl = http://localhost:5001
+@baseUrl = https://localhost:5001
 @token = YOUR_JWT_TOKEN_HERE
+@REFRESH_TOKEN =dadasdsadasdadasdasd
 @resetToken = YOUR_PASSWORD_RESET_TOKEN_HERE # Get this from the forgot-password email link
 @EMAIL=be1newinner@gmail.com
 @PASSWORD=vijay123
@@ -35,7 +36,7 @@ Content-Type: application/json
 # @name refreshToken
 POST {{baseUrl}}/users/refresh-token
 Content-Type: application/json
-Cookie: refreshToken=YOUR_REFRESH_TOKEN_IF_NOT_USING_COOKIES
+Cookie: refreshToken={{REFRESH_TOKEN}}
 
 ### Forgot password - Send password reset email
 # @name forgotPassword
@@ -89,86 +90,5 @@ Content-Type: application/json
 
 
 ### ----------------------------------------------------------------
-### Instructions for using this file with VS Code REST Client:
+### Important for using this file with VS Code REST Client:
 ### ----------------------------------------------------------------
-
-# 1. Install the "REST Client" extension by Huachao Mao in VS Code.
-# 2. For protected routes (those requiring `{{token}}`):
-#    a. First, run the "Login a user" (`# @name loginUser`) request.
-#    b. Copy the `accessToken` from the JSON response.
-#    c. Replace `YOUR_JWT_TOKEN_HERE` in the `@token` variable at the top of this file with the copied token.
-# 3. For the "Reset user password" (`# @name resetPassword`) route:
-#    a. First, run the "Forgot password" (`# @name forgotPassword`) request.
-#    b. Check the email sent to the specified address (or your console if `sendMail` is mocked for development).
-#    c. Extract the `token` value from the reset link.
-#    d. Replace `YOUR_PASSWORD_RESET_TOKEN_HERE` in the `@resetToken` variable at the top with this token.
-# 4. Click "Send Request" above any request block to execute it.
-# 5. The response will appear in a separate pane.
-
-### Example: How to get the JWT token after login
-# 1. Run the `# @name loginUser` request with valid credentials.
-# 2. The response might look like:
-#
-#    HTTP/1.1 200 OK
-#    Content-Type: application/json; charset=utf-8
-#    Set-Cookie: refreshToken=...; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=...
-#    ...
-#
-#    {
-#      "success": true,
-#      "statusCode": 200,
-#      "message": "User logged in successfully",
-#      "data": {
-#        "_id": "someUserId",
-#        "name": "Test User",
-#        "email": "testuser@example.com",
-#        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InNvbWVVc2VySWQiLCJpYXQiOjE2NzgwMzYwMDAsImV4cCI6MTY3ODA0MDAwMH0.xxxxxxxxxxxx"
-#      }
-#    }
-#
-# 3. Copy the value of `accessToken` (e.g., "eyJhbGciOi...") and paste it into the `@token` variable at the top.
-
-### Example: How to get the Reset Token
-# 1. Run the `# @name forgotPassword` request.
-# 2. If your `sendMail` function is configured, an email will be sent. The link in the email will look something like:
-#    `http://yourfrontend.com/reset-password?token=a1b2c3d4e5f6a1b2c3d4e5f6...`
-#    The part after `token=` is your reset token.
-# 3. If `sendMail` logs to the console for development, you'll see the HTML content with the link.
-# 4. Copy this token and paste it into the `@resetToken` variable.
-
-### Notes on Refresh Token:
-# The `refreshAccessToken` endpoint primarily relies on the `refreshToken` being sent as an HTTP-only cookie,
-# which is set during login. The REST Client extension might not automatically send cookies set by previous requests
-# in the same file without specific configuration or if the server's CORS policy is strict.
-#
-# If cookie-based refresh token isn't working directly in REST Client:
-# 1. You might need to manually copy the `refreshToken` value from the `Set-Cookie` header in the login response.
-# 2. Uncomment the JSON body in the `refreshAccessToken` request and paste the token there.
-#
-# However, your `refreshAccessToken` controller also checks `req.body.refreshToken`, so sending it in the body is a valid alternative for testing.
-
-```
-
-**Key features of this `user.http` file:**
-
-*   **Variables:** Uses `@baseUrl`, `@token`, and `@resetToken` for easy configuration.
-*   **Named Requests:** Each request block has a `# @name` directive (e.g., `# @name loginUser`). This allows you to run requests by name if your REST client supports it and helps in chaining requests if needed (though direct chaining is less common in simple `.http` files).
-*   **Clear Sections:** Divided into "User Management Endpoints" and "Protected User Endpoints."
-*   **Request Bodies:** Includes example JSON payloads for `POST` requests like login and create user.
-*   **Authorization:** Shows how to include the `Authorization: Bearer {{token}}` header for protected routes.
-*   **Query Parameters:** Demonstrates usage for the `reset-password` route.
-*   **Detailed Instructions:** Provides guidance on how to use the file, especially for obtaining and using the JWT and reset tokens.
-*   **Token Acquisition Examples:** Explains how to get the `accessToken` from the login response and the `resetToken` from the forgot password flow.
-*   **Notes on Refresh Token:** Addresses potential complexities with testing cookie-based refresh tokens in REST clients.
-
-**How to use it:**
-
-1.  **Save the file:** Create `user.http` in your `d:\Clients\M-PTravels\backend\docs\` folder and paste the content above.
-2.  **Install VS Code REST Client:** If you don't have it, install the "REST Client" extension by Huachao Mao.
-3.  **Update Variables:**
-   *   Modify `@baseUrl` if your server runs on a port other than `5000`.
-   *   After running the `loginUser` request, copy the `accessToken` from its response and paste it into the `@token` variable.
-   *   After running the `forgotPassword` request and obtaining the reset token (from email or console log), paste it into the `@resetToken` variable.
-4.  **Send Requests:** Click the "Send Request" link that appears above each request block in VS Code.
-
-This should give you a comprehensive way to test all your user-related API endpoints!

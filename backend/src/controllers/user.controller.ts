@@ -71,7 +71,7 @@ export const loginUser = async (
   next: NextFunction
 ): Promise<void> => {
   const { email, password } = req.body;
-  console.log("HOST => ",req.get("host"));
+  // console.log("HOST => ",req.get("host"));
   try {
     if (!email || !password)
       return next(new AppError("Email and password are required", 400));
@@ -104,7 +104,7 @@ export const loginUser = async (
     } = {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
     };
 
     res
@@ -179,6 +179,8 @@ export const refreshAccessToken = async (
     if (!incomingRefreshToken)
       return next(new AppError("Unauthorized access", 401));
 
+    console.log({ tokne: incomingRefreshToken });
+
     const decodedToken = jwt.verify(
       incomingRefreshToken,
       ENV_CONFIGS.REFRESH_TOKEN_SECRET as string
@@ -188,8 +190,16 @@ export const refreshAccessToken = async (
 
     if (!user) return next(new AppError("Invalid refresh token", 401));
 
-    if (incomingRefreshToken !== user.refreshToken)
+    // console.log(
+    //   user.refreshToken === incomingRefreshToken,
+    //   incomingRefreshToken,
+    //   user.refreshToken
+    // );
+
+    if (incomingRefreshToken !== user.refreshToken) {
+      console.log("TOJEN");
       return next(new AppError("Refresh token is expired or invalid", 401));
+    } else console.log("HERE");
 
     const options = {
       httpOnly: true,
@@ -205,10 +215,6 @@ export const refreshAccessToken = async (
 
     res
       .status(200)
-      .cookie("accessToken", accessToken, {
-        ...options,
-        maxAge: 24 * 60 * 60 * 1000,
-      }) // 1 day
       .cookie("refreshToken", refreshToken, {
         ...options,
         maxAge: 20 * 24 * 60 * 60 * 1000,
@@ -219,7 +225,6 @@ export const refreshAccessToken = async (
         message: "Access token refreshed successfully",
         data: {
           accessToken,
-          refreshToken,
         },
       });
   } catch (error: unknown) {

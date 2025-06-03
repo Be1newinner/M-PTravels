@@ -267,7 +267,7 @@ export const getTotalLeadsCount = async (
       status_code: 200,
       message: "Total leads count fetched successfully",
       data: {
-        totalLeads,
+        count: totalLeads,
       },
     });
   } catch (error: unknown) {
@@ -295,7 +295,7 @@ export const getLeadsTodayCount = async (
       status_code: 200,
       message: "Today's leads count fetched successfully",
       data: {
-        leadsToday,
+        count: leadsToday,
       },
     });
   } catch (error: unknown) {
@@ -323,7 +323,7 @@ export const getLeadsThisMonthCount = async (
       status_code: 200,
       message: "This month's leads count fetched successfully",
       data: {
-        leadsThisMonth,
+        count: leadsThisMonth,
       },
     });
   } catch (error: unknown) {

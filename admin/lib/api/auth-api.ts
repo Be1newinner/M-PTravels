@@ -1,45 +1,57 @@
-import { useMutation } from "@tanstack/react-query"
-import apiClient from "./api-client"
-import { useAuthStore } from "../store/auth-store"
-import { setCookie, deleteCookie } from "../utils/cookies"
+import { useMutation } from "@tanstack/react-query";
+import apiClient from "./api-client";
+import { useAuthStore } from "../store/auth-store";
 
 interface LoginCredentials {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 interface LoginResponse {
-  success: boolean
-  statusCode: number
-  message: string
+  success: boolean;
+  statusCode: number;
+  message: string;
   data: {
-    _id: string
-    name: string
-    email: string
-    accessToken: string
-  }
+    _id: string;
+    name: string;
+    email: string;
+    accessToken: string;
+  };
 }
 
 export const useLogin = () => {
-  const { login } = useAuthStore()
+  const { login } = useAuthStore();
 
   return useMutation({
     mutationFn: async (credentials: LoginCredentials) => {
-      const response = await apiClient.post<LoginResponse>("/users/login", credentials)
-      return response.data
+      const response = await apiClient.post<LoginResponse>(
+        "/users/login",
+        credentials
+      );
+      return response.data;
     },
     onSuccess: (data) => {
-      setCookie("accessToken", data.data.accessToken)
-      login(data.data)
+      login(data.data);
     },
-  })
-}
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+};
 
 export const useLogout = () => {
-  const { logout } = useAuthStore()
-
-  return () => {
-    deleteCookie("accessToken")
-    logout()
-  }
-}
+  const { logout } = useAuthStore();
+  return useMutation({
+    mutationFn: async () => {
+      const response = await apiClient.post("/users/logout");
+      return response.data;
+    },
+    onSuccess: () => {
+      console.log("Logged out successfully");
+      logout();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+};

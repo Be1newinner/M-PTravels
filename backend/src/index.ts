@@ -6,6 +6,11 @@ import connectToDB from "./config/db";
 import { setupSwagger } from "./config/swagger";
 import { ENV_CONFIGS } from "./config/envs.config";
 import { errorHandler } from "./middlewares/error.middleware";
+import fs from "fs";
+import path from "path";
+import https from "https";
+import helmet from "helmet";
+import { fileURLToPath } from "node:url";
 
 // Import Routes
 import userRoutes from "./routes/user.routes";
@@ -13,7 +18,19 @@ import blogRoutes from "./routes/blog.routes";
 import leadRoutes from "./routes/lead.routes";
 import cabRoutes from "./routes/cab.routes";
 import packageRoutes from "./routes/package.routes";
-import helmet from "helmet";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const privateKey = fs.readFileSync(
+  path.join(__dirname, "../", "localhost-key.pem"),
+  "utf8"
+);
+const certificate = fs.readFileSync(
+  path.join(__dirname, "../", "localhost.pem"),
+  "utf8"
+);
+const credentials = { key: privateKey, cert: certificate };
 
 const app = express();
 const PORT = ENV_CONFIGS.PORT || 5000;
@@ -25,6 +42,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://localhost:3001",
+      "https://localhost:3001",
       "http://localhost:5173",
       "https://firefly-top-jackal.ngrok-free.app",
       "https://mptravels.vercel.app",
@@ -72,7 +90,9 @@ app.use(errorHandler);
 // Database Connection & Server Start
 connectToDB()
   .then(() => {
-    app.listen(PORT, () => {
+    const httpsServer = https.createServer(credentials, app);
+
+    httpsServer.listen(PORT, () => {
       console.log(`⚙️  Server is running on http://localhost:${PORT}`);
     });
   })

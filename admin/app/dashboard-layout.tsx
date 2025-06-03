@@ -52,7 +52,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }, [pathname, router, isAuthenticated])
 
   const handleLogout = () => {
-    logout()
+    logout.mutate()
     router.push("/login")
   }
 

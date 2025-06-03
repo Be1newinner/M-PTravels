@@ -1,60 +1,83 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Users, TrendingUp, Calendar, Package, Award, ArrowRight } from "lucide-react"
-import DashboardLayout from "../dashboard-layout"
-import { useLeads } from "@/lib/api/leads-api"
-import { usePackages } from "@/lib/api/packages-api"
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import {
+  Users,
+  TrendingUp,
+  Calendar,
+  Package,
+  Award,
+  ArrowRight,
+} from "lucide-react";
+import DashboardLayout from "../dashboard-layout";
+// import { useLeads } from "@/lib/api/leads-api";
+import {
+  useTotalLeadsCount,
+  useLeadsTodayCount,
+  useLeadsThisMonthCount,
+  useRecentLeads,
+} from "@/lib/api/leads-api";
+import { usePackages } from "@/lib/api/packages-api";
 
 export default function DashboardPage() {
-  const [isLoading, setIsLoading] = useState(true)
+  const { data: totalLeadsData, isLoading: isTotalLeadsLoading } =
+    useTotalLeadsCount();
+  const { data: leadsTodayData, isLoading: isLeadsTodayLoading } =
+    useLeadsTodayCount();
+  const { data: leadsThisMonthData, isLoading: isLeadsThisMonthLoading } =
+    useLeadsThisMonthCount();
+  const { data: recentLeadsData, isLoading: isRecentLeadsLoading } =
+    useRecentLeads();
+  const { data: packagesData, isLoading: isPackagesLoading } = usePackages(
+    1,
+    5
+  );
 
-  const { data: leadsData, isLoading: isLeadsLoading } = useLeads({
-    page: 1,
-    limit: 5,
-  })
+  console.log({
+    totalLeadsData,
+    isTotalLeadsLoading,
+    leadsTodayData,
+    isLeadsTodayLoading,
+    leadsThisMonthData,
+    isLeadsThisMonthLoading,
+    recentLeadsData,
+    isRecentLeadsLoading,
+    packagesData,
+    isPackagesLoading,
+  });
 
-  const { data: packagesData, isLoading: isPackagesLoading } = usePackages(1, 5)
+  const isLoadingStats =
+    isTotalLeadsLoading ||
+    isLeadsTodayLoading ||
+    isLeadsThisMonthLoading ||
+    isPackagesLoading;
 
-  useEffect(() => {
-    if (!isLeadsLoading && !isPackagesLoading) {
-      setIsLoading(false)
-    }
-  }, [isLeadsLoading, isPackagesLoading])
-
-  const totalLeads = leadsData?.data?.pagination?.total_records || 0
-
-  const leadsToday =
-    leadsData?.data?.data?.filter((lead) => {
-      if (!lead.createdAt) return false
-      const today = new Date().toISOString().split("T")[0]
-      return new Date(lead.createdAt).toISOString().split("T")[0] === today
-    })?.length || 0
-
-  const leadsThisMonth =
-    leadsData?.data?.data?.filter((lead) => {
-      if (!lead.createdAt) return false
-      const now = new Date()
-      const thisMonth = now.getMonth()
-      const thisYear = now.getFullYear()
-      const leadDate = new Date(lead.createdAt)
-      return leadDate.getMonth() === thisMonth && leadDate.getFullYear() === thisYear
-    })?.length || 0
-
-  const totalPackages = packagesData?.meta?.total || 0
+  const totalPackages = packagesData?.meta?.total || 0;
 
   const topPackage = packagesData?.data?.length
     ? packagesData.data.reduce(
         (prev, current) => {
-          return (prev.price || 0) > (current.price || 0) ? prev : current
+          return (prev.price || 0) > (current.price || 0) ? prev : current;
         },
-        { title: "N/A" },
+        { title: "N/A" }
       )
-    : { title: "N/A" }
+    : { title: "N/A" };
 
   return (
     <DashboardLayout>
@@ -70,7 +93,11 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {isLoading ? <div className="h-8 w-16 animate-pulse rounded bg-muted"></div> : totalLeads}
+                {isTotalLeadsLoading ? (
+                  <div className="h-8 w-16 animate-pulse rounded bg-muted"></div>
+                ) : (
+                  totalLeadsData
+                )}
               </div>
               <p className="text-xs text-muted-foreground">All time leads</p>
             </CardContent>
@@ -83,7 +110,11 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {isLoading ? <div className="h-8 w-8 animate-pulse rounded bg-muted"></div> : leadsToday}
+                {isLeadsTodayLoading ? (
+                  <div className="h-8 w-8 animate-pulse rounded bg-muted"></div>
+                ) : (
+                  leadsTodayData
+                )}
               </div>
               <p className="text-xs text-muted-foreground">New leads today</p>
             </CardContent>
@@ -91,12 +122,18 @@ export default function DashboardPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Leads This Month</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Leads This Month
+              </CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {isLoading ? <div className="h-8 w-12 animate-pulse rounded bg-muted"></div> : leadsThisMonth}
+                {isLeadsThisMonthLoading ? (
+                  <div className="h-8 w-12 animate-pulse rounded bg-muted"></div>
+                ) : (
+                  leadsThisMonthData
+                )}
               </div>
               <p className="text-xs text-muted-foreground">Leads this month</p>
             </CardContent>
@@ -104,14 +141,22 @@ export default function DashboardPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Packages</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Packages
+              </CardTitle>
               <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {isLoading ? <div className="h-8 w-8 animate-pulse rounded bg-muted"></div> : totalPackages}
+                {isPackagesLoading ? (
+                  <div className="h-8 w-8 animate-pulse rounded bg-muted"></div>
+                ) : (
+                  totalPackages
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">Active tour packages</p>
+              <p className="text-xs text-muted-foreground">
+                Active tour packages
+              </p>
             </CardContent>
           </Card>
 
@@ -122,9 +167,15 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-md font-bold truncate">
-                {isLoading ? <div className="h-8 w-full animate-pulse rounded bg-muted"></div> : topPackage?.title}
+                {isPackagesLoading ? (
+                  <div className="h-8 w-full animate-pulse rounded bg-muted"></div>
+                ) : (
+                  topPackage?.title
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">Highest priced package</p>
+              <p className="text-xs text-muted-foreground">
+                Highest priced package
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -146,14 +197,19 @@ export default function DashboardPage() {
               </Button>
             </CardHeader>
             <CardContent>
-              {isLoading ? (
+              {isRecentLeadsLoading ? (
                 <div className="space-y-2">
                   {[...Array(5)].map((_, i) => (
-                    <div key={i} className="h-10 animate-pulse rounded bg-muted"></div>
+                    <div
+                      key={i}
+                      className="h-10 animate-pulse rounded bg-muted"
+                    ></div>
                   ))}
                 </div>
-              ) : !leadsData?.data?.data?.length ? (
-                <div className="text-center py-4 text-muted-foreground">No leads found</div>
+              ) : !recentLeadsData?.length ? (
+                <div className="text-center py-4 text-muted-foreground">
+                  No leads found
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -164,9 +220,11 @@ export default function DashboardPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {leadsData?.data?.data?.slice(0, 5).map((lead) => (
+                    {recentLeadsData?.map((lead) => (
                       <TableRow key={lead._id}>
-                        <TableCell className="font-medium">{lead.name}</TableCell>
+                        <TableCell className="font-medium">
+                          {lead.name}
+                        </TableCell>
                         <TableCell>{lead.email}</TableCell>
                         <TableCell>{lead.phone}</TableCell>
                       </TableRow>
@@ -192,14 +250,19 @@ export default function DashboardPage() {
               </Button>
             </CardHeader>
             <CardContent>
-              {isLoading ? (
+              {isPackagesLoading ? (
                 <div className="space-y-2">
                   {[...Array(5)].map((_, i) => (
-                    <div key={i} className="h-10 animate-pulse rounded bg-muted"></div>
+                    <div
+                      key={i}
+                      className="h-10 animate-pulse rounded bg-muted"
+                    ></div>
                   ))}
                 </div>
               ) : !packagesData?.data?.length ? (
-                <div className="text-center py-4 text-muted-foreground">No packages found</div>
+                <div className="text-center py-4 text-muted-foreground">
+                  No packages found
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -212,9 +275,15 @@ export default function DashboardPage() {
                   <TableBody>
                     {packagesData?.data?.slice(0, 5).map((pkg) => (
                       <TableRow key={pkg._id}>
-                        <TableCell className="font-medium">{pkg.title}</TableCell>
-                        <TableCell>{pkg.price ? `₹${pkg.price}` : "N/A"}</TableCell>
-                        <TableCell className="truncate max-w-[200px]">{pkg.description}</TableCell>
+                        <TableCell className="font-medium">
+                          {pkg.title}
+                        </TableCell>
+                        <TableCell>
+                          {pkg.price ? `₹${pkg.price}` : "N/A"}
+                        </TableCell>
+                        <TableCell className="truncate max-w-[200px]">
+                          {pkg.description}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -225,5 +294,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </DashboardLayout>
-  )
+  );
 }
