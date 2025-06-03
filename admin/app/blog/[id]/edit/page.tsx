@@ -17,7 +17,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import apiClient from "@/lib/api/api-client"
 import SimpleMarkdownEditor from "@/components/simple-markdown-editor"
 
-// Get a single blog post
+// Will Get a single blog post
 const useBlog = (id: string) => {
   return useQuery({
     queryKey: ["blog", id],
@@ -29,7 +29,7 @@ const useBlog = (id: string) => {
   })
 }
 
-// Update a blog post
+// Will Update a blog post
 const useUpdateBlog = (id: string) => {
   const queryClient = useQueryClient()
 
@@ -100,7 +100,6 @@ export default function EditBlogPage() {
     formData.append("title", title)
     formData.append("description", content)
 
-    // Append image if available
     if (image) {
       formData.append("image", image)
     }
@@ -130,7 +129,6 @@ export default function EditBlogPage() {
     const file = e.target.files[0]
     setImage(file)
 
-    // Create a preview URL
     const url = URL.createObjectURL(file)
     setPreviewUrl(url)
   }

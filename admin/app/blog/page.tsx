@@ -41,7 +41,6 @@ export default function BlogPage() {
   const { data: searchResults, isLoading: isSearching } = useSearchBlogs(searchTerm)
   const { mutate: deleteBlog, isPending: isDeleting } = useDeleteBlog()
 
-  // Use search results if search term is provided, otherwise use regular data
   const blogsToDisplay = searchTerm && searchResults ? searchResults.data : data?.data || []
 
   const handleDeleteBlog = (id: string) => {

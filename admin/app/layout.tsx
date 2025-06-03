@@ -7,10 +7,9 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Admin Panel",
+  title: "MP Admin Panel",
   description:
     "Admin panel for managing leads, packages, bus details, and blogs",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({

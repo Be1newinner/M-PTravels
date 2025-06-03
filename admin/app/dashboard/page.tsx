@@ -26,7 +26,6 @@ export default function DashboardPage() {
     }
   }, [isLeadsLoading, isPackagesLoading])
 
-  // Calculate stats with proper null checks
   const totalLeads = leadsData?.data?.pagination?.total_records || 0
 
   const leadsToday =
@@ -48,7 +47,6 @@ export default function DashboardPage() {
 
   const totalPackages = packagesData?.meta?.total || 0
 
-  // Find top package (most expensive) with null checks
   const topPackage = packagesData?.data?.length
     ? packagesData.data.reduce(
         (prev, current) => {

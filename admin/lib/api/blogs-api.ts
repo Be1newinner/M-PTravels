@@ -47,7 +47,7 @@ export const useSearchBlogs = (query: string) => {
       const response = await apiClient.get<BlogsResponse>(`/blogs/search?query=${query}`)
       return response.data
     },
-    enabled: !!query && query.length > 2, // Only search when query is at least 3 characters
+    enabled: !!query && query.length > 2, // Will Only search when query is at least 3 characters
   })
 }
 

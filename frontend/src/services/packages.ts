@@ -2,9 +2,9 @@ import { get, type Custom_API_Response_Type } from "./apiInstance";
 
 export type packagesType = {
   description: string;
-  image_url: string;
-  price: number;
-  price_unit: string;
+  image: string;
+  // price: number;
+  // price_unit: string;
   title: string;
   _id: string;
   slug: string;

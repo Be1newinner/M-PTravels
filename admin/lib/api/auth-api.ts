@@ -29,9 +29,7 @@ export const useLogin = () => {
       return response.data
     },
     onSuccess: (data) => {
-      // Store the token in a cookie
       setCookie("accessToken", data.data.accessToken)
-      // Update the auth store
       login(data.data)
     },
   })
@@ -41,9 +39,7 @@ export const useLogout = () => {
   const { logout } = useAuthStore()
 
   return () => {
-    // Clear the token cookie
     deleteCookie("accessToken")
-    // Update the auth store
     logout()
   }
 }

@@ -116,14 +116,14 @@ export function TanStackWrapper() {
                       <Image
                         width={400}
                         height={400}
-                        src={imageUrlBuilder(item.image_url)}
+                        src={imageUrlBuilder(item.image)}
                         alt={item.title}
                         className="w-full hover:scale-105 duration-300 pb-6 "
                       />
                     </div>
                     <h1 className="font-bold mt-4">{item.title}</h1>
                     <div className="flex justify-between items-center">
-                      <p className="font-bold">₹ {item.price} /-</p>
+                      {/* <p className="font-bold">₹ {item.price} /-</p> */}
                       <Link
                         href={PAGES.TOUR_PACKAGES + item.slug}
                         className={"button py-2 px-4"}

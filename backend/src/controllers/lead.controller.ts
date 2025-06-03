@@ -254,3 +254,113 @@ export const searchLead = async (
     return next(new AppError(message, 500));
   }
 };
+
+export const getTotalLeadsCount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const totalLeads = await Lead.countDocuments();
+
+    SendResponse(res, {
+      status_code: 200,
+      message: "Total leads count fetched successfully",
+      data: {
+        totalLeads,
+      },
+    });
+  } catch (error: unknown) {
+    console.error("Error while fetching total leads count", error);
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+    return next(new AppError(message, 500));
+  }
+};
+
+export const getLeadsTodayCount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const leadsToday = await Lead.countDocuments({
+      createdAt: { $gte: today },
+    });
+
+    SendResponse(res, {
+      status_code: 200,
+      message: "Today's leads count fetched successfully",
+      data: {
+        leadsToday,
+      },
+    });
+  } catch (error: unknown) {
+    console.error("Error while fetching today's leads count", error);
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+    return next(new AppError(message, 500));
+  }
+};
+
+export const getLeadsThisMonthCount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const today = new Date();
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    const leadsThisMonth = await Lead.countDocuments({
+      createdAt: { $gte: startOfMonth },
+    });
+
+    SendResponse(res, {
+      status_code: 200,
+      message: "This month's leads count fetched successfully",
+      data: {
+        leadsThisMonth,
+      },
+    });
+  } catch (error: unknown) {
+    console.error("Error while fetching this month's leads count", error);
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+    return next(new AppError(message, 500));
+  }
+};
+export const getRecentLeads = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const recentLeads = await Lead.find({})
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .select("_id name email phone createdAt");
+
+    if (!recentLeads || recentLeads.length === 0) {
+      return SendResponse(res, {
+        status_code: 200, // Or 404 if you prefer to indicate no recent leads found
+        message: "No recent leads found",
+        data: [],
+      });
+    }
+
+    SendResponse(res, {
+      status_code: 200,
+      message: "Recent leads fetched successfully",
+      data: recentLeads,
+    });
+  } catch (error: unknown) {
+    console.error("Error while fetching recent leads", error);
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error!";
+    return next(new AppError(message, 500));
+  }
+};

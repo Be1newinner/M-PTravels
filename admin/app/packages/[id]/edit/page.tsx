@@ -66,14 +66,12 @@ export default function EditPackagePage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData()
 
-    // Append form values to FormData
     Object.entries(values).forEach(([key, value]) => {
       if (value !== undefined) {
         formData.append(key, value.toString())
       }
     })
 
-    // Append image if available
     if (image) {
       formData.append("image", image)
     }
@@ -103,7 +101,6 @@ export default function EditPackagePage() {
     const file = e.target.files[0]
     setImage(file)
 
-    // Create a preview URL
     const url = URL.createObjectURL(file)
     setPreviewUrl(url)
   }

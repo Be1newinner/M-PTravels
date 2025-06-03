@@ -28,7 +28,7 @@ import DashboardLayout from "../../dashboard-layout"
 import { useCab, useUpdateCab } from "@/lib/api/cabs-api"
 
 export default function EditBusPage() {
-  // Form state
+  // The Form state
   const [formData, setFormData] = useState({
     title: "",
     model: "",
@@ -41,8 +41,7 @@ export default function EditBusPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
-  // Get cab data - using a default ID for now, in a real app you might get this from URL params
-  const cabId = "default-cab-id" // This would come from route params in a real app
+  const cabId = "default-cab-id" // route params in future
   const { data, isLoading, isError, refetch } = useCab(cabId)
   const { mutate: updateCab, isPending } = useUpdateCab(cabId)
 
@@ -65,7 +64,6 @@ export default function EditBusPage() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear error when user types
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -74,7 +72,6 @@ export default function EditBusPage() {
   const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear error when user selects
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -114,7 +111,6 @@ export default function EditBusPage() {
     formDataToSend.append("description", formData.description || "")
     formDataToSend.append("capacity", formData.capacity)
 
-    // Append new images
     newImages.forEach((file) => {
       formDataToSend.append("images", file)
     })
@@ -149,7 +145,6 @@ export default function EditBusPage() {
     const files = Array.from(e.target.files)
     setNewImages((prev) => [...prev, ...files])
 
-    // Create preview URLs
     const newPreviewUrls = files.map((file) => URL.createObjectURL(file))
     setImages((prev) => [...prev, ...newPreviewUrls])
 
@@ -162,13 +157,11 @@ export default function EditBusPage() {
   }
 
   const removeImage = (index: number) => {
-    // If it's a new image, remove from newImages array
     if (index >= (data?.data?.images?.length || 0)) {
       const newImagesIndex = index - (data?.data?.images?.length || 0)
       setNewImages((prev) => prev.filter((_, i) => i !== newImagesIndex))
     }
 
-    // Remove from preview array
     setImages((prev) => prev.filter((_, i) => i !== index))
   }
 

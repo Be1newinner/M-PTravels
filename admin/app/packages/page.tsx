@@ -40,7 +40,6 @@ export default function PackagesPage() {
   const { data, isLoading, isError, refetch } = usePackages(currentPage, itemsPerPage)
   const { mutate: deletePackage, isPending: isDeleting } = useDeletePackage()
 
-  // Filter packages based on search term with proper null checks
   const filteredPackages = data?.data
     ? data.data.filter((pkg) => {
         return (

@@ -15,14 +15,12 @@ export default function SimpleMarkdownEditor({ initialContent = "", onChange }: 
   const [markdown, setMarkdown] = useState(initialContent)
   const [html, setHtml] = useState("")
 
-  // Update markdown when initialContent changes
   useEffect(() => {
     if (initialContent !== markdown) {
       setMarkdown(initialContent)
     }
   }, [initialContent])
 
-  // Convert markdown to HTML for preview
   useEffect(() => {
     const convertMarkdownToHtml = async () => {
       try {
@@ -36,7 +34,6 @@ export default function SimpleMarkdownEditor({ initialContent = "", onChange }: 
         setHtml(String(result))
       } catch (error) {
         console.error("Error converting markdown to HTML:", error)
-        // Fallback to simple line break conversion if processing fails
         setHtml(markdown.replace(/\n/g, "<br />"))
       }
     }

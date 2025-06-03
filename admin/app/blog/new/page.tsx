@@ -51,7 +51,6 @@ export default function NewBlogPage() {
     formData.append("title", title)
     formData.append("description", content)
 
-    // Append image if available
     if (image) {
       formData.append("image", image)
     }
@@ -81,7 +80,6 @@ export default function NewBlogPage() {
     const file = e.target.files[0]
     setImage(file)
 
-    // Create a preview URL
     const url = URL.createObjectURL(file)
     setPreviewUrl(url)
   }

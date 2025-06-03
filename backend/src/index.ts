@@ -19,16 +19,18 @@ const app = express();
 const PORT = ENV_CONFIGS.PORT || 5000;
 
 // Middleware
-app.use(helmet())
+app.use(helmet());
 app.use(
   cors({
     origin: [
       "http://localhost:3000",
+      "http://localhost:3001",
       "http://localhost:5173",
       "https://firefly-top-jackal.ngrok-free.app",
       "https://mptravels.vercel.app",
       "https://mnp-admin.vercel.app",
       /^https:\/\/.*\.lite\.vusercontent\.net$/,
+      "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--3000--55edb8f4.local-credentialless.webcontainer-api.io",
     ],
     credentials: true,
   })

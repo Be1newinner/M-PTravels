@@ -5,6 +5,10 @@ import {
   deleteLead,
   getAllLeads,
   getLead,
+  getLeadsThisMonthCount,
+  getLeadsTodayCount,
+  getTotalLeadsCount,
+  getRecentLeads,
   searchLead,
   updateLead,
 } from "../controllers/lead.controller";
@@ -118,6 +122,68 @@ router.post("/all", verifyJWT, getAllLeads);
  *         description: No leads found
  */
 router.get("/search", verifyJWT, searchLead);
+
+/**
+ * @swagger
+ * /leads/count/total:
+ *   get:
+ *     summary: Get the total count of all leads
+ *     tags: [Leads]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Total leads count fetched successfully
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get("/count/total", verifyJWT, getTotalLeadsCount);
+
+/**
+ * @swagger
+ * /leads/count/today:
+ *   get:
+ *     summary: Get the count of leads created today
+ *     tags: [Leads]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Today's leads count fetched successfully
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get("/count/today", verifyJWT, getLeadsTodayCount);
+
+/**
+ * @swagger
+ * /leads/count/month:
+ *   get:
+ *     summary: Get the count of leads created this month
+ *     tags: [Leads]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: This month's leads count fetched successfully
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get("/count/month", verifyJWT, getLeadsThisMonthCount);
+
+/**
+ * @swagger
+ * /leads/recent:
+ *   get:
+ *     summary: Get the last 5 leads
+ *     tags: [Leads]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Recent leads fetched successfully
+ */
+router.get("/recent", verifyJWT, getRecentLeads);
 
 /**
  * @swagger

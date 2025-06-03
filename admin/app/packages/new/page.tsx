@@ -34,7 +34,6 @@ export default function NewPackagePage() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear error when user types
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -68,12 +67,10 @@ export default function NewPackagePage() {
 
     const formDataToSend = new FormData()
 
-    // Append form values to FormData
     Object.entries(formData).forEach(([key, value]) => {
       formDataToSend.append(key, value.toString())
     })
 
-    // Append image if available
     if (image) {
       formDataToSend.append("image", image)
     }
@@ -103,7 +100,6 @@ export default function NewPackagePage() {
     const file = e.target.files[0]
     setImage(file)
 
-    // Create a preview URL
     const url = URL.createObjectURL(file)
     setPreviewUrl(url)
   }

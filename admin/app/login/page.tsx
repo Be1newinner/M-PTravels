@@ -13,25 +13,22 @@ import { getCookie } from "@/lib/utils/cookies"
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("be1newinner@gmail.com")
+  const [password, setPassword] = useState("vijay123")
   const [error, setError] = useState("")
   const { mutate: login, isPending } = useLogin()
 
   useEffect(() => {
-    // Check if user is already logged in
     const token = getCookie("accessToken")
     if (token) {
       router.push("/dashboard")
     }
   }, [router])
 
-  // Handle form submission without react-hook-form
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     setError("")
 
-    // Basic validation
     if (!email || !email.includes("@")) {
       setError("Please enter a valid email address")
       return

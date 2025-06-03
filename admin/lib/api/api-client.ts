@@ -10,7 +10,6 @@ const apiClient = axios.create({
   },
 });
 
-// Add a request interceptor to include the auth token in requests
 apiClient.interceptors.request.use(
   (config) => {
     const token = getCookie("accessToken");
@@ -25,15 +24,12 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Add a response interceptor to handle errors
 apiClient.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle 401 Unauthorized errors (token expired or invalid)
     if (error.response && error.response.status === 401) {
-      // Clear cookies and redirect to login
       document.cookie =
         "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       window.location.href = "/login";

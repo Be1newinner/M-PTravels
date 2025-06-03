@@ -1,0 +1,114 @@
+@baseUrl = http://localhost:5001
+@access_token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTRjYWNiNDNlM2YwZjYxNTljYzMwMSIsImlhdCI6MTc0ODk0MTMwOCwiZXhwIjoxNzQ5MDI3NzA4fQ.Xkiidt3mUC-n_0sQ--FOqgZeXgQtIuyVtZQnaem5WUE
+@leadId = 67c85c5618b3c6cc0db39b85
+
+### -------------------------
+### Lead Management Endpoints
+### -------------------------
+
+### Create a new lead (No Auth Required)
+# @name createLead
+POST {{baseUrl}}/leads
+Content-Type: application/json
+
+{
+  "name": "Test Lead User 1",
+  "email": "test.lead1@example.com",
+  "phone": "1234567891",
+  "pickupAddress": "123 Pickup St, Test City",
+  "dropAddress": "456 Drop Ave, Test City",
+  "pickupDate": "2024-07-15T10:00:00Z",
+  "dropDate": "2024-07-16T18:00:00Z",
+  "message": "This is a test lead creation.",
+  "source": "Website Form"
+}
+
+### Get all leads with pagination and filtering (Auth Required)
+# Requires a valid JWT token
+# @name getAllLeads
+POST {{baseUrl}}/leads/all
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "limit": 5,
+  "filters": {
+    "name": "Test"
+  }
+}
+
+### Search leads by name, email, or phone (Auth Required)
+# Requires a valid JWT token
+# @name searchLeads
+GET {{baseUrl}}/leads/search?query=test.lead@example.com
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+### Get total leads count (Auth Required)
+# Requires a valid JWT token
+# @name getTotalLeadsCount
+GET {{baseUrl}}/leads/count/total
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+### Get leads today count (Auth Required)
+# Requires a valid JWT token
+# @name getLeadsTodayCount
+GET {{baseUrl}}/leads/count/today
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+### Get leads this month count (Auth Required)
+# Requires a valid JWT token
+# @name getLeadsThisMonthCount
+GET {{baseUrl}}/leads/count/month
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+### Get recent 5 leads (Auth Required)
+# Requires a valid JWT token
+# @name getRecentLeads
+GET {{baseUrl}}/leads/recent
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+### Get a single lead by ID (Auth Required)
+# Requires a valid JWT token
+# Replace {{leadId}} with an actual lead ID after creating one
+# @name getLeadById
+GET {{baseUrl}}/leads/{{leadId}}
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+### Update a lead by ID (Auth Required)
+# Requires a valid JWT token
+# Replace {{leadId}} with an actual lead ID
+# @name updateLeadById
+PATCH {{baseUrl}}/leads/{{leadId}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "name": "Updated Test Lead User",
+  "email": "updated.lead@example.com",
+  "phone": "0987654321",
+  "pickupAddress": "789 Updated Pickup St, Test City",
+  "dropAddress": "101 Updated Drop Ave, Test City",
+  "pickupDate": "2024-07-20T11:00:00Z",
+  "dropDate": "2024-07-21T19:00:00Z",
+  "message": "This lead has been updated."
+}
+
+### Delete a lead by ID (Auth Required)
+# Requires a valid JWT token
+# Replace {{leadId}} with an actual lead ID
+# @name deleteLeadById
+DELETE {{baseUrl}}/leads/{{leadId}}
+Authorization: Bearer {{access_token}}
+Accept: application/json
+
+
+### ----------------------------------------------------------------
+### Important: for using this file with VS Code REST Client:
+### ----------------------------------------------------------------

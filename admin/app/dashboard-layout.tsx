@@ -40,12 +40,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   useEffect(() => {
     setIsMounted(true)
 
-    // Check if user is logged in
+    // is user logged in?
     if (!isAuthenticated && pathname !== "/login") {
       router.push("/login")
     }
 
-    // Load sidebar state from localStorage if available
     const savedState = localStorage.getItem("sidebarCollapsed")
     if (savedState) {
       setSidebarCollapsed(savedState === "true")
@@ -76,7 +75,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Sidebar for desktop */}
+      {/* Sidebar in desktop version! */}
       <div
         className={cn(
           "hidden md:flex md:flex-col transition-all duration-300 ease-in-out",
@@ -216,7 +215,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <h1 className="text-lg font-bold">Admin Panel</h1>
       </div>
 
-      {/* Main content */}
+      {/* The Main content */}
       <div className="flex flex-col flex-1">
         <main className="flex-1 overflow-y-auto bg-muted/30 p-4 md:p-6">{children}</main>
       </div>
