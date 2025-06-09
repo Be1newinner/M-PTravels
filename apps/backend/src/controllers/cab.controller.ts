@@ -116,45 +116,25 @@ export const updateCab = async (
   next: NextFunction
 ): Promise<void> => {
   const { id } = req.params;
-  const { title, description, model, capacity } = req.body;
+  const { title, description, model, capacity, imageUrls } = req.body;
 
   try {
     const cab = await Cab.findById(id);
 
     if (!cab) return next(new AppError("Cab not found", 404));
 
-    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-      try {
-        for (const file of req.files as Express.Multer.File[]) {
-          await bucket.upload(file.path, {
-            destination: `cab-booking/cabs/${file.originalname}`,
-          });
-
-          cab.imageUrls.push(
-            `https://firebasestorage.googleapis.com/v0/b/wingfi-9b5b7.appspot.com/o/${encodeURIComponent(`cab-booking/cabs/${file.originalname}`)}?alt=media`
-          );
-
-          await fs.rm(file.path);
-        }
-      } catch (error: unknown) {
-        console.error("Error while uploading image", error);
-        const message =
-          error instanceof Error ? error.message : "Internal Server Error!";
-
-        return next(new AppError(message, 500));
-      }
-    }
-
     if (title) cab.title = title;
     if (description) cab.description = description;
     if (model) cab.model = model;
     if (capacity) cab.capacity = capacity;
+    if (capacity) cab.capacity = capacity;
+    if (imageUrls) cab.imageUrls = imageUrls;
 
     await cab.save();
 
     SendResponse(res, {
       status_code: 200,
-      message: "Cab fetched successfully",
+      message: "Cab updated successfully",
       data: cab,
     });
   } catch (error: unknown) {

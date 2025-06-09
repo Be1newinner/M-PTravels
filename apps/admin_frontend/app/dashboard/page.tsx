@@ -49,31 +49,32 @@ export default function DashboardPage() {
     5
   );
 
-  console.log({
-    totalLeadsData,
-    isTotalLeadsLoading,
-    leadsTodayData,
-    isLeadsTodayLoading,
-    leadsThisMonthData,
-    isLeadsThisMonthLoading,
-    recentLeadsData,
-    isRecentLeadsLoading,
-    packagesData,
-    isPackagesLoading,
-  });
+  // console.log({
+  //   totalLeadsData,
+  //   isTotalLeadsLoading,
+  //   leadsTodayData,
+  //   isLeadsTodayLoading,
+  //   leadsThisMonthData,
+  //   isLeadsThisMonthLoading,
+  //   recentLeadsData,
+  //   isRecentLeadsLoading,
+  //   packagesData,
+  //   isPackagesLoading,
+  // });
 
-  const isLoadingStats =
-    isTotalLeadsLoading ||
-    isLeadsTodayLoading ||
-    isLeadsThisMonthLoading ||
-    isPackagesLoading;
+  // const isLoadingStats =
+  //   isTotalLeadsLoading ||
+  //   isLeadsTodayLoading ||
+  //   isLeadsThisMonthLoading ||
+  //   isPackagesLoading;
 
   const totalPackages = packagesData?.meta?.total || 0;
 
   const topPackage = packagesData?.data?.length
     ? packagesData.data.reduce(
         (prev, current) => {
-          return (prev.price || 0) > (current.price || 0) ? prev : current;
+          const price = "price" in prev ? Number(prev.price) : 0;
+          return price > (current.price || 0) ? prev : current;
         },
         { title: "N/A" }
       )

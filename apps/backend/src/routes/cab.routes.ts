@@ -142,7 +142,7 @@ router.get("/:id", verifyJWT, getCab);
  *       404:
  *         description: Cab not found
  */
-router.patch("/:id", verifyJWT, upload.array("images", 5), updateCab);
+router.patch("/:id", verifyJWT, updateCab);
 
 /**
  * @swagger

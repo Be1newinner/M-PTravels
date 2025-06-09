@@ -18,6 +18,7 @@ import blogRoutes from "./routes/blog.routes";
 import leadRoutes from "./routes/lead.routes";
 import cabRoutes from "./routes/cab.routes";
 import packageRoutes from "./routes/package.routes";
+import { imagesRouter } from "./routes/images.routes";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,8 +48,6 @@ app.use(
       "https://firefly-top-jackal.ngrok-free.app",
       "https://mptravels.vercel.app",
       "https://mnp-admin.vercel.app",
-      /^https:\/\/.*\.lite\.vusercontent\.net$/,
-      "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--3000--55edb8f4.local-credentialless.webcontainer-api.io",
     ],
     credentials: true,
   })
@@ -72,6 +71,7 @@ app.use("/blogs", blogRoutes);
 app.use("/leads", leadRoutes);
 app.use("/cabs", cabRoutes);
 app.use("/packages", packageRoutes);
+app.use("/images", imagesRouter);
 
 // Root Route
 app.get("/", (_, res) => {

@@ -41,7 +41,7 @@ export default function EditBusPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
-  const cabId = "default-cab-id" // route params in future
+  const cabId = "67c85b4918b3c6cc0db39b60" // route params in future
   const { data, isLoading, isError, refetch } = useCab(cabId)
   const { mutate: updateCab, isPending } = useUpdateCab(cabId)
 

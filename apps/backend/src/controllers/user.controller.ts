@@ -147,9 +147,14 @@ export const logoutUser = async (
       { new: true }
     );
 
-    const cookieOptions = {
+    const cookieOptions: {
+      httpOnly: boolean;
+      secure: boolean;
+      sameSite: "none" | "lax" | "strict";
+    } = {
       httpOnly: true,
       secure: ENV_CONFIGS.NODE_ENV === "production",
+      sameSite: "none",
     };
 
     res.status(200).clearCookie("refreshToken", cookieOptions).json({
