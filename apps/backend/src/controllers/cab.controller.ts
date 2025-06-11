@@ -123,6 +123,8 @@ export const updateCab = async (
 
     if (!cab) return next(new AppError("Cab not found", 404));
 
+    console.log({ title, description, model, capacity, imageUrls });
+
     if (title) cab.title = title;
     if (description) cab.description = description;
     if (model) cab.model = model;

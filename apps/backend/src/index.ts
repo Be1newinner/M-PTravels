@@ -75,11 +75,11 @@ app.use("/images", imagesRouter);
 
 // Root Route
 app.get("/", (_, res) => {
-  res.status(200).json({
+  res.status(200).json({  
     success: true,
     message: "Welcome to Shipsar Developers's MP TRavels APIs",
     meta: {
-      organisation: "M and P Travels",
+      organization: "M and P Travels",
     },
   });
 });

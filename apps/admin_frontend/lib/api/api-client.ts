@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { useAuthStore } from "../store/auth-store";
+import { logOutApi } from "./auth-api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_DOMAIN || "https://localhost:5001";
 
@@ -66,6 +67,8 @@ const getAccessTokenFromRefreshTokenAPI = async () => {
     { withCredentials: true }
   );
 
+  // console.log({ refreshResponse });
+
   return refreshResponse.data?.data?.accessToken;
 };
 
@@ -93,19 +96,20 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     console.error("Error in request interceptor setup:", error);
+    // console.log("STATUS => ", error.status);
     return Promise.reject(error);
   }
 );
 
 apiClient.interceptors.response.use(
   (response) => {
-    console.log("REST_1");
+    // console.log("REST_1");
     return response;
   },
   async (error: AxiosError) => {
     const originalRequest = error.config;
 
-    console.log("REST_2");
+    // console.log("REST_2");
 
     if (
       error.response?.status === 401 &&
@@ -146,22 +150,33 @@ apiClient.interceptors.response.use(
             new AxiosError("No new access token from refresh"),
             null
           );
-          logoutAndRedirect();
+          await logoutAndRedirect();
           return Promise.reject(
             new AxiosError("No new access token from refresh")
           );
         }
       } catch (refreshError: any) {
-        console.error(
-          "Failed to refresh token:",
-          refreshError.response?.data || refreshError.message
-        );
+        // console.error(
+        //   "Failed to refresh token:",
+        //   refreshError.response?.data || refreshError.message
+        // );
         processQueue(refreshError, null);
         logoutAndRedirect();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
+    }
+
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      originalRequest.url?.includes("/users/refresh-token")
+    ) {
+      // console.log("Invalid Refresh Token => ", error.status, error.message);
+      await logOutApi();
+      await logoutAndRedirect();
+      return Promise.reject(error);
     }
 
     // If it's not a 401 for token refresh, or if it's the refresh endpoint itself failing,

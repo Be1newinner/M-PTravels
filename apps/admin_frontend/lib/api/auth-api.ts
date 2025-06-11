@@ -42,10 +42,7 @@ export const useLogin = () => {
 export const useLogout = () => {
   const { logout } = useAuthStore();
   return useMutation({
-    mutationFn: async () => {
-      const response = await apiClient.post("/users/logout");
-      return response.data;
-    },
+    mutationFn: logOutApi,
     onSuccess: () => {
       console.log("Logged out successfully");
       logout();
@@ -54,4 +51,9 @@ export const useLogout = () => {
       console.log(error);
     },
   });
+};
+
+export const logOutApi = async () => {
+  const response = await apiClient.post("/users/logout");
+  return response.data;
 };

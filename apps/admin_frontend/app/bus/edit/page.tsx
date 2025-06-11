@@ -1,15 +1,21 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,12 +26,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { toast } from "@/components/ui/use-toast"
-import { Upload, X, Loader2, AlertTriangle } from "lucide-react"
-import Image from "next/image"
-import DashboardLayout from "../../dashboard-layout"
-import { useCab, useUpdateCab } from "@/lib/api/cabs-api"
+} from "@/components/ui/alert-dialog";
+import { toast } from "@/components/ui/use-toast";
+import { Upload, X, Loader2, AlertTriangle } from "lucide-react";
+import Image from "next/image";
+import DashboardLayout from "../../dashboard-layout";
+import { useCab, useUpdateCab } from "@/lib/api/cabs-api";
 
 export default function EditBusPage() {
   // The Form state
@@ -34,16 +40,16 @@ export default function EditBusPage() {
     model: "",
     description: "",
     capacity: "0",
-  })
-  const [images, setImages] = useState<string[]>([])
-  const [newImages, setNewImages] = useState<File[]>([])
-  const [isUploading, setIsUploading] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+  });
+  const [images, setImages] = useState<string[]>([]);
+  const [newImages, setNewImages] = useState<File[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  const cabId = "67c85b4918b3c6cc0db39b60" // route params in future
-  const { data, isLoading, isError, refetch } = useCab(cabId)
-  const { mutate: updateCab, isPending } = useUpdateCab(cabId)
+  const cabId = "67c85b4918b3c6cc0db39b60"; // route params in future
+  const { data, isLoading, isError, refetch } = useCab(cabId);
+  const { mutate: updateCab, isPending } = useUpdateCab(cabId);
 
   useEffect(() => {
     if (data?.data) {
@@ -52,118 +58,120 @@ export default function EditBusPage() {
         model: data.data.model || "",
         description: data.data.description || "",
         capacity: String(data.data.capacity || 0),
-      })
+      });
 
       if (data.data.images && data.data.images.length > 0) {
-        setImages(data.data.images)
+        setImages(data.data.images);
       }
     }
-  }, [data])
+  }, [data]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (formErrors[name]) {
-      setFormErrors((prev) => ({ ...prev, [name]: "" }))
+      setFormErrors((prev) => ({ ...prev, [name]: "" }));
     }
-  }
+  };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (formErrors[name]) {
-      setFormErrors((prev) => ({ ...prev, [name]: "" }))
+      setFormErrors((prev) => ({ ...prev, [name]: "" }));
     }
-  }
+  };
 
   const validateForm = () => {
-    const errors: Record<string, string> = {}
+    const errors: Record<string, string> = {};
 
     if (!formData.title || formData.title.length < 2) {
-      errors.title = "Title must be at least 2 characters"
+      errors.title = "Title must be at least 2 characters";
     }
 
     if (!formData.model || formData.model.length < 2) {
-      errors.model = "Model must be at least 2 characters"
+      errors.model = "Model must be at least 2 characters";
     }
 
     if (!formData.capacity || Number.parseInt(formData.capacity) < 1) {
-      errors.capacity = "Capacity must be at least 1"
+      errors.capacity = "Capacity must be at least 1";
     }
 
-    setFormErrors(errors)
-    return Object.keys(errors).length === 0
-  }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!validateForm()) {
-      return
+      return;
     }
 
-    setIsSaving(true)
+    setIsSaving(true);
 
-    const formDataToSend = new FormData()
-    formDataToSend.append("title", formData.title)
-    formDataToSend.append("model", formData.model)
-    formDataToSend.append("description", formData.description || "")
-    formDataToSend.append("capacity", formData.capacity)
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("model", formData.model);
+    formDataToSend.append("description", formData.description || "");
+    formDataToSend.append("capacity", formData.capacity);
 
     newImages.forEach((file) => {
-      formDataToSend.append("images", file)
-    })
+      formDataToSend.append("images", file);
+    });
 
     updateCab(formDataToSend, {
       onSuccess: () => {
         toast({
           title: "Bus details updated",
           description: "Your bus details have been successfully updated.",
-        })
-        setIsSaving(false)
-        setNewImages([])
-        refetch()
+        });
+        setIsSaving(false);
+        setNewImages([]);
+        refetch();
       },
       onError: (error) => {
         toast({
           title: "Error",
           description: "Failed to update bus details. Please try again.",
           variant: "destructive",
-        })
-        console.error(error)
-        setIsSaving(false)
+        });
+        console.error(error);
+        setIsSaving(false);
       },
-    })
-  }
+    });
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return
+    if (!e.target.files || e.target.files.length === 0) return;
 
-    setIsUploading(true)
+    setIsUploading(true);
 
-    const files = Array.from(e.target.files)
-    setNewImages((prev) => [...prev, ...files])
+    const files = Array.from(e.target.files);
+    setNewImages((prev) => [...prev, ...files]);
 
-    const newPreviewUrls = files.map((file) => URL.createObjectURL(file))
-    setImages((prev) => [...prev, ...newPreviewUrls])
+    const newPreviewUrls = files.map((file) => URL.createObjectURL(file));
+    setImages((prev) => [...prev, ...newPreviewUrls]);
 
-    setIsUploading(false)
+    setIsUploading(false);
 
     toast({
       title: "Images added",
       description: `${files.length} image(s) added successfully.`,
-    })
-  }
+    });
+  };
 
   const removeImage = (index: number) => {
     if (index >= (data?.data?.images?.length || 0)) {
-      const newImagesIndex = index - (data?.data?.images?.length || 0)
-      setNewImages((prev) => prev.filter((_, i) => i !== newImagesIndex))
+      const newImagesIndex = index - (data?.data?.images?.length || 0);
+      setNewImages((prev) => prev.filter((_, i) => i !== newImagesIndex));
     }
 
-    setImages((prev) => prev.filter((_, i) => i !== index))
-  }
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
   if (isLoading) {
     return (
@@ -172,7 +180,7 @@ export default function EditBusPage() {
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       </DashboardLayout>
-    )
+    );
   }
 
   if (isError) {
@@ -181,18 +189,22 @@ export default function EditBusPage() {
         <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)]">
           <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
           <h2 className="text-xl font-bold mb-2">Error loading bus details</h2>
-          <p className="text-muted-foreground mb-4">There was a problem loading the bus details.</p>
+          <p className="text-muted-foreground mb-4">
+            There was a problem loading the bus details.
+          </p>
           <Button onClick={() => refetch()}>Try Again</Button>
         </div>
       </DashboardLayout>
-    )
+    );
   }
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1 className="text-3xl font-bold tracking-tight">Edit Bus Details</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Edit Bus Details
+          </h1>
           <div className="flex gap-2">
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -202,7 +214,8 @@ export default function EditBusPage() {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This will reset all changes you've made to the bus details. This action cannot be undone.
+                    This will reset all changes you've made to the bus details.
+                    This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -215,14 +228,15 @@ export default function EditBusPage() {
                           model: data.data.model || "",
                           description: data.data.description || "",
                           capacity: String(data.data.capacity || 0),
-                        })
-                        setImages(data.data.images || [])
-                        setNewImages([])
+                        });
+                        setImages(data.data.images || []);
+                        setNewImages([]);
                       }
                       toast({
                         title: "Changes reset",
-                        description: "All changes have been reset to the original values.",
-                      })
+                        description:
+                          "All changes have been reset to the original values.",
+                      });
                     }}
                   >
                     Reset
@@ -253,7 +267,9 @@ export default function EditBusPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Bus Information</CardTitle>
-                <CardDescription>Update your bus details and specifications</CardDescription>
+                <CardDescription>
+                  Update your bus details and specifications
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -267,7 +283,11 @@ export default function EditBusPage() {
                         value={formData.title}
                         onChange={handleInputChange}
                       />
-                      {formErrors.title && <p className="text-sm text-destructive">{formErrors.title}</p>}
+                      {formErrors.title && (
+                        <p className="text-sm text-destructive">
+                          {formErrors.title}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -279,7 +299,11 @@ export default function EditBusPage() {
                         value={formData.model}
                         onChange={handleInputChange}
                       />
-                      {formErrors.model && <p className="text-sm text-destructive">{formErrors.model}</p>}
+                      {formErrors.model && (
+                        <p className="text-sm text-destructive">
+                          {formErrors.model}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -292,7 +316,11 @@ export default function EditBusPage() {
                         value={formData.capacity}
                         onChange={handleInputChange}
                       />
-                      {formErrors.capacity && <p className="text-sm text-destructive">{formErrors.capacity}</p>}
+                      {formErrors.capacity && (
+                        <p className="text-sm text-destructive">
+                          {formErrors.capacity}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -318,7 +346,9 @@ export default function EditBusPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Bus Images</CardTitle>
-                <CardDescription>Upload and manage images of your bus</CardDescription>
+                <CardDescription>
+                  Upload and manage images of your bus
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -348,8 +378,12 @@ export default function EditBusPage() {
                     <label className="flex flex-col items-center justify-center aspect-video rounded-md border border-dashed cursor-pointer hover:bg-muted/50 transition-colors">
                       <div className="flex flex-col items-center justify-center p-4 text-center">
                         <Upload className="h-10 w-10 text-muted-foreground mb-2" />
-                        <p className="text-sm font-medium">{isUploading ? "Uploading..." : "Upload Image"}</p>
-                        <p className="text-xs text-muted-foreground mt-1">PNG, JPG or JPEG (max 5MB)</p>
+                        <p className="text-sm font-medium">
+                          {isUploading ? "Uploading..." : "Upload Image"}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          PNG, JPG or JPEG (max 5MB)
+                        </p>
                       </div>
                       <Input
                         type="file"
@@ -368,5 +402,5 @@ export default function EditBusPage() {
         </Tabs>
       </div>
     </DashboardLayout>
-  )
+  );
 }

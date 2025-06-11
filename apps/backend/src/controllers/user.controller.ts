@@ -9,6 +9,16 @@ import AppError from "../utils/AppError";
 import { SendResponse } from "../utils/JsonResponse";
 import { ENV_CONFIGS } from "../config/envs.config";
 
+const cookieOptions: {
+  httpOnly: boolean;
+  secure: boolean;
+  sameSite: "none" | "lax" | "strict";
+} = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+};
+
 interface TokenResponse {
   accessToken: string;
   refreshToken: string;
@@ -97,16 +107,6 @@ export const loginUser = async (
       )
       .lean();
 
-    const cookieOptions: {
-      httpOnly: boolean;
-      secure: boolean;
-      sameSite: "none" | "lax" | "strict";
-    } = {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    };
-
     res
       .status(200)
       .cookie("refreshToken", refreshToken, {
@@ -147,16 +147,6 @@ export const logoutUser = async (
       { new: true }
     );
 
-    const cookieOptions: {
-      httpOnly: boolean;
-      secure: boolean;
-      sameSite: "none" | "lax" | "strict";
-    } = {
-      httpOnly: true,
-      secure: ENV_CONFIGS.NODE_ENV === "production",
-      sameSite: "none",
-    };
-
     res.status(200).clearCookie("refreshToken", cookieOptions).json({
       success: true,
       statusCode: 200,
@@ -177,8 +167,7 @@ export const refreshAccessToken = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const incomingRefreshToken =
-    req.cookies?.refreshToken || req.body.refreshToken;
+  const incomingRefreshToken = req.cookies?.refreshToken;
 
   try {
     if (!incomingRefreshToken)
@@ -202,7 +191,6 @@ export const refreshAccessToken = async (
     // );
 
     if (incomingRefreshToken !== user.refreshToken) {
-      console.log("TOJEN");
       return next(new AppError("Refresh token is expired or invalid", 401));
     } else console.log("HERE");
 
