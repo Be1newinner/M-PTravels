@@ -1,0 +1,24 @@
+@baseUrl = https://localhost:5001
+# The image routes are not protected by auth middleware.
+
+###
+# Upload an image
+# The 'type' query parameter is required.
+# Valid types are defined in IMAGE_TYPES_ENUM, e.g., BUS_IMAGE
+POST {{baseUrl}}/images?type=BUS_IMAGE
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="bus.jpg"
+Content-Type: image/jpeg
+
+< ./bus.jpg
+--boundary--
+
+###
+# Delete an image
+# The 'publicId' query parameter is required.
+# You get the public_id from the upload response.
+@publicId = your_image_public_id_here
+DELETE {{baseUrl}}/images?publicId={{publicId}}
+Accept: application/json

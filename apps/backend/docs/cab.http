@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:5000/api/v1
+@baseUrl = https://localhost:5001
 @token = your_jwt_token_here
 
 ### Create a Cab
@@ -8,26 +8,24 @@ Content-Type: multipart/form-data
 
 --boundary
 Content-Disposition: form-data; name="title"
-
 Luxury Sedan
+
 --boundary
 Content-Disposition: form-data; name="description"
-
 Comfortable luxury ride
+
 --boundary
 Content-Disposition: form-data; name="model"
-
 Toyota Camry 2023
+
 --boundary
 Content-Disposition: form-data; name="capacity"
-
-4
 --boundary
+
 Content-Disposition: form-data; name="images"; filename="car1.jpg"
 Content-Type: image/jpeg
+./images/car1.jpg
 
-< ./images/car1.jpg
---boundary--
 
 ### Get All Cabs
 GET {{baseUrl}}/cabs

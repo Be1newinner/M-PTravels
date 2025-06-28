@@ -72,7 +72,7 @@ router.post("/", verifyJWT, upload.array("images", 5), createCab);
  *       404:
  *         description: No cabs found
  */
-router.get("/", verifyJWT, getCabs);
+router.get("/", getCabs);
 
 /**
  * @swagger
@@ -95,7 +95,7 @@ router.get("/", verifyJWT, getCabs);
  *       404:
  *         description: Cab not found
  */
-router.get("/:id", verifyJWT, getCab);
+router.get("/:id", getCab);
 
 /**
  * @swagger
@@ -142,7 +142,7 @@ router.get("/:id", verifyJWT, getCab);
  *       404:
  *         description: Cab not found
  */
-router.patch("/:id", verifyJWT, upload.array("images", 5), updateCab);
+router.patch("/:id", verifyJWT, updateCab);
 
 /**
  * @swagger

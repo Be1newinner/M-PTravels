@@ -1,6 +1,6 @@
 @baseUrl = https://localhost:5001
-@token = YOUR_JWT_TOKEN_HERE
-@REFRESH_TOKEN =dadasdsadasdadasdasd
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTRjYWNiNDNlM2YwZjYxNTljYzMwMSIsImlhdCI6MTc1MTAxMjI0MiwiZXhwIjoxNzUxMDk4NjQyfQ.UKvX3RRlufJ_ukhF-qkVNV66GRFVZ8N4fIVXirNEtQg
+@REFRESH_TOKEN =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTRjYWNiNDNlM2YwZjYxNTljYzMwMSIsImVtYWlsIjoiYmUxbmV3aW5uZXJAZ21haWwuY29tIiwiaWF0IjoxNzUxMDEyMjQyLCJleHAiOjE3NTM2MDQyNDJ9.f_iSyulpblFL7rSQ8jsEXXCLQJk7PP4ntBvnswPgMpA
 @resetToken = YOUR_PASSWORD_RESET_TOKEN_HERE # Get this from the forgot-password email link
 @EMAIL=be1newinner@gmail.com
 @PASSWORD=vijay123

@@ -40,8 +40,9 @@ export const uploadImageController = async (
   next: NextFunction
 ) => {
   try {
-    const file = req.file as Express.Multer.File;
+    const files = req.files as Express.Multer.File[];
     const typeParam = req.query?.type;
+    console.log({ files });
 
     if (
       !typeParam ||
@@ -52,39 +53,56 @@ export const uploadImageController = async (
 
     const type = typeParam as IMAGE_TYPES_ENUM;
 
-    if (!file) {
+    if (!files || files.length === 0) {
       return next(new AppError("No images provided", 400));
     }
 
-    const compressedImage = await compressImage(file, type);
+    const uploadedImages = [];
 
-    const result = await uploadBufferToCloudinary(compressedImage.buffer);
-    console.log(result);
+    for (const file of files) {
+      const compressedImage = await compressImage(file, type);
+      const result = await uploadBufferToCloudinary(compressedImage.buffer);
+
+      uploadedImages.push({
+        url: result.url,
+        public_id: result.public_id,
+      });
+    }
+
     res.status(200).json({
       message: "Upload successful",
-      url: result.url,
-      public_id: result.public_id,
+      images: uploadedImages,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Upload failed", error: err });
+    const message = err instanceof Error ? err.message : "Upload failed";
+    return next(new AppError(message, 500));
   }
 };
 
 // Delete route
-export const deleteImageController = async (req: Request, res: Response) => {
+export const deleteImageController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { publicId } = req.query;
+    if (!publicId) {
+      next(new AppError("Image publicId is required", 400));
+      return;
+    }
     const result = await deleteFromCloudinary(publicId as string);
 
     if (result.result !== "ok") {
       res.status(400).json({ message: "Failed to delete image", result });
+      return;
     }
 
     res.status(200).json({ message: "Image deleted successfully", result });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Deletion failed", error: err });
+    const message = err instanceof Error ? err.message : "Deletion failed";
+    return next(new AppError(message, 500));
   }
 };
 

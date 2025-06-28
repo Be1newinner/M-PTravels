@@ -32,6 +32,7 @@ import { Upload, X, Loader2, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import DashboardLayout from "../../dashboard-layout";
 import { useCab, useUpdateCab } from "@/lib/api/cabs-api";
+import { imagesUploadApi } from "@/lib/api/images-api";
 
 export default function EditBusPage() {
   // The Form state
@@ -46,6 +47,13 @@ export default function EditBusPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [imageChangesToBeMade, setImageChangesToBeMade] = useState<{
+    imagesToAdd: File[] | [];
+    imagesToRemove: string[] | [];
+  }>({
+    imagesToAdd: [],
+    imagesToRemove: [],
+  });
 
   const cabId = "67c85b4918b3c6cc0db39b60"; // route params in future
   const { data, isLoading, isError, refetch } = useCab(cabId);
@@ -60,9 +68,8 @@ export default function EditBusPage() {
         capacity: String(data.data.capacity || 0),
       });
 
-      if (data.data.images && data.data.images.length > 0) {
+      if (data.data.images && data.data.images.length > 0)
         setImages(data.data.images);
-      }
     }
   }, [data]);
 
@@ -104,7 +111,7 @@ export default function EditBusPage() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -113,55 +120,58 @@ export default function EditBusPage() {
 
     setIsSaving(true);
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("model", formData.model);
-    formDataToSend.append("description", formData.description || "");
-    formDataToSend.append("capacity", formData.capacity);
+    let imagesUploadResponse = [];
 
-    newImages.forEach((file) => {
-      formDataToSend.append("images", file);
-    });
+    if (imageChangesToBeMade.imagesToAdd.length) {
+      imagesUploadResponse = await imagesUploadApi(
+        imageChangesToBeMade.imagesToAdd
+      );
+    }
+    console.log({ response: imagesUploadResponse });
 
-    updateCab(formDataToSend, {
-      onSuccess: () => {
-        toast({
-          title: "Bus details updated",
-          description: "Your bus details have been successfully updated.",
-        });
-        setIsSaving(false);
-        setNewImages([]);
-        refetch();
-      },
-      onError: (error) => {
-        toast({
-          title: "Error",
-          description: "Failed to update bus details. Please try again.",
-          variant: "destructive",
-        });
-        console.error(error);
-        setIsSaving(false);
-      },
-    });
+    // const formDataToSend = new FormData();
+    // formDataToSend.append("title", formData.title);
+    // formDataToSend.append("model", formData.model);
+    // formDataToSend.append("description", formData.description || "");
+    // formDataToSend.append("capacity", formData.capacity);
+
+    // updateCab(formDataToSend, {
+    //   onSuccess: () => {
+    //     toast({
+    //       title: "Bus details updated",
+    //       description: "Your bus details have been successfully updated.",
+    //     });
+    //     setIsSaving(false);
+    //     setNewImages([]);
+    //     refetch();
+    //   },
+    //   onError: (error) => {
+    //     toast({
+    //       title: "Error",
+    //       description: "Failed to update bus details. Please try again.",
+    //       variant: "destructive",
+    //     });
+    //     console.error(error);
+    //     setIsSaving(false);
+    //   },
+    // });
+    setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
+    setIsSaving(false);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageAddition = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-
-    setIsUploading(true);
 
     const files = Array.from(e.target.files);
     setNewImages((prev) => [...prev, ...files]);
+    setImageChangesToBeMade((prev) => ({
+      ...prev,
+      imagesToAdd: [...prev.imagesToAdd, ...files],
+    }));
 
     const newPreviewUrls = files.map((file) => URL.createObjectURL(file));
+    console.log({ newPreviewUrls });
     setImages((prev) => [...prev, ...newPreviewUrls]);
-
-    setIsUploading(false);
-
-    toast({
-      title: "Images added",
-      description: `${files.length} image(s) added successfully.`,
-    });
   };
 
   const removeImage = (index: number) => {
@@ -389,7 +399,7 @@ export default function EditBusPage() {
                         type="file"
                         accept="image/*"
                         className="hidden"
-                        onChange={handleImageUpload}
+                        onChange={handleImageAddition}
                         disabled={isUploading}
                         multiple
                       />

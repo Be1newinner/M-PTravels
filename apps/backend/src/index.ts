@@ -48,6 +48,7 @@ app.use(
       "https://firefly-top-jackal.ngrok-free.app",
       "https://mptravels.vercel.app",
       "https://mnp-admin.vercel.app",
+      "https://kzmksnb9kryam9rvyczm.lite.vusercontent.net",
     ],
     credentials: true,
   })
@@ -75,7 +76,7 @@ app.use("/images", imagesRouter);
 
 // Root Route
 app.get("/", (_, res) => {
-  res.status(200).json({  
+  res.status(200).json({
     success: true,
     message: "Welcome to Shipsar Developers's MP TRavels APIs",
     meta: {
