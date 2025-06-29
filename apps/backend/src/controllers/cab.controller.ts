@@ -117,13 +117,13 @@ export const updateCab = async (
 ): Promise<void> => {
   const { id } = req.params;
   const { title, description, model, capacity, imageUrls } = req.body;
-
+  console.log({ title, description, model, capacity, imageUrls });
   try {
     const cab = await Cab.findById(id);
 
     if (!cab) return next(new AppError("Cab not found", 404));
 
-    console.log({ title, description, model, capacity, imageUrls });
+    // console.log({ title, description, model, capacity, imageUrls });
 
     if (title) cab.title = title;
     if (description) cab.description = description;

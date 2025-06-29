@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch -r source-map-support/register.js src/index.ts",
+    "dev2": "tsx watch -r source-map-support/register.js src/index.ts",
+    "dev": "powershell -Command \"$timestamp = Get-Date -Format 'yyyy-MM-ddTHH-mm-ss'; tsx watch -r source-map-support\\register.js src\\index.ts *> logs\\$timestamp.log  -Encoding UTF8 2>&1\"",
     "check": "tsc --noEmit",
     "debug": "node --inspect-brk -r ts-node/register src/index.ts",
     "lint": "npx eslint src",

@@ -1,35 +1,24 @@
+import { AxiosResponse } from "axios";
 import apiClient from "./api-client";
 
-// export const useCreateCab = () => {
-//   const queryClient = useQueryClient();
+interface ImageUploadApiResponse {
+  images: {
+    url: string;
+    public_id: string;
+  }[];
+  message: string;
+}
 
-//   return useMutation({
-//     mutationFn: async (cabData: FormData) => {
-//       const response = await apiClient.post<CabResponse>("/cabs", cabData, {
-//         headers: {
-//           "Content-Type": "multipart/form-data",
-//         },
-//       });
-//       return response.data;
-//     },
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["cabs"] });
-//     },
-//   });
-// };
-
-export const imagesUploadApi = async (data: File[]) => {
-  const formData = new FormData();
-  data.forEach((file) => {
-    formData.append("images", file);
-  });
+export async function imagesUploadApi(
+  formData: FormData
+): Promise<AxiosResponse<ImageUploadApiResponse>> {
   const response = await apiClient.post("/images?type=BUS_IMAGE", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  return response.data;
-};
+  return response;
+}
 
 // const axios = require('axios');
 // const FormData = require('form-data');

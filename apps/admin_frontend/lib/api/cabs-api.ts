@@ -7,8 +7,7 @@ interface Cab {
   description?: string;
   model: string;
   capacity: number;
-  images?: string[];
-  [key: string]: any;
+  imageUrls?: string[];
 }
 
 interface CabsResponse {
@@ -75,18 +74,11 @@ export const useUpdateCab = (id: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (cabData: FormData) => {
-      for (const pair of cabData.entries()) {
-        console.log(pair[0] + " => " + pair[1]);
-      }
+    mutationFn: async (cabData: Partial<Cab>) => {
+      console.log("API CALL CABS UPDATE ", cabData);
       const response = await apiClient.patch<CabResponse>(
         `/cabs/${id}`,
-        cabData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        cabData
       );
       return response.data;
     },

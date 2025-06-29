@@ -1,12 +1,14 @@
 {
-  "name": "shadcn-ui-monorepo",
+  "name": "mp-travels-monorepo",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "backend": "powershell -Command \"$timestamp = Get-Date -Format 'yyyy-MM-ddTHH-mm-ss'; pnpm run dev --filter=mp_travels_backend *> apps\\backend\\logs\\backend-$timestamp.log 2>&1\"",
+    "admin": "pnpm run dev --filter=mp_admin_panel"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, SetStateAction, Dispatch } from "react";
 import {
   Card,
   CardContent,
@@ -33,29 +33,35 @@ import Image from "next/image";
 import DashboardLayout from "../../dashboard-layout";
 import { useCab, useUpdateCab } from "@/lib/api/cabs-api";
 import { imagesUploadApi } from "@/lib/api/images-api";
+import {
+  handleImageAddition,
+  handleRemoveImage,
+  imageUploadUtility,
+} from "@/lib/utils/handleImageAdditionRemove";
+
+type ImageChangeState = {
+  imagesToAdd: File[];
+  imagesToRemove: string[];
+};
 
 export default function EditBusPage() {
-  // The Form state
   const [formData, setFormData] = useState({
     title: "",
     model: "",
     description: "",
-    capacity: "0",
+    capacity: 0,
   });
   const [images, setImages] = useState<string[]>([]);
-  const [newImages, setNewImages] = useState<File[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [imageChangesToBeMade, setImageChangesToBeMade] = useState<{
-    imagesToAdd: File[] | [];
-    imagesToRemove: string[] | [];
-  }>({
-    imagesToAdd: [],
-    imagesToRemove: [],
-  });
+  const [imageChangesToBeMade, setImageChangesToBeMade] =
+    useState<ImageChangeState>({
+      imagesToAdd: [],
+      imagesToRemove: [],
+    });
+  const imageUploadMapRef = useRef<Record<string, File>>({});
 
-  const cabId = "67c85b4918b3c6cc0db39b60"; // route params in future
+  const cabId = "67c85b4918b3c6cc0db39b60";
   const { data, isLoading, isError, refetch } = useCab(cabId);
   const { mutate: updateCab, isPending } = useUpdateCab(cabId);
 
@@ -65,11 +71,11 @@ export default function EditBusPage() {
         title: data.data.title || "",
         model: data.data.model || "",
         description: data.data.description || "",
-        capacity: String(data.data.capacity || 0),
+        capacity: Number(data.data.capacity || 0),
       });
 
-      if (data.data.images && data.data.images.length > 0)
-        setImages(data.data.images);
+      if (data.data.imageUrls && data.data.imageUrls.length > 0)
+        setImages(data.data.imageUrls);
     }
   }, [data]);
 
@@ -77,14 +83,6 @@ export default function EditBusPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (formErrors[name]) {
-      setFormErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (formErrors[name]) {
@@ -103,7 +101,7 @@ export default function EditBusPage() {
       errors.model = "Model must be at least 2 characters";
     }
 
-    if (!formData.capacity || Number.parseInt(formData.capacity) < 1) {
+    if (!formData.capacity) {
       errors.capacity = "Capacity must be at least 1";
     }
 
@@ -111,77 +109,58 @@ export default function EditBusPage() {
     return Object.keys(errors).length === 0;
   };
 
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsSaving(true);
 
-    let imagesUploadResponse = [];
+    const uploadedImages = await imageUploadUtility(imageChangesToBeMade);
 
-    if (imageChangesToBeMade.imagesToAdd.length) {
-      imagesUploadResponse = await imagesUploadApi(
-        imageChangesToBeMade.imagesToAdd
-      );
+    try {
+      const imageUrls = [
+        ...images.filter(
+          (img) =>
+            !img.includes("blob:") ||
+            (imageChangesToBeMade?.imagesToRemove as string[])?.includes(img)
+        ),
+        ...uploadedImages,
+      ];
+
+      const updateCabForm = {
+        ...formData,
+        ...(imageUrls.length && { imageUrls }),
+      };
+
+      updateCab(updateCabForm);
+
+      toast({
+        title: "Success",
+        description: "Bus updated successfully!",
+      });
+
+      setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
+    } catch (err) {
+      console.error("Upload failed:", err);
+      toast({
+        title: "Error",
+        description: "Image upload or update failed.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
     }
-    console.log({ response: imagesUploadResponse });
-
-    // const formDataToSend = new FormData();
-    // formDataToSend.append("title", formData.title);
-    // formDataToSend.append("model", formData.model);
-    // formDataToSend.append("description", formData.description || "");
-    // formDataToSend.append("capacity", formData.capacity);
-
-    // updateCab(formDataToSend, {
-    //   onSuccess: () => {
-    //     toast({
-    //       title: "Bus details updated",
-    //       description: "Your bus details have been successfully updated.",
-    //     });
-    //     setIsSaving(false);
-    //     setNewImages([]);
-    //     refetch();
-    //   },
-    //   onError: (error) => {
-    //     toast({
-    //       title: "Error",
-    //       description: "Failed to update bus details. Please try again.",
-    //       variant: "destructive",
-    //     });
-    //     console.error(error);
-    //     setIsSaving(false);
-    //   },
-    // });
-    setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
-    setIsSaving(false);
   };
 
-  const handleImageAddition = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-
-    const files = Array.from(e.target.files);
-    setNewImages((prev) => [...prev, ...files]);
-    setImageChangesToBeMade((prev) => ({
-      ...prev,
-      imagesToAdd: [...prev.imagesToAdd, ...files],
-    }));
-
-    const newPreviewUrls = files.map((file) => URL.createObjectURL(file));
-    console.log({ newPreviewUrls });
-    setImages((prev) => [...prev, ...newPreviewUrls]);
-  };
-
-  const removeImage = (index: number) => {
-    if (index >= (data?.data?.images?.length || 0)) {
-      const newImagesIndex = index - (data?.data?.images?.length || 0);
-      setNewImages((prev) => prev.filter((_, i) => i !== newImagesIndex));
-    }
-
-    setImages((prev) => prev.filter((_, i) => i !== index));
-  };
+  useEffect(() => {
+    return () => {
+      imageChangesToBeMade.imagesToAdd.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        URL.revokeObjectURL(url);
+      });
+    };
+  }, []);
 
   if (isLoading) {
     return (
@@ -237,10 +216,9 @@ export default function EditBusPage() {
                           title: data.data.title || "",
                           model: data.data.model || "",
                           description: data.data.description || "",
-                          capacity: String(data.data.capacity || 0),
+                          capacity: data.data.capacity,
                         });
-                        setImages(data.data.images || []);
-                        setNewImages([]);
+                        setImages(data.data.imageUrls || []);
                       }
                       toast({
                         title: "Changes reset",
@@ -378,32 +356,49 @@ export default function EditBusPage() {
                           variant="destructive"
                           size="icon"
                           className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => removeImage(index)}
+                          onClick={() =>
+                            handleRemoveImage(
+                              image,
+                              setImageChangesToBeMade,
+                              setImages,
+                              imageUploadMapRef
+                            )
+                          }
                         >
                           <X className="h-4 w-4" />
                         </Button>
                       </div>
                     ))}
 
-                    <label className="flex flex-col items-center justify-center aspect-video rounded-md border border-dashed cursor-pointer hover:bg-muted/50 transition-colors">
-                      <div className="flex flex-col items-center justify-center p-4 text-center">
-                        <Upload className="h-10 w-10 text-muted-foreground mb-2" />
-                        <p className="text-sm font-medium">
-                          {isUploading ? "Uploading..." : "Upload Image"}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          PNG, JPG or JPEG (max 5MB)
-                        </p>
-                      </div>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleImageAddition}
-                        disabled={isUploading}
-                        multiple
-                      />
-                    </label>
+                    {!isSaving && (
+                      <label className="flex flex-col items-center justify-center aspect-video rounded-md border border-dashed cursor-pointer hover:bg-muted/50 transition-colors">
+                        <div className="flex flex-col items-center justify-center p-4 text-center">
+                          <Upload className="h-10 w-10 text-muted-foreground mb-2" />
+                          <p className="text-sm font-medium">
+                            {isSaving ? "Uploading..." : "Upload Image"}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            PNG, JPG or JPEG (max 5MB)
+                          </p>
+                        </div>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) =>
+                            handleImageAddition(
+                              e,
+                              isSaving,
+                              setImageChangesToBeMade,
+                              setImages,
+                              imageUploadMapRef
+                            )
+                          }
+                          disabled={isSaving}
+                          multiple
+                        />
+                      </label>
+                    )}
                   </div>
                 </div>
               </CardContent>

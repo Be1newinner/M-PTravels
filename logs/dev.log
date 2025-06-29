@@ -1,0 +1,45 @@
+
+> shadcn-ui-monorepo@0.0.1 dev D:\Clients\M-PTravels
+> turbo dev
+
+turbo 2.4.2
+
+• Packages in scope: @workspace/eslint-config, @workspace/typescript-config, @workspace/ui, m_and_p_travels, mp_admin_panel, mp_travels_backend
+• Running dev in 6 packages
+• Remote caching disabled
+mp_travels_backend:dev: cache bypass, force executing bfe1f9716b3c7007
+mp_admin_panel:dev: cache bypass, force executing 1aabc77289c6c3fb
+m_and_p_travels:dev: cache bypass, force executing 4ea418f3e3f82323
+mp_admin_panel:dev: 
+mp_admin_panel:dev: > mp_admin_panel@0.0.2 dev D:\Clients\M-PTravels\apps\admin_frontend
+mp_admin_panel:dev: > next dev
+mp_admin_panel:dev: 
+mp_travels_backend:dev: 
+mp_travels_backend:dev: > mp_travels_backend@1.0.0 dev D:\Clients\M-PTravels\apps\backend
+mp_travels_backend:dev: > tsx watch -r source-map-support/register.js src/index.ts
+m_and_p_travels:dev: 
+mp_travels_backend:dev: 
+m_and_p_travels:dev: > m_and_p_travels@0.1.0 dev D:\Clients\M-PTravels\apps\client_frontend
+m_and_p_travels:dev: > next dev --turbopack
+m_and_p_travels:dev: 
+mp_admin_panel:dev:    ▲ Next.js 15.2.4
+mp_admin_panel:dev:    - Local:        http://localhost:3000
+mp_admin_panel:dev:    - Network:      http://192.168.1.6:3000
+mp_admin_panel:dev:    - Environments: .env
+mp_admin_panel:dev: 
+mp_admin_panel:dev:  ✓ Starting...
+mp_travels_backend:dev: 
+mp_travels_backend:dev: ✅ MongoDB connected !! DB HOST: mp-base-shard-00-00.lbutn.mongodb.net
+mp_travels_backend:dev: ⚙️  Server is running on http://localhost:5001
+m_and_p_travels:dev:  ⚠ Port 3000 is in use, using available port 3001 instead.
+m_and_p_travels:dev:    ▲ Next.js 15.3.2 (Turbopack)
+m_and_p_travels:dev:    - Local:        http://localhost:3001
+m_and_p_travels:dev:    - Network:      http://192.168.1.6:3001
+m_and_p_travels:dev:    - Environments: .env
+m_and_p_travels:dev: 
+m_and_p_travels:dev:  ✓ Starting...
+m_and_p_travels:dev:  ✓ Ready in 4.4s
+mp_admin_panel:dev:  ✓ Ready in 6.9s
+mp_travels_backend:dev: ⚠️  Shutting down gracefully...
+Terminate batch job (Y/N)? 
+^C
