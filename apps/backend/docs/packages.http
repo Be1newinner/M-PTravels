@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:5001
+@baseUrl = https://localhost:5001
 @JWT_TOKEN = YOUR_JWT_TOKEN_HERE
 @slug = test-slug
 @PACKAGE_ID = BLOG_OBJECT_ID

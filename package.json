@@ -7,8 +7,8 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "backend": "powershell -Command \"$timestamp = Get-Date -Format 'yyyy-MM-ddTHH-mm-ss'; pnpm run dev --filter=mp_travels_backend *> apps\\backend\\logs\\backend-$timestamp.log 2>&1\"",
-    "admin": "pnpm run dev --filter=mp_admin_panel"
+    "admin": "pnpm run dev --filter=mp_admin_panel",
+    "frontend": "pnpm run dev --filter=mp_admin_panel --filter=m_and_p_travels"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",
