@@ -26,7 +26,7 @@ export default function ContactUs() {
             </p>
             <div className="flex justify-center lg:justify-start items-center text-lg">
               <p className="mr-4">
-                Let's Connect:
+                Let&apos;s Connect:
               </p>
               <Link href={PAGES.CONTACT}>
                 <Button

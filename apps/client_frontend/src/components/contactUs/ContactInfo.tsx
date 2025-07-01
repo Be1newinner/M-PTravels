@@ -9,7 +9,7 @@ export default function ContactInfo() {
     <div className="bg-white shadow-lg rounded-xl p-8 max-md:p-6 h-full">
       <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
       <p className="text-gray-600 mb-6">
-        We'd love to hear from you! Whether you have a question about our services, need assistance, or just want to give feedback, our team is ready to help.
+        We&apos;d love to hear from you! Whether you have a question about our services, need assistance, or just want to give feedback, our team is ready to help.
       </p>
 
       <div className="space-y-6 mb-8">

@@ -1,6 +1,5 @@
 import { CiLocationOn } from "react-icons/ci";
 import { RiHotelFill } from "react-icons/ri";
-import { Colors } from "@/constants/colors";
 import Image from "next/image";
 import { Button } from "../ui/button";
 

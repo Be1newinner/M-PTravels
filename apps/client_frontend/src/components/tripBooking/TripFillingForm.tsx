@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Colors } from "@/constants/colors";
 import { PAGES } from "@/constants/pages";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";

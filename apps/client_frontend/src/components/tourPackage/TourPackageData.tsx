@@ -1,29 +1,28 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Pagination } from "../news/AllTime";
 import { PackagesCard } from "./PackagesCard";
-import { PackagesSearchBar } from "./PackagesSearchBar";
 import { PackageTagBar } from "./PackageTagBar";
 import { fetchPackages } from "@/services/packages";
 import { slugify } from "@/utils/text_helpers";
 
 export function TourPackageData() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  // const [searchQuery] = useState("");
+  const [debouncedSearchQuery] = useState("");
 
   // Debounce search query
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchQuery(searchQuery);
-      setCurrentPage(1); // Reset to first page on new search
-    }, 500); // 500ms debounce time
+  // useEffect(() => {
+  //   const handler = setTimeout(() => {
+  //     setDebouncedSearchQuery(searchQuery);
+  //     setCurrentPage(1); // Reset to first page on new search
+  //   }, 500); // 500ms debounce time
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchQuery]);
+  //   return () => {
+  //     clearTimeout(handler);
+  //   };
+  // }, [searchQuery]);
 
   const { isPending, error, data, refetch } = useQuery({
     queryKey: ["fetchPackagesPage", currentPage, debouncedSearchQuery],
@@ -40,15 +39,15 @@ export function TourPackageData() {
     refetch();
   };
 
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-  };
+  // const handleSearchChange = (query: string) => {
+  //   setSearchQuery(query);
+  // };
 
-  const handleSearchSubmit = () => {
-    // Debouncing handles the actual fetch, this just ensures immediate update if needed
-    setDebouncedSearchQuery(searchQuery);
-    setCurrentPage(1); // Reset to first page on search submit
-  };
+  // const handleSearchSubmit = () => {
+  //   // Debouncing handles the actual fetch, this just ensures immediate update if needed
+  //   setDebouncedSearchQuery(searchQuery);
+  //   setCurrentPage(1); // Reset to first page on search submit
+  // };
 
   if (isPending) return "Loading...";
   if (error) return "An error has occurred: " + error.message;

@@ -53,10 +53,12 @@ export default function OurHistory() {
           Since 1998
         </h5>
         <p className="text-gray-600 max-md:text-md max-lg:font-normal">
-          Lorem ipsum dolor sit amet consectetur. Nibh vivamus quis risus augue
-          odio eget donec leo phasellus. Auctor est aliquam commodo enim auctor
-          libero. Cras sed sagittis id in ridiculus amet vel euismod. Eu nunc
-          lacus dui natoque. Consequat aenean tristique accumsan dictum augue.
+          Since 1998, we&apos;ve grown from a small regional bus service into a
+          nationwide travel network trusted by millions. From launching India&apos;s
+          first real-time bus tracking to introducing luxury sleeper coaches,
+          we&apos;ve led with innovation, comfort, and safety at every turn. Today,
+          we serve 10M+ happy travelers annually — and we&apos;re just getting
+          started.
         </p>
         <div className="w-full flex flex-wrap items-center justify-between gap-6 max-2xl:gap-5 mt-8">
           {history.map((item, index) => (

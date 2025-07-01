@@ -1,5 +1,4 @@
 "use client";
-import { Colors } from "@/constants/colors";
 import {
   QueryClient,
   QueryClientProvider,
