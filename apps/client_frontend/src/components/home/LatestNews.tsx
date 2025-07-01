@@ -8,6 +8,7 @@ import {
 import { fetchNews } from "@/services/News";
 import NewsCard from "../news/NewsCard";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 const queryClient = new QueryClient();
 
@@ -18,9 +19,9 @@ export default function LatestNews() {
         <div className="flex justify-between pb-4">
           <p className="text-3xl font-bold max-sm:text-2xl">Our Latest News</p>
           <Link href={"/news"}>
-            <button className={["px-6 py-3", Colors.primary].join(" ")}>
+            <Button className="px-6 py-3">
               Show More
-            </button>
+            </Button>
           </Link>
         </div>
         <QueryClientProvider client={queryClient}>

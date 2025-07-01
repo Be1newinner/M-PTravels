@@ -37,7 +37,7 @@ export function AllNews() {
 
   return (
     <div className="bg-gray-200 py-4">
-      <div className="grid grid-cols-2 items-center justify-center gap-6 mt-6 px-24 max-md:px-4 max-lg:px-8 max-2xl:px-16 mx-auto max-2xl:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 px-24 max-md:px-4 max-lg:px-8 max-2xl:px-16 mx-auto max-2xl:gap-5">
         {data?.data?.map((item) => (
           <NewsCard
             key={item._id}

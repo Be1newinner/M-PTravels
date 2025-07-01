@@ -24,18 +24,18 @@ export default function Available() {
   ];
 
   return (
-    <div className="pb-8 flex justify-between max-lg:flex-wrap gap-x-2 gap-y-4 md:gap-4 -translate-y-6 max-sm:-translate-y-8">
+    <div className="pb-8 flex justify-between max-lg:flex-wrap gap-x-4 gap-y-6 md:gap-6 -translate-y-6 max-sm:-translate-y-8">
       {AvailableData.map((item) => (
         <div
           key={item.id}
-          className="flex sm:flex-1 basis-full px-14 gap-2 py-5 shadow-lg rounded-lg bg-white max-xl:px-2 max-2xl:px-5 max-xl:w-full items-center max-xl:justify-center"
+          className="flex sm:flex-1 basis-full lg:basis-1/3 px-8 py-6 shadow-lg rounded-lg bg-white items-center justify-center text-center sm:text-left"
         >
-          <item.icon className={["text-5xl", Colors.textPrimary].join(" ")} />
+          <item.icon className={["text-5xl mr-4", Colors.textPrimary].join(" ")} />
           <div>
-            <h1 className="text-2xl max-sm:text-xl max-2xl:text-xl font-medium">
+            <h1 className="text-2xl font-medium mb-1">
               {item.name}
             </h1>
-            <p className="text-gray-500">Call +91 {Informations.phone}</p>
+            <p className="text-gray-500 text-lg">Call +91 {Informations.phone}</p>
           </div>
         </div>
       ))}

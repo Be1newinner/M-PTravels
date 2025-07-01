@@ -10,6 +10,7 @@ export type submitLeadBody = {
   dropDate: string;
   source?: string;
   message?: string;
+  packageId?: string; // Added packageId
 };
 
 export type submitLeadResponse = {
@@ -25,6 +26,7 @@ export type submitLeadResponse = {
   updatedAt: string;
   source?: string;
   message?: string;
+  packageId?: string; // Added packageId
 };
 
 export async function submitLead({
@@ -37,9 +39,10 @@ export async function submitLead({
   dropDate,
   source = "",
   message = "",
+  packageId = "", // Added packageId
 }: submitLeadBody) {
   const response = await post<Custom_API_Response_Type<submitLeadResponse>>(
-    `/lead`,
+    `/leads`,
     {
       name,
       email,
@@ -50,12 +53,12 @@ export async function submitLead({
       dropDate,
       source,
       message,
+      packageId, // Sent packageId
     }
   );
 
   const { data, code } = await response;
   if (code >= 300 || code < 200) {
-    // console.log(data)
     throw new Error(data?.message || "Unknown Error!");
   }
   console.log(data?.data);

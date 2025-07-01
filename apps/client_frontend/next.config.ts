@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
         hostname: "firebasestorage.googleapis.com",
         pathname: "/v0/b/wingfi-9b5b7.appspot.com/o/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/decvnwos9/image/upload/**",
+      },
+      {
+        protocol: "https",
+        hostname: "example.com",
+        pathname: "/**",
+      },
     ],
   },
 };

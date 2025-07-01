@@ -10,9 +10,9 @@ export type packagesType = {
   slug: string;
 };
 
-export async function fetchPackages({ limit = 4, page = 1 }) {
+export async function fetchPackages({ limit = 4, page = 1, search = "" }) {
   const response = await get<Custom_API_Response_Type<packagesType[]>>(
-    `/packages?limit=${limit}&page=${page}`
+    `/packages?limit=${limit}&page=${page}${search ? `&search=${search}` : ""}`
   );
   const { data, code } = await response;
   if (code != 200) {

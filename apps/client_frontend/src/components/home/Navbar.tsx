@@ -19,16 +19,16 @@ export default function Navbar({ location }: { location: string }) {
 
   return (
     <div className="bg-[#ECECF2]">
-      <div className="container h-full flex items-center justify-between py-2 max-md:py-2 max-xl:py-4 relative">
-        <Link href={PAGES.HOME} className="w-24 aspect-square">
+      <div className="container h-full flex items-center justify-between py-2 max-md:py-2 max-xl:py-4 relative px-4 sm:px-6 lg:px-8">
+        <Link href={PAGES.HOME} className="w-20 max-sm:w-16 aspect-square">
           <Image  
     width={1920}
     height={1920} src="/logo.webp" alt="logo" />
         </Link>
 
-        <div className="flex justify-between max-sm:h-12 items-center max-xl:w-ful">
-          <button onClick={toggleDropDown} className="flex justify-end">
-            <IoReorderThreeOutline className="text-white px-1 py-2 text-5xl  xl:hidden" />
+        <div className="flex items-center max-sm:h-12"> {/* Adjusted classes here */}
+          <button onClick={toggleDropDown}> {/* Removed flex justify-end */}
+            <IoReorderThreeOutline className="text-white px-1 py-2 text-5xl xl:hidden" />
           </button>
           {isOpen && (
             <ul className="absolute top-20 right-0 bg-black z-50  text-white font-medium max-sm:w-full p-6 xl:hidden">

@@ -8,6 +8,8 @@ import { Colors } from "@/constants/colors";
 import { PAGES } from "@/constants/pages";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export default function Footer() {
   const socialMediaLinks = [
@@ -18,26 +20,26 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="flex justify-between max-md:justify-between max-lg:justify-normal max-md:gap-0 max-lg:gap-10 bg-white px-20 py-10 max-xl:flex-wrap max-sm:px-4 max-xl:px-8 ">
+    <footer className="flex justify-between max-md:justify-between max-lg:justify-normal max-md:gap-0 max-lg:gap-10 bg-white px-4 sm:px-8 lg:px-20 py-10 max-xl:flex-wrap">
       <div className="w-1/4 max-sm:w-full max-md:w-2/3 max-lg:w-1/2">
         <Image
           width={1920}
           height={1920}
           src="/logo.webp"
           alt="logo"
-          className="w-1/3 max-xl:w-1/5"
+          className="w-1/3 max-lg:w-1/4 max-md:w-1/3 max-sm:w-1/2"
         />
         <p className="text-gray-500 py-4">{Informations.about_short}</p>
         <p>Subscribe to our special offers</p>
         <div className="h-12 flex items-center justify-between gap-3 max-sm:flex-wrap max-sm:px-2 max-lg:px-4 border border-gray-300 px-3 mt-4 rounded-lg bg-white shadow-md">
-          <input
+          <Input
             type="text"
             name="email"
             placeholder="Enter your email"
-            className="flex-1 outline-none bg-transparent p-3 max-sm:p-2 rounded-md text-gray-700 placeholder-gray-400"
+            className="flex-1 outline-none bg-transparent p-3 max-sm:p-2 rounded-md text-gray-700 placeholder-gray-400 border-none shadow-none"
           />
           <span className="text-gray-400">|</span>
-          <button className="px-6 py-1">Subscribe</button>
+          <Button className="px-6 py-1">Subscribe</Button>
         </div>
       </div>
       <div>

@@ -1,9 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Colors } from "@/constants/colors";
 import { PAGES } from "@/constants/pages";
 import Image from "next/image";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { submitLead } from "@/services/leads";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 interface FormDataType {
   name: string;
@@ -16,212 +22,275 @@ interface FormDataType {
   end_date: string;
 }
 
-type UserDetailsFormProps = {
-  formData: FormDataType;
-  setFormData: React.Dispatch<React.SetStateAction<FormDataType>>;
-  formAction: (e: React.FormEvent) => void;
-};
+// Props for BookingDetails component
+interface BookingDetailsProps {
+  startDate: string;
+  endDate: string;
+}
 
-const UserDetailsForm = ({
-  formData,
-  setFormData,
-  formAction,
-}: UserDetailsFormProps) => {
-  // Handle input change dynamically
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  return (
-    <form onSubmit={formAction}>
-      <div className="p-4 py-10 w-full bg-white shadow-lg rounded-lg">
-        <p className="text-2xl font-medium">Enter Your Details</p>
-        <div className="flex flex-wrap max-sm:flex-wrap mt-4">
-          {/** Input Fields */}
-          {[
-            { name: "name", placeholder: "Full Name", type: "text" },
-            { name: "email", placeholder: "Email", type: "email" },
-            { name: "phone", placeholder: "Your Contact Number", type: "tel" },
-            {
-              name: "no_of_people",
-              placeholder: "No. of People",
-              type: "number",
-            },
-            {
-              name: "pickup_address",
-              placeholder: "Your Pickup Address!",
-              type: "text",
-            },
-          ].map((input) => (
-            <div
-              key={input.name}
-              className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4 nth-last-[2]:w-full"
-            >
-              <input
-                type={input.type}
-                name={input.name}
-                placeholder={input.placeholder}
-                value={formData[input.name as keyof typeof formData]}
-                onChange={handleChange}
-                className="h-full w-full placeholder:text-black bg-gray-200 px-4 outline-none rounded-md border-b-2"
-              />
-            </div>
-          ))}
-
-          {/** Textarea */}
-          <div className="w-full max-sm:w-full pr-4 max-sm:pr-0 my-4">
-            <textarea
-              name="special_request"
-              placeholder="Any other detail or message?"
-              value={formData.special_request}
-              onChange={handleChange}
-              className="h-full w-full bg-gray-200 px-4 outline-none rounded-md border-b-2 pt-3"
-              rows={4}
-            ></textarea>
-          </div>
-        </div>
-      </div>
-
-      {/** Trip Date Section */}
-      <div className="mt-8 p-4 py-8 w-full bg-white shadow-lg rounded-lg">
-        <p className="text-2xl font-medium"> Enter Trip Date </p>
-        <div className="flex flex-wrap max-sm:flex-wrap mt-4">
-          {[
-            { name: "start_date", label: "Trip Start Date" },
-            { name: "end_date", label: "Trip End Date" },
-          ].map((dateInput) => (
-            <div
-              key={dateInput.name}
-              className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4"
-            >
-              <label htmlFor={dateInput.name}>{dateInput.label}</label>
-              <input
-                type="date"
-                name={dateInput.name}
-                id={dateInput.name}
-                value={formData[dateInput.name as keyof typeof formData]}
-                onChange={handleChange}
-                className="h-full w-full bg-gray-200 px-4 outline-none rounded-md border-b-2"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/** Submit Button */}
-      <button
-        type="submit"
-        className="mt-8 mb-2 h-12 w-full bg-blue-500 text-white rounded-lg"
-      >
-        Book Trip!
-      </button>
-
-      {/** Terms & Conditions */}
-      <div className="my-4 text-center">
-        <span>
-          By signing in or creating an account, you agree with our{" "}
-          <Link href={PAGES.PRIVACY} className={Colors.textPrimary}>
-            Terms & Conditions
-          </Link>
-        </span>
-      </div>
-    </form>
-  );
-};
-
-const BookingDetails = () => {
+const BookingDetails = ({ startDate, endDate }: BookingDetailsProps) => {
   return (
     <div>
       <div className="bg-white rounded-lg shadow-lg">
         <div className="px-4 py-3 w-full rounded-t-lg bg-slate-300 text-2xl max-sm:text-xl font-medium">
           <p>Your Booking Details</p>
         </div>
-        <div className="flex text-center items-center max-sm:gap-4 justify-between px-8 max-md:px-4 max-lg:px-48 max-xl:px-60 py-4">
-          <div className="">
-            <p className="text-lg max-sm:text-sm font-medium">12:00</p>
-            <p className="text-lg max-sm:text-sm font-medium text-gray-500">
-              DUB
-            </p>
-          </div>
-          <div className="flex items-center gap-4 max-sm:gap-2">
-            <p className="text-sm font-medium">From</p>
-            <div className="flex flex-col items-center">
-              <p>0h 50m</p>
-              <Image
-                width={1920}
-                height={1920}
-                src="/route-plan.png"
-                alt="plan "
-              ></Image>
-              <p className="text-sm font-medium">1 Stop</p>
-            </div>
-            <p className="text-sm font-medium">To</p>
-          </div>
-          <div>
-            <p className="text-lg max-sm:text-sm font-medium">12:50</p>
-            <p className="text-lg max-sm:text-sm font-medium text-gray-500">
-              SHJ
-            </p>
-          </div>
-        </div>
-        <div className="flex justify-between px-8 max-md:px-4 pb-8 py-2 max-xl:px-24">
+        <div className="flex text-center items-center justify-between px-8 max-md:px-4 py-4">
           <div className="py-2">
-            <p className="text-smfont-medium text-gray-500 ">Departure</p>
-            <p className="text-lg max-sm:text-base font-medium">14 Aug, 2023</p>
+            <p className="text-sm font-medium text-gray-500 ">Departure</p>
+            <p className="text-lg max-sm:text-base font-medium">{startDate}</p>
           </div>
           <div className="w-[1px] border-l-2 border-gray-500"></div>
           <div className="py-2">
             <p className="text-sm font-medium text-gray-500">Arrival</p>
-            <p className="text-lg max-sm:text-base font-medium">14 Aug, 2023</p>
+            <p className="text-lg max-sm:text-base font-medium">{endDate}</p>
           </div>
         </div>
         <div className="px-4">
           <hr className="border-gray-400 "></hr>
         </div>
         <div className="text-sm font-medium text-gray-500 py-8 max-sm:py-4 px-4">
-          <p>Tpm Line</p>
-          <p>Operated by Feel Dubai Airlines</p>
-          <p>Economy | Flight FK234 | Aircraft BOEING 777-90</p>
-          <p>Adult(s): 25KG luggage free</p>
+          <p>Trip details will be confirmed upon booking.</p>
+          <p>Operated by M and P Travels</p>
+          <p>Comfortable seating | Luggage allowance as per package</p>
+          <p>Please check your booking confirmation for final details.</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default function TripFillingForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    no_of_people: "",
-    pickup_address: "",
-    special_request: "",
-    start_date: "",
-    end_date: "",
-  });
+export default function TripFillingForm({ packageID }: { packageID: string }) {
+  const [isCooldown, setIsCooldown] = useState(false);
 
-  // Handle form submission
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form Submitted:", formData);
+  const {
+    register,
+    handleSubmit,
+    watch, // Use watch to get current form values
+    setValue,
+    formState: { errors },
+  } = useForm<FormDataType>();
+
+  // Watch for changes in start_date and end_date
+  const startDate = watch("start_date");
+  const endDate = watch("end_date");
+
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    setValue("start_date", today);
+    setValue("end_date", today);
+  }, [setValue]);
+
+  const onSubmit = async (data: FormDataType) => {
+    if (isCooldown) {
+      toast.error("Form already submitted! Please wait 5 seconds.", {
+        position: "top-right",
+      });
+      return;
+    }
+
+    try {
+      await submitLead({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        pickupAddress: data.pickup_address,
+        dropAddress: "", // Assuming no drop address for this form
+        pickupDate: data.start_date,
+        dropDate: data.end_date,
+        message: data.special_request,
+        packageId: packageID, // Pass the packageID
+      });
+
+      toast.success("Trip booked successfully!", { position: "top-right" });
+
+      // Start cooldown
+      setIsCooldown(true);
+      setTimeout(() => setIsCooldown(false), 5000);
+    } catch (error) {
+      toast.error(`${(error as Error).message} Try again!`, {
+        position: "top-right",
+      });
+    }
   };
 
   return (
     <div>
+      <ToastContainer />
       <div className="w-full flex max-xl:flex-wrap gap-4 max-sm:px-2 max-xl:px-10 bg-gray-100">
         <div className="pl-16 max-xl:pl-0 pr-4 max-xl:pr-0  pt-4 h-full w-8/12 max-xl:w-full">
-          <UserDetailsForm
-            formData={formData}
-            setFormData={setFormData}
-            formAction={handleFormSubmit}
-          />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="p-4 py-10 w-full bg-white shadow-lg rounded-lg">
+              <p className="text-2xl font-medium">Enter Your Details</p>
+              <div className="flex flex-wrap max-sm:flex-wrap mt-4">
+                {/** Input Fields */}
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                  <Input
+                    type="text"
+                    placeholder="Full Name"
+                    className={errors.name ? "border-2 border-red-500" : ""}
+                    {...register("name", { required: "Full Name is required" })}
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    className={errors.email ? "border-2 border-red-500" : ""}
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                  <Input
+                    type="tel"
+                    placeholder="Your Contact Number"
+                    className={errors.phone ? "border-2 border-red-500" : ""}
+                    {...register("phone", {
+                      required: "Contact Number is required",
+                      minLength: {
+                        value: 10,
+                        message: "Minimum 10 digits required",
+                      },
+                      maxLength: {
+                        value: 15,
+                        message: "Maximum 15 digits allowed",
+                      },
+                    })}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm">
+                      {errors.phone.message}
+                    </p>
+                  )}
+                </div>
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                  <Input
+                    type="number"
+                    placeholder="No. of People"
+                    className={errors.no_of_people ? "border-2 border-red-500" : ""}
+                    {...register("no_of_people", {
+                      required: "Number of people is required",
+                      min: { value: 1, message: "At least 1 person required" },
+                    })}
+                  />
+                  {errors.no_of_people && (
+                    <p className="text-red-500 text-sm">
+                      {errors.no_of_people.message}
+                    </p>
+                  )}
+                </div>
+                <div className="h-12 w-full pr-4 max-sm:pr-0 my-4">
+                  <Input
+                    type="text"
+                    placeholder="Your Pickup Address!"
+                    className={errors.pickup_address ? "border-2 border-red-500" : ""}
+                    {...register("pickup_address", {
+                      required: "Pickup address is required",
+                    })}
+                  />
+                  {errors.pickup_address && (
+                    <p className="text-red-500 text-sm">
+                      {errors.pickup_address.message}
+                    </p>
+                  )}
+                </div>
+
+                {/** Textarea */}
+                <div className="w-full pr-4 max-sm:pr-0 my-4">
+                  <textarea
+                    placeholder="Any other detail or message?"
+                    className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pt-3 ${
+                      errors.special_request ? "border-2 border-red-500" : ""
+                    }`}
+                    rows={4}
+                    {...register("special_request")}
+                  ></textarea>
+                  {errors.special_request && (
+                    <p className="text-red-500 text-sm">
+                      {errors.special_request.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/** Trip Date Section */}
+            <div className="mt-8 p-4 py-8 w-full bg-white shadow-lg rounded-lg">
+              <p className="text-2xl font-medium"> Enter Trip Date </p>
+              <div className="flex flex-wrap max-sm:flex-wrap mt-4">
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                  <label htmlFor="start_date">Trip Start Date</label>
+                  <Input
+                    type="date"
+                    id="start_date"
+                    className={errors.start_date ? "border-2 border-red-500" : ""}
+                    {...register("start_date", {
+                      required: "Start date is required",
+                    })}
+                  />
+                  {errors.start_date && (
+                    <p className="text-red-500 text-sm">
+                      {errors.start_date.message}
+                    </p>
+                  )}
+                </div>
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                  <label htmlFor="end_date">Trip End Date</label>
+                  <Input
+                    type="date"
+                    id="end_date"
+                    className={errors.end_date ? "border-2 border-red-500" : ""}
+                    {...register("end_date", {
+                      required: "End date is required",
+                    })}
+                  />
+                  {errors.end_date && (
+                    <p className="text-red-500 text-sm">
+                      {errors.end_date.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/** Submit Button */}
+            <Button
+              type="submit"
+              className="mt-8 mb-2 h-12 w-full"
+              disabled={isCooldown}
+            >
+              Book Trip!
+            </Button>
+
+            {/** Terms & Conditions */}
+            <div className="my-4 text-center">
+              <span>
+                By signing in or creating an account, you agree with our{" "}
+                <Link href={PAGES.PRIVACY} className={Colors.textPrimary}>
+                  Terms & Conditions
+                </Link>
+              </span>
+            </div>
+          </form>
         </div>
         <div className="w-4/12 max-xl:w-full max-xl:pr-0 bg-gray-100 pr-16 py-4">
-          <BookingDetails />
+          <BookingDetails startDate={startDate} endDate={endDate} />
         </div>
       </div>
     </div>

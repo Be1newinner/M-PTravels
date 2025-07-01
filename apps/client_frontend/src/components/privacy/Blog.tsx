@@ -50,7 +50,7 @@ export default function Blog() {
             Our Privacy Policy in brief
           </p>
 
-          <div className="ml-4">
+          <div className="ml-2 sm:ml-4">
             <div className="flex gap-4">
               <FaCircle size={6} className="mt-2" />
               <p className="text-sm">
@@ -90,7 +90,7 @@ export default function Blog() {
             lobortis nulla nibh. Blandit adipiscing gravida suspendisse lacinia.
             Eleifend sed turpis aliquet non condimentum cursus ligula{" "}
           </p>
-          <div className="ml-4">
+          <div className="ml-2 sm:ml-4">
             <div className="flex gap-4">
               <FaCircle size={6} className="mt-2" />
               <p className="text-sm">
@@ -141,7 +141,7 @@ export default function Blog() {
       </div>
 
       {/* our privacy policy in brief */}
-      <div className="mt-4 p-4 shadow-xl border rounded-2xl bg-white">
+      <div className="mt-4 p-4 shadow-xl border font-medium rounded-2xl bg-white ">
         <div>
           <h1 className="text-lg font-semibold">
             We Our Privacy Policy in brief{" "}
@@ -160,9 +160,9 @@ export default function Blog() {
             Pretium amet.
           </p>
         </div>
-        <div className="text-gray-400 ml-5">
+        <div className="text-gray-400 ml-2 sm:ml-5">
           <div className="flex gap-4">
-            <FaCircle size={18} className="mt-2" />
+            <FaCircle size={12} className="mt-2 sm:size={18}" />
             <p>
               Lorem ipsum dolor sit amet consectetur. Maecenas lobortis gravida
               lobortis nulla nibh. Blandit adipiscing gravida suspendisse
@@ -172,7 +172,7 @@ export default function Blog() {
             </p>
           </div>
           <div className="flex gap-4">
-            <FaCircle size={18} className="mt-2" />
+            <FaCircle size={12} className="mt-2 sm:size={18}" />
             <p>
               Lorem ipsum dolor sit amet consectetur. Maecenas lobortis gravida
               lobortis nulla nibh. Blandit adipiscing gravida suspendisse
@@ -265,7 +265,7 @@ export default function Blog() {
           </p>
         </div>
 
-        <div className="ml-4 mt-4 text-gray-400">
+        <div className="ml-2 sm:ml-4 mt-4 text-gray-400">
           <div className="flex gap-4">
             <FaCircle size={6} className="mt-2" />
             <p className="text-sm">

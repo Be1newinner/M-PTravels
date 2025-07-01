@@ -33,12 +33,7 @@ export default function Journey() {
               alt="Blog Banner"
               className="rounded-3xl max-sm:rounded-2xl"
             />
-            <button
-              onClick={handleVideo}
-              className="absolute text-white text-8xl max-sm:text-2xl transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            >
-              <IoPlayCircleOutline />
-            </button>
+            {/* Removed commented out video button */}
           </div>
         </div>
       </div>

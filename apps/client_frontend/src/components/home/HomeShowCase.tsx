@@ -2,6 +2,7 @@ import { Colors } from "@/constants/colors";
 import { PAGES } from "@/constants/pages";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export default function HomeShowCase() {
   return (
@@ -31,14 +32,11 @@ export default function HomeShowCase() {
                   </div>
                 </div>
                 <Link href={PAGES.TOUR_PACKAGES} className="max-md:text-center">
-                  <button
-                    className={[
-                      "px-6 py-3 text-sm text-white rounded-lg hover:bg-white hover:text-black duration-700",
-                      Colors.primary,
-                    ].join(" ")}
+                  <Button
+                    className="text-sm rounded-lg hover:bg-white hover:text-black duration-700"
                   >
                     Booking Now
-                  </button>
+                  </Button>
                 </Link>
               </div>
               <div className="w-full flex items-center max-md:w-full max-lg:w-9/12">

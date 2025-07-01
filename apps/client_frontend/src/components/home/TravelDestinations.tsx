@@ -2,6 +2,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { RiHotelFill } from "react-icons/ri";
 import { Colors } from "@/constants/colors";
 import Image from "next/image";
+import { Button } from "../ui/button";
 
 export default function TravelDestinations() {
   return (
@@ -11,14 +12,11 @@ export default function TravelDestinations() {
           <h1 className="text-3xl max-sm:text-2xl font-bold">
             Popular Indian Travel Destinations
           </h1>
-          <button
-            className={[
-              "px-6 py-3 shadow-2xl rounded-lg text-white hover:bg-white hover:text-black duration-700",
-              Colors.primary,
-            ].join(" ")}
+          <Button
+            className="px-6 py-3 shadow-2xl rounded-lg hover:bg-white hover:text-black duration-700"
           >
             Show More
-          </button>
+          </Button>
         </div>
         <div className="flex flex-between items-center gap-20 max-lg:gap-6 py-10 max-lg:flex-wrap">
           <div className="max-xl:w-1/2 max-sm:px-2 max-md:px-10 max-lg:w-full">
@@ -41,14 +39,11 @@ export default function TravelDestinations() {
                   <RiHotelFill className="text-2xl" />
                   <p>Hotel</p>
                 </div>
-                <button
-                  className={[
-                    "w-full py-2 shadow-lg rounded-lg text-white hover:bg-white hover:text-black duration-700",
-                    Colors.primary,
-                  ].join(" ")}
+                <Button
+                  className="w-full py-2 shadow-lg rounded-lg hover:bg-white hover:text-black duration-700"
                 >
                   Discover
-                </button>
+                </Button>
               </div>
             </div>
             <div className="w-1/2 relative group overflow-hidden pt-8 pl-4 max-md:w-full max-md:pl-0 sm:w-1/2 sm:pl-2">
@@ -67,14 +62,11 @@ export default function TravelDestinations() {
                   <RiHotelFill className="text-2xl" />
                   <p className="py-2">Hotel</p>
                 </div>
-                <button
-                  className={[
-                    "w-full py-2  shadow-lg rounded-lg text-white hover:bg-white hover:text-black duration-700",
-                    Colors.primary,
-                  ].join(" ")}
+                <Button
+                  className="w-full py-2  shadow-lg rounded-lg hover:bg-white hover:text-black duration-700"
                 >
                   Discover
-                </button>
+                </Button>
               </div>
             </div>
             <div className="w-1/2 relative group overflow-hidden pt-8 pr-4 max-sm:w-full max-md:pr-0 sm:w-1/2 sm:pr-2">
@@ -93,14 +85,11 @@ export default function TravelDestinations() {
                   <RiHotelFill className="text-2xl" />
                   <p className="py-2">Hotel</p>
                 </div>
-                <button
-                  className={[
-                    "w-full py-2 shadow-lg rounded-lg text-white hover:bg-white hover:text-black duration-700",
-                    Colors.primary,
-                  ].join(" ")}
+                <Button
+                  className="w-full py-2 shadow-lg rounded-lg hover:bg-white hover:text-black duration-700"
                 >
                   Discover
-                </button>
+                </Button>
               </div>
             </div>
             <div className="w-1/2 relative group overflow-hidden pt-8 pl-4 max-sm:w-full max-md:pl-0 sm:w-1/2 sm:pl-2">
@@ -119,14 +108,11 @@ export default function TravelDestinations() {
                   <RiHotelFill className="text-2xl" />
                   <p className="py-2">Hotel</p>
                 </div>
-                <button
-                  className={[
-                    "w-full py-2 shadow-lg rounded-lg text-white hover:bg-white hover:text-black duration-700",
-                    Colors.primary,
-                  ].join(" ")}
+                <Button
+                  className="w-full py-2 shadow-lg rounded-lg hover:bg-white hover:text-black duration-700"
                 >
                   Discover
-                </button>
+                </Button>
               </div>
             </div>
           </div>

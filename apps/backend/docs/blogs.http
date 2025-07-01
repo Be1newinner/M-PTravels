@@ -1,6 +1,6 @@
-@baseUrl = http://localhost:5001
+@baseUrl = https://localhost:5001
 @token = YOUR_JWT_TOKEN_HERE
-@slug = test-slug
+@slug = explore-indias-best-road-trips-with-comfort
 @blogId = BLOG_OBJECT_ID
 
 ###

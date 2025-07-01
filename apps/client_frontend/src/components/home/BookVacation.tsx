@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { submitLead } from "@/services/leads";
 import { FaArrowsLeftRightToLine } from "react-icons/fa6";
 import { useEffect, useState } from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 export default function BookVacation() {
   type formDataType = {
@@ -67,9 +69,6 @@ export default function BookVacation() {
     }
   };
 
-  const inputClass =
-    "outline-none bg-slate-300 placeholder:text-black-500 text-md px-4 rounded-lg h-12 w-full";
-  const errorInputClass = "border-2 border-red-500";
   const labelClass = "text-gray-500 font-semibold";
 
   return (
@@ -87,13 +86,11 @@ export default function BookVacation() {
                 Full Name
               </label>
               <div>
-                <input
+                <Input
                   type="text"
                   id="fullname"
                   placeholder="Your Full Name"
-                  className={`${inputClass} ${
-                    errors.fullname ? errorInputClass : ""
-                  }`}
+                  className={errors.fullname ? "border-2 border-red-500" : ""}
                   {...register("fullname", {
                     required: "Your name is required",
                   })}
@@ -111,14 +108,12 @@ export default function BookVacation() {
                   Phone
                 </label>
                 <div>
-                  <input
+                  <Input
                     type="number"
                     id="phone"
                     placeholder="Your Phone no."
                     maxLength={10}
-                    className={`${inputClass} ${
-                      errors.phone ? errorInputClass : ""
-                    }`}
+                    className={errors.phone ? "border-2 border-red-500" : ""}
                     {...register("phone", {
                       required: "Phone no. is required",
                       minLength: {
@@ -145,13 +140,11 @@ export default function BookVacation() {
                   From
                 </label>
                 <div>
-                  <input
+                  <Input
                     type="text"
                     id="travel-from"
                     placeholder="Your origin location"
-                    className={`${inputClass} ${
-                      errors.from ? errorInputClass : ""
-                    }`}
+                    className={errors.from ? "border-2 border-red-500" : ""}
                     {...register("from", {
                       required: "Origin location is required",
                     })}
@@ -175,13 +168,11 @@ export default function BookVacation() {
                   To
                 </label>
                 <div>
-                  <input
+                  <Input
                     type="text"
                     id="travel-to"
                     placeholder="Destination"
-                    className={`${inputClass} ${
-                      errors.to ? errorInputClass : ""
-                    }`}
+                    className={errors.to ? "border-2 border-red-500" : ""}
                     {...register("to", { required: "Destination is required" })}
                   />
                   {errors.to && (
@@ -198,12 +189,10 @@ export default function BookVacation() {
                   Departing
                 </label>
                 <div>
-                  <input
+                  <Input
                     type="date"
                     id="departing"
-                    className={`${inputClass} ${
-                      errors.departing ? errorInputClass : ""
-                    }`}
+                    className={errors.departing ? "border-2 border-red-500" : ""}
                     {...register("departing", {
                       required: "Departing date is required",
                     })}
@@ -228,12 +217,10 @@ export default function BookVacation() {
                   Returning
                 </label>
                 <div>
-                  <input
+                  <Input
                     type="date"
                     id="returning"
-                    className={`${inputClass} ${
-                      errors.returning ? errorInputClass : ""
-                    }`}
+                    className={errors.returning ? "border-2 border-red-500" : ""}
                     {...register("returning", {
                       required: "Returning date is required",
                     })}
@@ -252,11 +239,11 @@ export default function BookVacation() {
                 Total Passengers
               </label>
               <div>
-                <input
+                <Input
                   type="number"
                   min={1}
-                  className={`${inputClass} text-center ${
-                    errors.passengers ? errorInputClass : ""
+                  className={`text-center ${
+                    errors.passengers ? "border-2 border-red-500" : ""
                   }`}
                   {...register("passengers", {
                     required: "Number of passengers is required",
@@ -277,9 +264,9 @@ export default function BookVacation() {
               </div>
             </div>
             <div className="rounded-lg self-end w-full justify-self-end col-span-2 sm:col-span-1">
-              <button type="submit" className="px-8 py-3 w-full">
+              <Button type="submit" className="w-full">
                 Submit
-              </button>
+              </Button>
             </div>
           </form>
         </div>

@@ -12,8 +12,8 @@ export function PackageTagBar() {
     ]
   
     return (
-      <div className="py-10 container flex gap-8 justify-between max-lg:flex-wrap max-md:gap-3 max-2xl:gap-8">
-        {TagBarData.map(item => <div key={item.id} className="flex px-14 gap-2 py-5 shadow-lg rounded-lg bg-gray-100 max-xl:px-2 max-2xl:px-5 w-full items-center max-xl:justify-center ">
+      <div className="py-10 container flex gap-8 justify-between max-lg:flex-wrap max-md:gap-3 max-2xl:gap-8 px-4 sm:px-6 lg:px-8">
+        {TagBarData.map(item => <div key={item.id} className="flex px-4 sm:px-14 gap-2 py-5 shadow-lg rounded-lg bg-gray-100 max-xl:px-2 max-2xl:px-5 w-full items-center max-xl:justify-center ">
           <div className="flex gap-4">
             <item.icon
               className={`text-4xl text-center  ${Colors.textPrimary}`}
