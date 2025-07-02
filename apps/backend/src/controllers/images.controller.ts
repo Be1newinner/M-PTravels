@@ -1,12 +1,12 @@
 import {
   deleteFromCloudinary,
   uploadBufferToCloudinary,
-} from "@/utils/cloudinaryService";
+} from "../utils/cloudinaryService";
 import { IMAGE_SIZES, IMAGE_TYPES_ENUM } from "../constants";
 
 import { NextFunction, Request, Response } from "express";
 import sharp from "sharp";
-import AppError from "@/utils/AppError";
+import AppError from "../utils/AppError";
 
 export async function compressImage(
   file: Express.Multer.File,

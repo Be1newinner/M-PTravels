@@ -94,11 +94,12 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
         email: data.email,
         phone: data.phone,
         pickupAddress: data.pickup_address,
-        dropAddress: "", // Assuming no drop address for this form
+        dropAddress: packageID,
         pickupDate: data.start_date,
         dropDate: data.end_date,
         message: data.special_request,
-        packageId: packageID, // Pass the packageID
+        packageId: packageID,
+        source: `tour_packages/${packageID}`,
       });
 
       toast.success("Trip booked successfully!", { position: "top-right" });
@@ -117,13 +118,13 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
     <div>
       <ToastContainer />
       <div className="w-full flex max-xl:flex-wrap gap-4 max-sm:px-2 max-xl:px-10 bg-gray-100">
-        <div className="pl-16 max-xl:pl-0 pr-4 max-xl:pr-0  pt-4 h-full w-8/12 max-xl:w-full">
+        <div className="pl-16 max-xl:pl-0 px-4 max-xl:pr-0  pt-4 h-full w-8/12 max-xl:w-full">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="p-4 py-10 w-full bg-white shadow-lg rounded-lg">
+            <div className="px-10 py-10 w-full bg-white shadow-lg rounded-lg">
               <p className="text-2xl font-medium">Enter Your Details</p>
               <div className="flex flex-wrap max-sm:flex-wrap mt-4">
                 {/** Input Fields */}
-                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-2">
                   <Input
                     type="text"
                     placeholder="Full Name"
@@ -136,7 +137,7 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-2">
                   <Input
                     type="email"
                     placeholder="Email"
@@ -155,7 +156,7 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-2">
                   <Input
                     type="tel"
                     placeholder="Your Contact Number"
@@ -178,11 +179,13 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-4">
+                <div className="h-12 w-1/2 max-sm:w-full pr-4 max-sm:pr-0 my-2">
                   <Input
                     type="number"
                     placeholder="No. of People"
-                    className={errors.no_of_people ? "border-2 border-red-500" : ""}
+                    className={
+                      errors.no_of_people ? "border-2 border-red-500" : ""
+                    }
                     {...register("no_of_people", {
                       required: "Number of people is required",
                       min: { value: 1, message: "At least 1 person required" },
@@ -194,11 +197,13 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-full pr-4 max-sm:pr-0 my-4">
+                <div className="h-12 w-full pr-4 max-sm:pr-0 my-2">
                   <Input
                     type="text"
                     placeholder="Your Pickup Address!"
-                    className={errors.pickup_address ? "border-2 border-red-500" : ""}
+                    className={
+                      errors.pickup_address ? "border-2 border-red-500" : ""
+                    }
                     {...register("pickup_address", {
                       required: "Pickup address is required",
                     })}
@@ -211,7 +216,7 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
                 </div>
 
                 {/** Textarea */}
-                <div className="w-full pr-4 max-sm:pr-0 my-4">
+                <div className="w-full pr-4 max-sm:pr-0 my-2">
                   <textarea
                     placeholder="Any other detail or message?"
                     className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pt-3 ${
@@ -238,7 +243,9 @@ export default function TripFillingForm({ packageID }: { packageID: string }) {
                   <Input
                     type="date"
                     id="start_date"
-                    className={errors.start_date ? "border-2 border-red-500" : ""}
+                    className={
+                      errors.start_date ? "border-2 border-red-500" : ""
+                    }
                     {...register("start_date", {
                       required: "Start date is required",
                     })}

@@ -1,7 +1,7 @@
 import {
   deleteImageController,
   uploadImageController,
-} from "@/controllers/images.controller";
+} from "../controllers/images.controller";
 import { Router } from "express";
 import multer from "multer";
 

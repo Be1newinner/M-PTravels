@@ -13,10 +13,12 @@ const cookieOptions: {
   httpOnly: boolean;
   secure: boolean;
   sameSite: "none" | "lax" | "strict";
+  domain: string;
 } = {
   httpOnly: true,
   secure: true,
   sameSite: "none",
+  domain: ".shipsar.in",
 };
 
 interface TokenResponse {

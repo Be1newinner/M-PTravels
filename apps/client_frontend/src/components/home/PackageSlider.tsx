@@ -18,6 +18,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "../ui/button";
+import { slugify } from "@/utils/text_helpers";
 
 const queryClient = new QueryClient();
 
@@ -73,7 +74,7 @@ export function TanStackWrapper() {
                       <h1 className="font-bold text-xl mb-4">{item.title}</h1>
                       <div className="flex justify-between items-center">
                         <Link
-                          href={PAGES.TOUR_PACKAGES + item.slug}
+                          href={PAGES.TOUR_PACKAGES + slugify(item.title) + "-" + item._id}
                         >
                           <Button className={"py-3 px-6 text-base"}>
                             Booking Now

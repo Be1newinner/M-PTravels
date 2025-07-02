@@ -6,11 +6,11 @@ import connectToDB from "./config/db";
 import { setupSwagger } from "./config/swagger";
 import { ENV_CONFIGS } from "./config/envs.config";
 import { errorHandler } from "./middlewares/error.middleware";
-import fs from "fs";
-import path from "path";
-import https from "https";
+// import fs from "fs";
+// import path from "path";
+// import https from "https";
 import helmet from "helmet";
-import { fileURLToPath } from "node:url";
+// import { fileURLToPath } from "node:url";
 
 // Import Routes
 import userRoutes from "./routes/user.routes";
@@ -20,37 +20,29 @@ import cabRoutes from "./routes/cab.routes";
 import packageRoutes from "./routes/package.routes";
 import { imagesRouter } from "./routes/images.routes";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
-const privateKey = fs.readFileSync(
-  path.join(__dirname, "../", "localhost-key.pem"),
-  "utf8"
-);
-const certificate = fs.readFileSync(
-  path.join(__dirname, "../", "localhost.pem"),
-  "utf8"
-);
-const credentials = { key: privateKey, cert: certificate };
+// const privateKey = fs.readFileSync(
+//   path.join(__dirname, "../", "localhost-key.pem"),
+//   "utf8"
+// );
+// const certificate = fs.readFileSync(
+//   path.join(__dirname, "../", "localhost.pem"),
+//   "utf8"
+// );
+// const credentials = { key: privateKey, cert: certificate };
 
 const app = express();
 const PORT = ENV_CONFIGS.PORT || 5000;
+
+const WHITELIST_DOMAINS = process.env.CORS_WHITELIST?.split(",");
 
 // Middleware
 app.use(helmet());
 app.use(
   cors({
-    origin: [
-      "http://localhost:32100",
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "https://localhost:3001",
-      "http://localhost:5173",
-      "https://firefly-top-jackal.ngrok-free.app",
-      "https://mptravels.vercel.app",
-      "https://mnp-admin.vercel.app",
-      "https://kzmksnb9kryam9rvyczm.lite.vusercontent.net",
-    ],
+    origin: WHITELIST_DOMAINS,
     credentials: true,
   })
 );
@@ -92,9 +84,9 @@ app.use(errorHandler);
 // Database Connection & Server Start
 connectToDB()
   .then(() => {
-    const httpsServer = https.createServer(credentials, app);
+    // const httpsServer = https.createServer(credentials, app);
 
-    httpsServer.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`⚙️  Server is running on http://localhost:${PORT}`);
     });
   })
