@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./Providers";
-import Clarity from "@microsoft/clarity";
 
-Clarity.init("s8gd2xbff6");
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
