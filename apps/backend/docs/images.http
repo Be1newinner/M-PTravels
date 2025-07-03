@@ -19,6 +19,6 @@ Content-Type: image/jpeg
 # Delete an image
 # The 'publicId' query parameter is required.
 # You get the public_id from the upload response.
-@publicId = your_image_public_id_here
+@publicId = package/jaipur2_1_zjuklr
 DELETE {{baseUrl}}/images?publicId={{publicId}}
 Accept: application/json

@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import Blog from "../models/blog.model";
-import { bucket } from "../config/firebaseInit";
-import fs from "fs/promises";
 import { SendResponse } from "../utils/JsonResponse";
 import AppError from "../utils/AppError";
 import { parseQueryInt } from "../utils/parseQueryInt";
@@ -12,24 +10,11 @@ export const createBlog = async (
   next: NextFunction
 ): Promise<void> => {
   const { title, blog, slug } = req.body;
-  let imageUrl = "";
-
-  if (req.file) {
-    await bucket.upload(req.file.path, {
-      destination: `cab-booking/blogs/${req.file.originalname}`,
-    });
-
-    imageUrl = `https://firebasestorage.googleapis.com/v0/b/wingfi-9b5b7.appspot.com/o/${encodeURIComponent(`cab-booking/blogs/${req.file.originalname}`)}?alt=media`;
-
-    await fs.rm(req.file.path);
-    // console.log("IMAGE ", req.file);
-  }
 
   try {
     const blogData = await Blog.create({
       title,
       blog,
-      image: imageUrl,
       slug,
     });
     SendResponse(res, {
@@ -169,13 +154,6 @@ export const deleteBlog = async (
     const blog = await Blog.findById(id);
 
     if (!blog) return next(new AppError("Blogs not found", 404));
-
-    if (blog?.image && blog?.image !== "") {
-      let fileName =
-        blog?.image?.split("/").pop()?.split("?")[0].replace(/%2F/g, "/") ?? "";
-
-      await bucket.file(fileName).delete();
-    }
 
     await Blog.findByIdAndDelete(id);
 

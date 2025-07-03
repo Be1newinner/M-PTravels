@@ -24,17 +24,14 @@ export const blogSchema = new Schema<IBlog>(
     },
     image: {
       type: String,
-      required: [true, "Image is required"],
       trim: true,
     },
     slug: {
       type: String,
-      required: [true, "Slug is required"],
       trim: true,
     },
     desc: {
       type: String,
-      required: [true, "Short Description is required"],
       trim: true,
     },
   },

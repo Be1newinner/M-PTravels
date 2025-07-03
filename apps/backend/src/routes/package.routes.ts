@@ -7,7 +7,6 @@ import {
   getPackages,
   updatePackage,
 } from "../controllers/package.controller";
-import { upload } from "../middlewares/multer.middleware";
 
 const router: Router = Router();
 
@@ -56,7 +55,7 @@ const router: Router = Router();
  *       500:
  *         description: Internal Server Error
  */
-router.post("/", verifyJWT, upload.single("image"), createPackage);
+router.post("/", verifyJWT, createPackage);
 
 /**
  * @swagger
@@ -136,7 +135,7 @@ router.get("/:id", getPackage);
  *       404:
  *         description: Package not found
  */
-router.patch("/:id", verifyJWT, upload.single("image"), updatePackage);
+router.patch("/:id", verifyJWT, updatePackage);
 
 /**
  * @swagger

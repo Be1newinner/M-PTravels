@@ -13,12 +13,12 @@ const cookieOptions: {
   httpOnly: boolean;
   secure: boolean;
   sameSite: "none" | "lax" | "strict";
-  domain: string;
+  // domain: string;
 } = {
-  httpOnly: true,
+  httpOnly: false,
   secure: true,
   sameSite: "none",
-  domain: ".shipsar.in",
+  // domain: ".ngrok-free.app",
 };
 
 interface TokenResponse {

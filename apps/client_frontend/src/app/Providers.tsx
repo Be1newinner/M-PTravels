@@ -11,9 +11,9 @@ type ProvidersProps = {
 };
 
 const Providers: React.FC<ProvidersProps> = ({ children }) => {
-    useEffect(()=>{
-        Clarity.init("s8gd2xbff6");
-    },[])
+  useEffect(() => {
+    Clarity.init("s8gd2xbff6");
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       {children}

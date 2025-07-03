@@ -53,7 +53,6 @@ router.post("/login", loginUser);
 
 router.post("/create", createUser);
 
-
 /**
  * @swagger
  * /users/refresh-token:
@@ -195,5 +194,11 @@ router.post("/logout", logoutUser);
  *         description: User not found
  */
 router.post("/change-password", verifyJWT, changeCurrentPassword);
+
+router.get("/check-cookie", (req, res) => {
+  // Access the cookies sent by the frontend to the backend
+  const authToken = req.cookies.authToken;
+  res.json({ authToken });
+});
 
 export default router;

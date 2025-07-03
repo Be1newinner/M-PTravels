@@ -8,7 +8,6 @@ import {
   searchBlogs,
   updateBlog,
 } from "../controllers/blog.controller";
-import { upload } from "../middlewares/multer.middleware";
 
 const router: Router = Router();
 
@@ -50,7 +49,7 @@ const router: Router = Router();
 // router.route("/").post(verifyJWT, upload.single("image"), createBlog);
 // router.route("/").post(, createBlog);
 
-router.post("/", upload.single("image"), createBlog);
+router.post("/", createBlog);
 
 /**
  * @swagger

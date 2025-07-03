@@ -26,20 +26,18 @@ const packageSchema = new Schema<IPackage>(
     },
     slug: {
       type: String,
-      required: [true, "slug is required"],
       trim: true,
     },
     price: {
       type: Number,
-      trim: true,
+      trim: false,
     },
     price_unit: {
       type: String,
-      trim: true,
+      trim: false,
     },
     image: {
       type: String,
-      required: [true, "Image is required"],
       trim: true,
     },
   },
