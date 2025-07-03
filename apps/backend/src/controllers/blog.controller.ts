@@ -9,13 +9,14 @@ export const createBlog = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { title, content, slug } = req.body;
+  const { title, content, slug, image } = req.body;
 
   try {
     const blogData = await Blog.create({
       title,
       content,
       slug,
+      image,
     });
     SendResponse(res, {
       status_code: 201,
