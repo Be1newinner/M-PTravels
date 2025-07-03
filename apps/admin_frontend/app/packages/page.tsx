@@ -1,11 +1,18 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Pagination,
   PaginationContent,
@@ -14,10 +21,17 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { Search, Plus, MapPin, IndianRupee, Loader2, AlertTriangle } from "lucide-react"
-import DashboardLayout from "../dashboard-layout"
-import { usePackages, useDeletePackage } from "@/lib/api/packages-api"
+} from "@/components/ui/pagination";
+import {
+  Search,
+  Plus,
+  MapPin,
+  IndianRupee,
+  Loader2,
+  AlertTriangle,
+} from "lucide-react";
+import DashboardLayout from "../dashboard-layout";
+import { usePackages, useDeletePackage } from "@/lib/api/packages-api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,30 +42,34 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { toast } from "@/components/ui/use-toast"
+} from "@/components/ui/alert-dialog";
+import { toast } from "@/components/ui/use-toast";
 
 export default function PackagesPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const [packageToDelete, setPackageToDelete] = useState<string | null>(null)
-  const itemsPerPage = 9
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [packageToDelete, setPackageToDelete] = useState<string | null>(null);
+  const itemsPerPage = 9;
 
-  const { data, isLoading, isError, refetch } = usePackages(currentPage, itemsPerPage)
-  const { mutate: deletePackage, isPending: isDeleting } = useDeletePackage()
+  const { data, isLoading, isError, refetch } = usePackages(
+    currentPage,
+    itemsPerPage
+  );
+  const { mutate: deletePackage, isPending: isDeleting } = useDeletePackage();
 
   const filteredPackages = data?.data
     ? data.data.filter((pkg) => {
         return (
           pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (pkg.description && pkg.description.toLowerCase().includes(searchTerm.toLowerCase()))
-        )
+          (pkg.description &&
+            pkg.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
       })
-    : []
+    : [];
 
   const handleDeletePackage = (id: string) => {
-    setPackageToDelete(id)
-  }
+    setPackageToDelete(id);
+  };
 
   const confirmDeletePackage = () => {
     if (packageToDelete) {
@@ -60,23 +78,25 @@ export default function PackagesPage() {
           toast({
             title: "Package deleted",
             description: "Package has been successfully deleted.",
-          })
-          refetch()
-          setPackageToDelete(null)
+          });
+          refetch();
+          setPackageToDelete(null);
         },
         onError: (error) => {
           toast({
             title: "Error",
             description: "Failed to delete package. Please try again.",
             variant: "destructive",
-          })
-          console.error(error)
+          });
+          console.error(error);
         },
-      })
+      });
     }
-  }
+  };
 
-  const totalPages = data?.meta?.total ? Math.ceil(data.meta.total / itemsPerPage) : 0
+  const totalPages = data?.meta?.total
+    ? Math.ceil(data.meta.total / itemsPerPage)
+    : 0;
 
   if (isLoading) {
     return (
@@ -85,7 +105,7 @@ export default function PackagesPage() {
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       </DashboardLayout>
-    )
+    );
   }
 
   if (isError) {
@@ -94,11 +114,13 @@ export default function PackagesPage() {
         <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)]">
           <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
           <h2 className="text-xl font-bold mb-2">Error loading packages</h2>
-          <p className="text-muted-foreground mb-4">There was a problem loading the packages.</p>
+          <p className="text-muted-foreground mb-4">
+            There was a problem loading the packages.
+          </p>
           <Button onClick={() => refetch()}>Try Again</Button>
         </div>
       </DashboardLayout>
-    )
+    );
   }
 
   return (
@@ -151,7 +173,9 @@ export default function PackagesPage() {
                 </div>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-xl">{pkg.title}</CardTitle>
-                  <CardDescription className="line-clamp-2">{pkg.description}</CardDescription>
+                  <CardDescription className="line-clamp-2">
+                    {pkg.description}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="pb-2">
                   <div className="flex flex-col space-y-1.5">
@@ -165,7 +189,8 @@ export default function PackagesPage() {
                       <div className="flex items-center text-sm font-semibold">
                         <IndianRupee className="mr-1 h-4 w-4" />
                         <span>
-                          {pkg.price.toLocaleString("en-IN")} {pkg.price_unit || ""}
+                          {pkg.price.toLocaleString("en-IN")}{" "}
+                          {pkg.price_unit || ""}
                         </span>
                       </div>
                     )}
@@ -180,7 +205,11 @@ export default function PackagesPage() {
                     onOpenChange={(open) => !open && setPackageToDelete(null)}
                   >
                     <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="icon" onClick={() => handleDeletePackage(pkg._id)}>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => handleDeletePackage(pkg._id)}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
@@ -205,12 +234,16 @@ export default function PackagesPage() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete the package.
+                          This action cannot be undone. This will permanently
+                          delete the package.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={confirmDeletePackage} disabled={isDeleting}>
+                        <AlertDialogAction
+                          onClick={confirmDeletePackage}
+                          disabled={isDeleting}
+                        >
                           {isDeleting ? (
                             <>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -235,31 +268,36 @@ export default function PackagesPage() {
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    // disabled={currentPage === 1}
                   />
                 </PaginationItem>
 
                 {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
-                  let pageNumber: number
+                  let pageNumber: number;
 
                   if (totalPages <= 5) {
-                    pageNumber = i + 1
+                    pageNumber = i + 1;
                   } else if (currentPage <= 3) {
-                    pageNumber = i + 1
+                    pageNumber = i + 1;
                   } else if (currentPage >= totalPages - 2) {
-                    pageNumber = totalPages - 4 + i
+                    pageNumber = totalPages - 4 + i;
                   } else {
-                    pageNumber = currentPage - 2 + i
+                    pageNumber = currentPage - 2 + i;
                   }
 
                   return (
                     <PaginationItem key={i}>
-                      <PaginationLink isActive={pageNumber === currentPage} onClick={() => setCurrentPage(pageNumber)}>
+                      <PaginationLink
+                        isActive={pageNumber === currentPage}
+                        onClick={() => setCurrentPage(pageNumber)}
+                      >
                         {pageNumber}
                       </PaginationLink>
                     </PaginationItem>
-                  )
+                  );
                 })}
 
                 {totalPages > 5 && currentPage < totalPages - 2 && (
@@ -268,15 +306,21 @@ export default function PackagesPage() {
                       <PaginationEllipsis />
                     </PaginationItem>
                     <PaginationItem>
-                      <PaginationLink onClick={() => setCurrentPage(totalPages)}>{totalPages}</PaginationLink>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(totalPages)}
+                      >
+                        {totalPages}
+                      </PaginationLink>
                     </PaginationItem>
                   </>
                 )}
 
                 <PaginationItem>
                   <PaginationNext
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    // disabled={currentPage === totalPages}
                   />
                 </PaginationItem>
               </PaginationContent>
@@ -285,5 +329,5 @@ export default function PackagesPage() {
         )}
       </div>
     </DashboardLayout>
-  )
+  );
 }

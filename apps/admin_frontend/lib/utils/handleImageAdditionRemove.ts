@@ -1,5 +1,5 @@
 import React from "react";
-import { imagesUploadApi } from "../api/images-api";
+import { imagesUploadApi, imagesRemoveApi } from "../api/images-api";
 
 type ImageChangeState = {
   imagesToAdd: File[];
@@ -62,7 +62,8 @@ export const handleRemoveImage = (
 };
 
 export async function imageUploadUtility(
-  imageChangesToBeMade: ImageChangeState
+  imageChangesToBeMade: ImageChangeState,
+  type: string
 ): Promise<string[] | []> {
   if (!imageChangesToBeMade?.imagesToAdd?.length) return [];
 
@@ -71,8 +72,23 @@ export async function imageUploadUtility(
     formData.append("images", file)
   );
 
-  const res = await imagesUploadApi(formData);
+  const res = await imagesUploadApi(formData, type);
 
   if (res.statusText === "OK") return res?.data?.images.map((img) => img.url);
   else return [];
+}
+
+export async function imageDeleteUtility(
+  imageUrlsToDelete: string[]
+): Promise<boolean> {
+  if (!imageUrlsToDelete.length) return true; // Nothing to delete
+
+  try {
+    const deletePromises = imageUrlsToDelete.map((url) => imagesRemoveApi(url));
+    await Promise.all(deletePromises);
+    return true;
+  } catch (error) {
+    console.error("Error deleting images:", error);
+    return false;
+  }
 }

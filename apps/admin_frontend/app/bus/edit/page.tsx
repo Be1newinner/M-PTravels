@@ -37,6 +37,7 @@ import {
   handleImageAddition,
   handleRemoveImage,
   imageUploadUtility,
+  imageDeleteUtility, // Import the new utility
 } from "@/lib/utils/handleImageAdditionRemove";
 
 type ImageChangeState = {
@@ -116,36 +117,56 @@ export default function EditBusPage() {
     if (!validateForm()) return;
     setIsSaving(true);
 
-    const uploadedImages = await imageUploadUtility(imageChangesToBeMade);
-
     try {
-      const imageUrls = [
-        ...images.filter(
-          (img) =>
-            !img.includes("blob:") ||
-            (imageChangesToBeMade?.imagesToRemove as string[])?.includes(img)
-        ),
-        ...uploadedImages,
-      ];
+      // 1. Upload new images
+      const uploadedImages = await imageUploadUtility(imageChangesToBeMade, "BUS_IMAGE");
+
+      // 2. Delete images marked for removal
+      const deleteSuccess = await imageDeleteUtility(imageChangesToBeMade.imagesToRemove);
+
+      if (!deleteSuccess) {
+        console.warn("Some images failed to delete, proceeding with update.");
+      }
+
+      // 3. Construct the final list of image URLs for the cab update
+      // Filter out images that were marked for removal AND are not temporary blob URLs (which would be handled by upload)
+      const remainingImages = images.filter(
+        (img) =>
+          !imageChangesToBeMade.imagesToRemove.includes(img) && // Not in the list to be removed
+          !img.startsWith("blob:") // Not a temporary local blob URL (these are handled by `uploadedImages`)
+      );
+
+      const finalImageUrls = [...remainingImages, ...uploadedImages];
 
       const updateCabForm = {
         ...formData,
-        ...(imageUrls.length && { imageUrls }),
+        imageUrls: finalImageUrls,
       };
 
-      updateCab(updateCabForm);
-
-      toast({
-        title: "Success",
-        description: "Bus updated successfully!",
+      updateCab(updateCabForm, {
+        onSuccess: () => {
+          toast({
+            title: "Success",
+            description: "Bus updated successfully!",
+          });
+          // After successful update, reset image changes and refetch data to ensure UI consistency
+          setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
+          refetch(); // Refetch to get the latest state from the server
+        },
+        onError: (error) => {
+          toast({
+            title: "Error",
+            description: "Failed to update bus. Please try again.",
+            variant: "destructive",
+          });
+          console.error(error);
+        },
       });
-
-      setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
     } catch (err) {
-      console.error("Upload failed:", err);
+      console.error("Operation failed:", err);
       toast({
         title: "Error",
-        description: "Image upload or update failed.",
+        description: "An error occurred during image operations or update.",
         variant: "destructive",
       });
     } finally {
