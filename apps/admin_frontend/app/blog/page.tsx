@@ -188,7 +188,7 @@ export default function BlogPage() {
                 </CardContent>
                 <CardFooter className="flex gap-2">
                   <Button variant="outline" className="flex-1" asChild>
-                    <Link href={`/blog/${blog._id}/edit`}>Edit Post</Link>
+                    <Link href={`/blog/${blog.slug}/edit`}>Edit Post</Link>
                   </Button>
                   <AlertDialog
                     open={blogToDelete === blog._id}
@@ -198,7 +198,7 @@ export default function BlogPage() {
                       <Button
                         variant="destructive"
                         size="icon"
-                        onClick={() => handleDeleteBlog(blog._id)}
+                        onClick={() => blog._id && handleDeleteBlog(blog._id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -310,7 +310,9 @@ export default function BlogPage() {
                         )
                       )
                     }
-                    isActive={currentPage !== Math.ceil(data.meta.total / itemsPerPage)}
+                    isActive={
+                      currentPage !== Math.ceil(data.meta.total / itemsPerPage)
+                    }
                   />
                 </PaginationItem>
               </PaginationContent>
