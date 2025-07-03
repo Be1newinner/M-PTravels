@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch -r source-map-support/register.js src/index.ts",
+    "dev:ssl": "tsx watch -r source-map-support/register.js src/index_ssl.ts",
     "dev2": "powershell -Command \"$timestamp = Get-Date -Format 'yyyy-MM-ddTHH-mm-ss'; tsx watch -r source-map-support\\register.js src\\index.ts *> logs\\$timestamp.log  -Encoding UTF8 2>&1\"",
     "check": "tsc --noEmit",
     "debug": "node --inspect-brk -r ts-node/register src/index.ts",

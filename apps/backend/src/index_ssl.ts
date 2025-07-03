@@ -6,7 +6,11 @@ import connectToDB from "./config/db";
 import { setupSwagger } from "./config/swagger";
 import { ENV_CONFIGS } from "./config/envs.config";
 import { errorHandler } from "./middlewares/error.middleware";
+import fs from "fs";
+import path from "path";
+import https from "https";
 import helmet from "helmet";
+import { fileURLToPath } from "node:url";
 
 import userRoutes from "./routes/user.routes";
 import blogRoutes from "./routes/blog.routes";
@@ -14,6 +18,19 @@ import leadRoutes from "./routes/lead.routes";
 import cabRoutes from "./routes/cab.routes";
 import packageRoutes from "./routes/package.routes";
 import { imagesRouter } from "./routes/images.routes";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const privateKey = fs.readFileSync(
+  path.join(__dirname, "../", "localhost-key.pem"),
+  "utf8"
+);
+const certificate = fs.readFileSync(
+  path.join(__dirname, "../", "localhost.pem"),
+  "utf8"
+);
+const credentials = { key: privateKey, cert: certificate };
 
 const app = express();
 const PORT = ENV_CONFIGS.PORT || 5000;
@@ -61,7 +78,9 @@ app.use(errorHandler);
 
 connectToDB()
   .then(() => {
-    app.listen(PORT, () => {
+    const httpsServer = https.createServer(credentials, app);
+
+    httpsServer.listen(PORT, () => {
       console.log(`⚙️  Server is running on http://localhost:${PORT}`);
     });
   })
