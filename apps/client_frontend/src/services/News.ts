@@ -6,8 +6,8 @@ export type NewsType = {
   updatedAt: string;
   image: string;
   slug: string;
+  content: string;
   desc: string;
-  blog: string;
 };
 
 export async function fetchNews({ limit = 4, page = 1 }) {
@@ -18,13 +18,10 @@ export async function fetchNews({ limit = 4, page = 1 }) {
   if (code != 200) {
     throw new Error(data?.message || "Unknown Error!");
   }
-  // console.log(data?.data);
   return { data: data?.data, meta: data?.meta };
 }
 
-export async function fetchBlogBySlug(
-  slug: string
-): Promise<NewsType> {
+export async function fetchBlogBySlug(slug: string): Promise<NewsType> {
   const response = await get<Custom_API_Response_Type<NewsType>>(
     `/blogs/${slug}`
   );
@@ -32,7 +29,6 @@ export async function fetchBlogBySlug(
   if (code !== 200 || data === null) {
     throw new Error(data?.message || "Unknown Error!");
   }
-
 
   return data.data;
 }

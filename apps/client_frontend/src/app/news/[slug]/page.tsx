@@ -49,7 +49,7 @@ function BlogContent({ params }: { params: Promise<{ slug: string }> }) {
         Published on: {new Date(data.updatedAt).toLocaleDateString()}
       </div>
       <div className="prose max-w-none text-lg leading-relaxed text-gray-800 px-4 md:px-8 lg:px-12">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{data.blog}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{data.content}</ReactMarkdown>
       </div>
     </div>
   );

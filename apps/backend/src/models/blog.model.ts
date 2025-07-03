@@ -2,10 +2,9 @@ import { Schema, model } from "mongoose";
 
 export interface IBlog {
   title: string;
-  blog: string;
   image: string;
   slug: string;
-  desc: string;
+  content: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -14,12 +13,12 @@ export const blogSchema = new Schema<IBlog>(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
+      required: [true, "Title is required!"],
       trim: true,
     },
-    blog: {
+    content: {
       type: String,
-      required: [true, "Blog Data is required"],
+      required: [true, "Blog Data is required!"],
       trim: true,
     },
     image: {
@@ -29,10 +28,7 @@ export const blogSchema = new Schema<IBlog>(
     slug: {
       type: String,
       trim: true,
-    },
-    desc: {
-      type: String,
-      trim: true,
+      required: [true, "Slug is required!"],
     },
   },
   { timestamps: true }

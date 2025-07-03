@@ -164,6 +164,6 @@ router.route("/:id").delete(verifyJWT, deleteBlog);
  *       401:
  *         description: Unauthorized
  */
-router.route("/:id").patch(verifyJWT, updateBlog);
+router.route("/:slug").patch(verifyJWT, updateBlog);
 
 export default router;

@@ -23,9 +23,9 @@ export default function NewsCard({
       <div className="relative overflow-hidden border border-white group-hover:border-blue-300 rounded-2xl bg-white cursor-pointer p-4 flex gap-4 h-full max-sm:flex-col">
         {/* Left Image Section */}
         <div className="aspect-[4/3] overflow-hidden rounded-xl w-full md:w-2/5 max-sm:h-48 flex-shrink-0">
-          <Image  
-    width={1920}
-    height={1920}
+          <Image
+            width={1920}
+            height={1920}
             src={img_url}
             alt={img_url}
             className="group-hover:scale-105 w-full h-full object-cover"
@@ -42,7 +42,9 @@ export default function NewsCard({
             >
               {title}
             </Link>
-            <p className="text-gray-500 text-sm sm:text-base">{description?.slice(0, 150)}...</p>
+            <p className="text-gray-500 text-sm sm:text-base">
+              {description?.slice(0, 150)}...
+            </p>
           </div>
 
           {/* Bottom Section */}

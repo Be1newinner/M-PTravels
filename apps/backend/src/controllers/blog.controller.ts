@@ -9,12 +9,12 @@ export const createBlog = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { title, blog, slug } = req.body;
+  const { title, content, slug } = req.body;
 
   try {
     const blogData = await Blog.create({
       title,
-      blog,
+      content,
       slug,
     });
     SendResponse(res, {
@@ -50,11 +50,11 @@ export const getBlogs = async (
             { $limit: limitNum },
             {
               $project: {
-                title: 1,
-                image: 1,
-                updatedAt: 1,
-                slug: 1,
-                desc: 1,
+                title: true,
+                image: true,
+                updatedAt: true,
+                content: true,
+                slug: true,
               },
             },
           ],
@@ -114,15 +114,16 @@ export const updateBlog = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { id } = req.params;
-  const { title, description } = req.body;
+  const { slug } = req.params;
+  const { title, content, image } = req.body;
 
   try {
-    const blog = await Blog.findByIdAndUpdate(
-      id,
+    const blog = await Blog.findOneAndUpdate(
+      { slug },
       {
         title,
-        description,
+        content,
+        image,
       },
       { new: true }
     );
