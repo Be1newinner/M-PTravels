@@ -38,7 +38,7 @@ export default function NewBlogPage() {
   const { mutate: createBlog, isPending } = useCreateBlog();
 
   useEffect(() => {
-    // Cleanup function to revoke object URL when component unmounts or image changes
+    // This will remove the existing url space!
     return () => {
       if (currentPreviewUrl && currentPreviewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(currentPreviewUrl);
@@ -69,7 +69,7 @@ export default function NewBlogPage() {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setSelectedImageFile(file);
-      // Revoke previous blob URL if it exists
+      // let's check and revoke previous blob URL if it exists
       if (currentPreviewUrl && currentPreviewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(currentPreviewUrl);
       }
@@ -79,7 +79,7 @@ export default function NewBlogPage() {
 
   const handleRemoveImage = () => {
     setSelectedImageFile(null);
-    // Revoke current blob URL if it exists
+    // let's Revoke current blob URL if it exists
     if (currentPreviewUrl && currentPreviewUrl.startsWith("blob:")) {
       URL.revokeObjectURL(currentPreviewUrl);
     }
@@ -111,7 +111,7 @@ export default function NewBlogPage() {
             variant: "destructive",
           });
           setIsUploadingImage(false);
-          return; // Stop submission if image upload fails
+          return;
         }
       } catch (uploadError) {
         console.error("Error uploading image:", uploadError);
@@ -122,7 +122,7 @@ export default function NewBlogPage() {
           variant: "destructive",
         });
         setIsUploadingImage(false);
-        return; 
+        return;
       } finally {
         setIsUploadingImage(false);
       }
@@ -216,7 +216,9 @@ export default function NewBlogPage() {
                   </div>
                   <div>
                     <p>slug</p>
-                    <p className="text-sm text-gray-400 px-2">{slug ? slug : "your-slug-will-be-here"}</p>
+                    <p className="text-sm text-gray-400 px-2">
+                      {slug ? slug : "your-slug-will-be-here"}
+                    </p>
                   </div>
 
                   <div className="space-y-2">

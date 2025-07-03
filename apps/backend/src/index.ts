@@ -12,7 +12,6 @@ import https from "https";
 import helmet from "helmet";
 import { fileURLToPath } from "node:url";
 
-// Import Routes
 import userRoutes from "./routes/user.routes";
 import blogRoutes from "./routes/blog.routes";
 import leadRoutes from "./routes/lead.routes";
@@ -38,7 +37,6 @@ const PORT = ENV_CONFIGS.PORT || 5000;
 
 const WHITELIST_DOMAINS = process.env.CORS_WHITELIST?.split(",");
 
-// Middleware
 app.use(helmet());
 app.use(
   cors({
@@ -59,7 +57,6 @@ app.use(morgan("dev"));
 // Setup Swagger (Move it before routes)
 setupSwagger(app);
 
-// Define Routes
 app.use("/users", userRoutes);
 app.use("/blogs", blogRoutes);
 app.use("/leads", leadRoutes);
@@ -67,7 +64,6 @@ app.use("/cabs", cabRoutes);
 app.use("/packages", packageRoutes);
 app.use("/images", imagesRouter);
 
-// Root Route
 app.get("/", (_, res) => {
   res.status(200).json({
     success: true,
@@ -78,10 +74,8 @@ app.get("/", (_, res) => {
   });
 });
 
-// Global Error Handling Middleware
 app.use(errorHandler);
 
-// Database Connection & Server Start
 connectToDB()
   .then(() => {
     const httpsServer = https.createServer(credentials, app);
@@ -95,7 +89,6 @@ connectToDB()
     process.exit(1);
   });
 
-// Graceful Shutdown for Database Connection
 process.on("SIGINT", async () => {
   console.log("⚠️  Shutting down gracefully...");
   process.exit(0);

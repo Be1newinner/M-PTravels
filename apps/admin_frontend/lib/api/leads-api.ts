@@ -102,21 +102,16 @@ export const useLeadsThisMonthCount = () => {
   });
 };
 
-// Assuming recent leads endpoint returns an array of leads directly or wrapped in a 'data' object.
-// Adjust Lead[] or { data: Lead[] } based on actual API response.
 interface RecentLeadsResponse {
   status_code: number;
   message: string;
-  data: Lead[]; // Or Lead[] if not nested under 'data'
+  data: Lead[]; 
 }
 
 export const useRecentLeads = () => {
   return useQuery({
     queryKey: ["leads", "recent"],
     queryFn: async () => {
-      // Assuming the API returns { data: Lead[] }
-      // If it returns Lead[] directly, change to:
-      // const response = await apiClient.get<Lead[]>("/leads/recent")
       const response = await apiClient.get<RecentLeadsResponse>(
         "/leads/recent"
       );

@@ -38,7 +38,6 @@ import {
   imageDeleteUtility,
 } from "@/lib/utils/handleImageAdditionRemove";
 
-// Define a type for image changes to be made
 type ImageChangeState = {
   imagesToAdd: File[];
   imagesToRemove: string[];
@@ -65,14 +64,14 @@ export default function EditPackagePage() {
   const { mutate: updatePackage, isPending: isUpdating } =
     useUpdatePackage(packageId);
 
-  const [currentImage, setCurrentImage] = useState<string | null>(null); // The URL currently displayed/persisted
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [imageChangesToBeMade, setImageChangesToBeMade] =
     useState<ImageChangeState>({
       imagesToAdd: [],
       imagesToRemove: [],
     });
-  const imageUploadMapRef = useRef<Record<string, File>>({}); // To keep track of blob URLs to files
-  const [isImageProcessing, setIsImageProcessing] = useState(false); // New state for image processing
+  const imageUploadMapRef = useRef<Record<string, File>>({});
+  const [isImageProcessing, setIsImageProcessing] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,21 +91,17 @@ export default function EditPackagePage() {
         price: data.data.price,
         price_unit: data.data.price_unit,
       });
-      setCurrentImage(data.data.image || null); // Set initial image
-      setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] }); // Reset changes
-      imageUploadMapRef.current = {}; // Clear ref
+      setCurrentImage(data.data.image || null);
+      setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
+      imageUploadMapRef.current = {};
     }
   }, [data, form]);
 
-  // Cleanup effect for object URLs
   useEffect(() => {
     return () => {
-      // Revoke object URLs for images that were added but not submitted
-      // or if the component unmounts while a blob URL is active
       imageChangesToBeMade.imagesToAdd.forEach((file) => {
         const url = URL.createObjectURL(file);
         if (url !== currentImage) {
-          // Avoid revoking currentImage twice if it's a blob
           URL.revokeObjectURL(url);
         }
       });
@@ -117,91 +112,76 @@ export default function EditPackagePage() {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
 
-    // If there's an existing image that's not a new blob, mark it for removal
     if (currentImage && !currentImage.startsWith("blob:")) {
       setImageChangesToBeMade((prev) => ({
         ...prev,
         imagesToRemove: [...prev.imagesToRemove, currentImage],
       }));
     } else if (currentImage && currentImage.startsWith("blob:")) {
-      // If the current image is a blob, revoke its URL as it's being replaced
       URL.revokeObjectURL(currentImage);
     }
 
-    // Clear any previous image to add, and add the new one
     setImageChangesToBeMade((prev) => ({
       ...prev,
-      imagesToAdd: [file], // Only one image to add
+      imagesToAdd: [file],
     }));
 
     const url = URL.createObjectURL(file);
-    imageUploadMapRef.current = { [url]: file }; // Store only the current file
-    setCurrentImage(url); // Display the new blob URL
+    imageUploadMapRef.current = { [url]: file };
+    setCurrentImage(url);
   };
 
   const handleRemoveImage = () => {
     if (currentImage) {
-      // If it's an existing image (not a blob), mark for removal
       if (!currentImage.startsWith("blob:")) {
         setImageChangesToBeMade((prev) => ({
           ...prev,
           imagesToRemove: [...prev.imagesToRemove, currentImage],
         }));
       } else {
-        // If it's a new blob image, just remove it from imagesToAdd
         setImageChangesToBeMade((prev) => ({
           ...prev,
           imagesToAdd: [],
         }));
-        // Revoke object URL immediately for local cleanup
         URL.revokeObjectURL(currentImage);
       }
     }
-    setCurrentImage(null); // Clear the displayed image
-    imageUploadMapRef.current = {}; // Clear ref
+    setCurrentImage(null); 
+    imageUploadMapRef.current = {}; 
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsImageProcessing(true); // Start image processing indicator
-    let finalImageUrl: string | null = data?.data?.image || null; // Start with the original image URL
+    setIsImageProcessing(true); 
+    let finalImageUrl: string | null = data?.data?.image || null; 
 
     try {
-      // 1. Upload new images (if any)
       if (imageChangesToBeMade.imagesToAdd.length > 0) {
         const uploadedImages = await imageUploadUtility(
           {
             imagesToAdd: imageChangesToBeMade.imagesToAdd,
-            imagesToRemove: [], // Not relevant for upload utility
+            imagesToRemove: [], 
           },
           "PACKAGE_IMAGE"
         );
         if (uploadedImages.length > 0) {
-          finalImageUrl = uploadedImages[0]; // Take the first (and only) uploaded image URL
+          finalImageUrl = uploadedImages[0]; 
         } else {
-          // If upload failed, revert to original or null
           finalImageUrl = data?.data?.image || null;
           toast({
             title: "Image Upload Failed",
             description: "Could not upload the new image. Please try again.",
             variant: "destructive",
           });
-          return; // Stop submission if image upload is critical
+          return; 
         }
       } else if (currentImage === null && data?.data?.image) {
-        // If currentImage is null, but there was an original image, it means it was removed
         finalImageUrl = null;
       } else if (currentImage && !currentImage.startsWith("blob:")) {
-        // If currentImage is still a server URL and no new image was added, keep it
         finalImageUrl = currentImage;
       } else if (currentImage && currentImage.startsWith("blob:")) {
-        // This case should ideally be handled by imageChangesToBeMade.imagesToAdd
-        // but as a fallback, if a blob URL is still 'currentImage' and not in imagesToAdd,
-        // it means it was a new image that failed to upload or was not processed.
-        // For simplicity, we'll treat it as if no new image was successfully set.
         finalImageUrl = data?.data?.image || null;
       }
 
-      // 2. Delete images marked for removal
       if (imageChangesToBeMade.imagesToRemove.length > 0) {
         const deleteSuccess = await imageDeleteUtility(
           imageChangesToBeMade.imagesToRemove
@@ -216,10 +196,9 @@ export default function EditPackagePage() {
         }
       }
 
-      // Construct the payload for updatePackage
       const updatePayload = {
         ...values,
-        image: finalImageUrl, // Pass the final image URL (or null)
+        image: finalImageUrl, 
       };
 
       updatePackage(updatePayload, {
@@ -229,7 +208,6 @@ export default function EditPackagePage() {
             description: "Your package has been successfully updated.",
           });
           router.push("/packages");
-          // Reset image changes after successful update
           setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
           imageUploadMapRef.current = {};
         },
@@ -250,7 +228,7 @@ export default function EditPackagePage() {
         variant: "destructive",
       });
     } finally {
-      setIsImageProcessing(false); // End image processing indicator
+      setIsImageProcessing(false); 
     }
   }
 

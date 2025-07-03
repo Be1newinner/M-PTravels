@@ -32,12 +32,11 @@ import { Upload, X, Loader2, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import DashboardLayout from "../../dashboard-layout";
 import { useCab, useUpdateCab } from "@/lib/api/cabs-api";
-import { imagesUploadApi } from "@/lib/api/images-api";
 import {
   handleImageAddition,
   handleRemoveImage,
   imageUploadUtility,
-  imageDeleteUtility, // Import the new utility
+  imageDeleteUtility,
 } from "@/lib/utils/handleImageAdditionRemove";
 
 type ImageChangeState = {
@@ -110,7 +109,6 @@ export default function EditBusPage() {
     return Object.keys(errors).length === 0;
   };
 
- 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -118,22 +116,23 @@ export default function EditBusPage() {
     setIsSaving(true);
 
     try {
-      // 1. Upload new images
-      const uploadedImages = await imageUploadUtility(imageChangesToBeMade, "BUS_IMAGE");
+      const uploadedImages = await imageUploadUtility(
+        imageChangesToBeMade,
+        "BUS_IMAGE"
+      );
 
-      // 2. Delete images marked for removal
-      const deleteSuccess = await imageDeleteUtility(imageChangesToBeMade.imagesToRemove);
+      const deleteSuccess = await imageDeleteUtility(
+        imageChangesToBeMade.imagesToRemove
+      );
 
       if (!deleteSuccess) {
         console.warn("Some images failed to delete, proceeding with update.");
       }
 
-      // 3. Construct the final list of image URLs for the cab update
-      // Filter out images that were marked for removal AND are not temporary blob URLs (which would be handled by upload)
       const remainingImages = images.filter(
         (img) =>
-          !imageChangesToBeMade.imagesToRemove.includes(img) && // Not in the list to be removed
-          !img.startsWith("blob:") // Not a temporary local blob URL (these are handled by `uploadedImages`)
+          !imageChangesToBeMade.imagesToRemove.includes(img) &&
+          !img.startsWith("blob:")
       );
 
       const finalImageUrls = [...remainingImages, ...uploadedImages];
@@ -149,9 +148,8 @@ export default function EditBusPage() {
             title: "Success",
             description: "Bus updated successfully!",
           });
-          // After successful update, reset image changes and refetch data to ensure UI consistency
           setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
-          refetch(); // Refetch to get the latest state from the server
+          refetch();
         },
         onError: (error) => {
           toast({

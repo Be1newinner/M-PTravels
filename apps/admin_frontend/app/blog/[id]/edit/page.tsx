@@ -65,7 +65,7 @@ export default function EditBlogPage() {
     if (data?.data) {
       console.log("Successfully fetched blog data:", data.data);
       setTitle(data.data.title || "");
-      setContent(data.data.content || ""); // Changed from data.data.description to data.data.blog
+      setContent(data.data.content || ""); 
       setCurrentImage(data.data.image || null);
       setImageChangesToBeMade({ imagesToAdd: [], imagesToRemove: [] });
       imageUploadMapRef.current = {};

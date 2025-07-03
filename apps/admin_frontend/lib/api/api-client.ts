@@ -179,8 +179,6 @@ apiClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // If it's not a 401 for token refresh, or if it's the refresh endpoint itself failing,
-    // or if the original request was already a retry, just reject the error normally.
     return Promise.reject(error);
   }
 );

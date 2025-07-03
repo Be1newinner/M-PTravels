@@ -81,7 +81,7 @@ export async function imageUploadUtility(
 export async function imageDeleteUtility(
   imageUrlsToDelete: string[]
 ): Promise<boolean> {
-  if (!imageUrlsToDelete.length) return true; // Nothing to delete
+  if (!imageUrlsToDelete.length) return true; 
 
   try {
     const deletePromises = imageUrlsToDelete.map((url) => imagesRemoveApi(url));

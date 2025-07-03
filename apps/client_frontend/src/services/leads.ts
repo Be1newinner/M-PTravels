@@ -10,7 +10,7 @@ export type submitLeadBody = {
   dropDate: string;
   source?: string;
   message?: string;
-  packageId?: string; // Added packageId
+  packageId?: string; 
 };
 
 export type submitLeadResponse = {
@@ -26,7 +26,7 @@ export type submitLeadResponse = {
   updatedAt: string;
   source?: string;
   message?: string;
-  packageId?: string; // Added packageId
+  packageId?: string; 
 };
 
 export async function submitLead({
@@ -39,7 +39,7 @@ export async function submitLead({
   dropDate,
   source = "",
   message = "",
-  packageId = "", // Added packageId
+  packageId = "", 
 }: submitLeadBody) {
   const response = await post<Custom_API_Response_Type<submitLeadResponse>>(
     `/leads`,
@@ -53,7 +53,7 @@ export async function submitLead({
       dropDate,
       source,
       message,
-      packageId, // Sent packageId
+      packageId, 
     }
   );
 

@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   useEffect(() => {
     setIsMounted(true);
 
-    // is user logged in?
+    // we will check if user logged in?
     if (!isAuthenticated && pathname !== "/login") {
       router.push("/login");
     }
@@ -75,7 +75,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="flex h-screen bg-background">
-      {/* Sidebar in desktop version! */}
+      {/* this is Sidebar in desktop version! */}
       <div
         className={cn(
           "hidden md:flex md:flex-col transition-all duration-300 ease-in-out",

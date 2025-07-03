@@ -7,7 +7,7 @@ interface Package {
   description: string
   price?: number
   price_unit?: string
-  image?: string | null // Changed to string | null
+  image?: string | null 
   [key: string]: any
 }
 
@@ -55,8 +55,8 @@ export const useCreatePackage = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (packageData: Omit<Package, "_id">) => { // Changed to accept Omit<Package, "_id">
-      const response = await apiClient.post<PackageResponse>("/packages", packageData) // Removed multipart/form-data header
+    mutationFn: async (packageData: Omit<Package, "_id">) => { 
+      const response = await apiClient.post<PackageResponse>("/packages", packageData) 
       return response.data
     },
     onSuccess: () => {
@@ -69,8 +69,8 @@ export const useUpdatePackage = (id: string) => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (packageData: Partial<Package>) => { // Changed to Partial<Package>
-      const response = await apiClient.patch<PackageResponse>(`/packages/${id}`, packageData) // Removed multipart/form-data header
+    mutationFn: async (packageData: Partial<Package>) => { 
+      const response = await apiClient.patch<PackageResponse>(`/packages/${id}`, packageData) 
       return response.data
     },
     onSuccess: () => {

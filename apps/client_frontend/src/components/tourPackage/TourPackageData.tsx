@@ -44,7 +44,6 @@ export function TourPackageData() {
   // };
 
   // const handleSearchSubmit = () => {
-  //   // Debouncing handles the actual fetch, this just ensures immediate update if needed
   //   setDebouncedSearchQuery(searchQuery);
   //   setCurrentPage(1); // Reset to first page on search submit
   // };

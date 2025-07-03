@@ -60,7 +60,7 @@ export const uploadBufferToCloudinary = async (
           {
             folder,
             resource_type: "image",
-            ...options, // Merge any additional options provided by the caller
+            ...options, 
           } as UploadApiOptions,
           (error, result) => {
             if (error) {
@@ -108,19 +108,10 @@ export const uploadBufferToCloudinary = async (
   }
 };
 
-/**
- * Deletes an asset from Cloudinary by its public ID.
- * Provides robust error handling and clear return values for calling services.
- *
- * @param publicId The full public ID of the asset to delete (e.g., "my_folder/my_subfolder/asset_name_12345").
- * @returns A Promise resolving to an object indicating success or failure,
- * along with an error message if the operation failed.
- */
 export const deleteFromCloudinary = async (
   publicId: string
 ): Promise<{ success: boolean; message: string; error?: unknown }> => {
   if (!publicId) {
-    // Log this as a warning or error, depending on severity
     console.warn(
       "Attempted to delete from Cloudinary with an empty public ID."
     );
@@ -130,10 +121,6 @@ export const deleteFromCloudinary = async (
   try {
     const result = await cloudinary.uploader.destroy(publicId);
 
-    // Cloudinary's destroy method returns a result object.
-    // 'result' will typically contain { result: 'ok' } on success,
-    // or { result: 'not found' } if the asset didn't exist.
-    // For other errors, it usually throws an exception.
     if (result && result.result === "ok") {
       console.log(
         `Cloudinary asset with public ID '${publicId}' deleted successfully.`

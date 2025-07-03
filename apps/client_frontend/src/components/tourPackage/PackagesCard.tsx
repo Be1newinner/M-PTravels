@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 type packagesCardType = {
   image: string;
   title: string;
-  slug: string; // Ensure slug is passed
+  slug: string; 
 };
 
 export function PackagesCard({ image, title, slug }: packagesCardType) {

@@ -16,7 +16,6 @@ interface ImageDeleteApiResponse {
   };
 }
 
-// Helper to extract public_id from a Cloudinary URL
 const getPublicIdFromCloudinaryUrl = (url: string): string | null => {
   try {
     const urlParts = url.split("/");
@@ -44,7 +43,7 @@ export async function imagesUploadApi(
 }
 
 export async function imagesRemoveApi(
-  imageUrl: string // Now accepts a full image URL
+  imageUrl: string 
 ): Promise<AxiosResponse<ImageDeleteApiResponse>> {
   const publicId = getPublicIdFromCloudinaryUrl(imageUrl);
   if (!publicId) {

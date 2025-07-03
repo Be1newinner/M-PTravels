@@ -64,7 +64,6 @@ export default function LeadsPage() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear error when user types
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -387,7 +386,7 @@ export default function LeadsPage() {
                     <PaginationItem>
                       <PaginationPrevious
                         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                        disabled={currentPage === 1}
+                        // disabled={currentPage === 1}
                       />
                     </PaginationItem>
 
@@ -432,7 +431,7 @@ export default function LeadsPage() {
                     <PaginationItem>
                       <PaginationNext
                         onClick={() => setCurrentPage((prev) => Math.min(prev + 1, data.data.pagination.total_pages))}
-                        disabled={currentPage === data.data.pagination.total_pages}
+                        // disabled={currentPage === data.data.pagination.total_pages}
                       />
                     </PaginationItem>
                   </PaginationContent>

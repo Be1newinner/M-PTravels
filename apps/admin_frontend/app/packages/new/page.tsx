@@ -42,7 +42,7 @@ export default function NewPackagePage() {
   const { mutate: createPackage, isPending } = useCreatePackage();
 
   useEffect(() => {
-    // Cleanup function to revoke object URL when component unmounts or image changes
+    // again the Cleanup function to revoke or remove the object URL when component unmounts or image changes
     return () => {
       if (currentPreviewUrl && currentPreviewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(currentPreviewUrl);
@@ -65,7 +65,7 @@ export default function NewPackagePage() {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setSelectedImageFile(file);
-      // Revoke previous blob URL if it exists
+      // again Revoke previous blob URL if it exists
       if (currentPreviewUrl && currentPreviewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(currentPreviewUrl);
       }
@@ -75,7 +75,7 @@ export default function NewPackagePage() {
 
   const handleRemoveImage = () => {
     setSelectedImageFile(null);
-    // Revoke current blob URL if it exists
+    // again Revoke current blob URL if it exists
     if (currentPreviewUrl && currentPreviewUrl.startsWith("blob:")) {
       URL.revokeObjectURL(currentPreviewUrl);
     }
@@ -126,7 +126,7 @@ export default function NewPackagePage() {
             variant: "destructive",
           });
           setIsUploadingImage(false);
-          return; // Stop submission if image upload fails
+          return; 
         }
       } catch (uploadError) {
         console.error("Error uploading image:", uploadError);
@@ -137,7 +137,7 @@ export default function NewPackagePage() {
           variant: "destructive",
         });
         setIsUploadingImage(false);
-        return; // Stop submission on upload error
+        return; 
       } finally {
         setIsUploadingImage(false);
       }
@@ -148,7 +148,7 @@ export default function NewPackagePage() {
       description: formData.description,
       price: Number(formData.price),
       price_unit: formData.price_unit,
-      image: imageUrl, // Use the uploaded image URL
+      image: imageUrl, 
     };
 
     createPackage(packageDataToSend, {
